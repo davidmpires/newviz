@@ -3,8 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WSET Study Hub - Levels 1, 2 & 3</title>
+    <title>WSET Study Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #C86B45;
+            --primary-dark: #651E1C;
+            --text: #3D2B2A;
+            --text-light: #6B5654;
+            --background: #FFFFFF;
+            --surface: #F8F6F5;
+            --border: #E8E2E0;
+            --success: #4A9D6E;
+            --error: #C85A45;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,166 +27,437 @@
         }
 
         body {
-            font-family: 'Georgia', serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--surface);
+            color: var(--text);
+            line-height: 1.6;
             min-height: 100vh;
-            color: #fff;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 40px 20px;
         }
 
-        header {
-            text-align: center;
-            padding: 40px 0;
-        }
-
-        header h1 {
-            font-size: 2.5rem;
-            color: #c9a227;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        header p {
-            color: #ddd;
-            font-size: 1.1rem;
-        }
-
-        /* Level Selector */
-        .level-selector {
+        /* Header */
+        .header {
             display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 30px 0;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
             flex-wrap: wrap;
+            gap: 20px;
         }
 
-        .level-btn {
-            padding: 15px 35px;
-            font-size: 1.1rem;
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .level-tabs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .level-tab {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
             font-family: inherit;
-            border: 2px solid #c9a227;
-            background: transparent;
-            color: #c9a227;
+            border: 1px solid var(--border);
+            background: var(--background);
+            color: var(--text);
             cursor: pointer;
-            border-radius: 30px;
-            transition: all 0.3s ease;
+            border-radius: 25px;
+            transition: all 0.2s ease;
         }
 
-        .level-btn:hover, .level-btn.active {
-            background: #c9a227;
-            color: #1a1a2e;
+        .level-tab:hover {
+            border-color: var(--primary);
+            color: var(--primary);
         }
 
-        /* Mode Tabs */
-        .mode-tabs {
+        .level-tab.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--background);
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(61, 43, 42, 0.08);
+        }
+
+        /* Mode Toggle */
+        .mode-toggle {
             display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 20px 0 30px;
-            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
         }
 
-        .mode-tab {
-            padding: 12px 25px;
-            font-size: 1rem;
+        .mode-btn {
+            padding: 12px 24px;
+            font-size: 0.95rem;
+            font-weight: 500;
             font-family: inherit;
-            border: none;
-            background: rgba(255,255,255,0.1);
-            color: #fff;
+            border: 1px solid var(--border);
+            background: var(--background);
+            color: var(--text);
             cursor: pointer;
             border-radius: 8px;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
-        .mode-tab:hover {
-            background: rgba(255,255,255,0.2);
+        .mode-btn:hover {
+            border-color: var(--primary);
         }
 
-        .mode-tab.active {
-            background: #722f37;
-            color: #fff;
+        .mode-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
         }
 
-        /* Content Area */
-        .content-area {
-            background: rgba(255,255,255,0.05);
-            border-radius: 15px;
-            padding: 30px;
-            min-height: 400px;
+        /* Welcome Section */
+        .welcome-text {
+            color: var(--text);
+            margin-bottom: 8px;
         }
 
-        /* Quiz Styles */
-        .quiz-container {
+        .welcome-text strong {
+            color: var(--primary-dark);
+        }
+
+        .welcome-text em {
+            color: var(--primary);
+            font-style: italic;
+        }
+
+        .scope-text {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 16px;
+        }
+
+        /* Control Bar */
+        .control-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .btn-primary {
+            padding: 12px 24px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: inherit;
+            border: none;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            padding: 12px 24px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            font-family: inherit;
+            border: 1px solid var(--border);
+            background: var(--background);
+            color: var(--text);
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text-light);
+        }
+
+        .stat-badge {
+            padding: 10px 16px;
+            font-size: 0.9rem;
+            background: var(--surface);
+            border-radius: 8px;
+            color: var(--text);
+        }
+
+        .stat-badge strong {
+            color: var(--primary-dark);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-top: 16px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--surface);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 8px;
+        }
+
+        /* Question Card */
+        .question-container {
             display: none;
         }
 
-        .quiz-container.active {
+        .question-container.active {
             display: block;
         }
 
-        .question-card {
-            background: rgba(255,255,255,0.08);
-            border-radius: 12px;
-            padding: 25px;
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
         .question-number {
-            color: #c9a227;
             font-size: 0.9rem;
-            margin-bottom: 10px;
+            color: var(--text-light);
+        }
+
+        .timer {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .timer.warning {
+            color: var(--error);
+        }
+
+        .accuracy-badge {
+            padding: 6px 12px;
+            background: var(--surface);
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .accuracy-badge.good {
+            background: rgba(74, 157, 110, 0.1);
+            color: var(--success);
+        }
+
+        .accuracy-badge.needs-work {
+            background: rgba(200, 90, 69, 0.1);
+            color: var(--error);
         }
 
         .question-text {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            line-height: 1.6;
+            font-size: 1.15rem;
+            font-weight: 500;
+            margin-bottom: 24px;
+            line-height: 1.5;
         }
 
+        /* Options */
         .options {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
 
         .option {
-            padding: 15px 20px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 8px;
+            padding: 16px 20px;
+            background: var(--surface);
+            border: 2px solid transparent;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
         }
 
         .option:hover {
-            background: rgba(255,255,255,0.15);
-            border-color: #c9a227;
+            border-color: var(--primary);
+            background: white;
         }
 
         .option.selected {
-            background: rgba(201, 162, 39, 0.3);
-            border-color: #c9a227;
+            border-color: var(--primary);
+            background: rgba(200, 107, 69, 0.08);
         }
 
         .option.correct {
-            background: rgba(39, 174, 96, 0.3);
-            border-color: #27ae60;
+            border-color: var(--success);
+            background: rgba(74, 157, 110, 0.1);
         }
 
         .option.incorrect {
-            background: rgba(231, 76, 60, 0.3);
-            border-color: #e74c3c;
+            border-color: var(--error);
+            background: rgba(200, 90, 69, 0.1);
         }
 
-        /* Flash Cards */
+        .option.correct::before {
+            content: "✓ ";
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .option.incorrect::before {
+            content: "✗ ";
+            color: var(--error);
+            font-weight: 600;
+        }
+
+        /* Explanation */
+        .explanation {
+            margin-top: 20px;
+            padding: 16px 20px;
+            background: rgba(200, 107, 69, 0.05);
+            border-left: 3px solid var(--primary);
+            border-radius: 0 8px 8px 0;
+            display: none;
+        }
+
+        .explanation.show {
+            display: block;
+        }
+
+        .explanation-title {
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .explanation-text {
+            color: var(--text);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .question-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn-danger {
+            padding: 10px 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            font-family: inherit;
+            border: 1px solid var(--error);
+            background: transparent;
+            color: var(--error);
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-danger:hover {
+            background: var(--error);
+            color: white;
+        }
+
+        /* Results */
+        .results {
+            text-align: center;
+            padding: 40px 20px;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .results-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .results h2 {
+            font-size: 1.75rem;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        .results-score {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 20px 0;
+        }
+
+        .results-score.passed {
+            color: var(--success);
+        }
+
+        .results-score.failed {
+            color: var(--error);
+        }
+
+        .results-details {
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+
+        .results-breakdown {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .breakdown-item {
+            text-align: center;
+        }
+
+        .breakdown-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .breakdown-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        /* Flashcards */
         .flashcard-container {
             display: none;
-            text-align: center;
         }
 
         .flashcard-container.active {
@@ -180,11 +466,10 @@
 
         .flashcard {
             width: 100%;
-            max-width: 500px;
-            height: 300px;
-            margin: 20px auto;
+            height: 280px;
             perspective: 1000px;
             cursor: pointer;
+            margin: 20px 0;
         }
 
         .flashcard-inner {
@@ -192,7 +477,7 @@
             width: 100%;
             height: 100%;
             text-align: center;
-            transition: transform 0.6s;
+            transition: transform 0.5s;
             transform-style: preserve-3d;
         }
 
@@ -205,805 +490,626 @@
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
-            border-radius: 15px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 30px;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             line-height: 1.6;
         }
 
         .flashcard-front {
-            background: linear-gradient(135deg, #722f37, #8b3a42);
-            border: 2px solid #c9a227;
+            background: var(--background);
+            border: 2px solid var(--border);
+            color: var(--text);
         }
 
         .flashcard-back {
-            background: linear-gradient(135deg, #c9a227, #d4af37);
-            color: #1a1a2e;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
             transform: rotateY(180deg);
+        }
+
+        .flashcard-hint {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 16px;
         }
 
         .flashcard-nav {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .flashcard-btn {
-            padding: 12px 30px;
-            font-size: 1rem;
-            font-family: inherit;
-            border: 1px solid #c9a227;
-            background: transparent;
-            color: #c9a227;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .flashcard-btn:hover {
-            background: #c9a227;
-            color: #1a1a2e;
-        }
-
-        .card-counter {
-            color: #888;
-            margin-top: 15px;
-        }
-
-        .card-hint {
-            color: #888;
-            font-size: 0.9rem;
-            margin-top: 10px;
-        }
-
-        /* Mock Exam */
-        .exam-container {
-            display: none;
-        }
-
-        .exam-container.active {
-            display: block;
-        }
-
-        .exam-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
+            gap: 12px;
             flex-wrap: wrap;
-            gap: 15px;
         }
 
-        .timer {
-            font-size: 1.5rem;
-            color: #c9a227;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 4px;
-            margin-bottom: 25px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #722f37, #c9a227);
-            border-radius: 4px;
-            transition: width 0.3s ease;
-        }
-
-        /* Buttons */
-        .btn-primary {
-            padding: 15px 40px;
-            font-size: 1.1rem;
-            font-family: inherit;
-            border: none;
-            background: linear-gradient(135deg, #722f37, #8b3a42);
-            color: #fff;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            margin-top: 20px;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(114, 47, 55, 0.4);
-        }
-
-        /* Results */
-        .results {
+        .flashcard-counter {
             text-align: center;
-            padding: 40px;
+            margin-top: 16px;
+            color: var(--text-light);
+            font-size: 0.9rem;
         }
 
-        .score {
-            font-size: 4rem;
-            color: #c9a227;
-            margin: 20px 0;
+        /* Keyboard shortcuts */
+        .shortcuts {
+            display: flex;
+            justify-content: flex-end;
+            gap: 16px;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 12px;
         }
 
-        .score-text {
-            font-size: 1.3rem;
-            color: #ddd;
+        .shortcut kbd {
+            display: inline-block;
+            padding: 2px 6px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 0.75rem;
         }
 
         /* Responsive */
         @media (max-width: 600px) {
-            header h1 {
-                font-size: 1.8rem;
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
             }
 
-            .level-btn {
-                padding: 12px 25px;
-                font-size: 1rem;
+            .header h1 {
+                font-size: 1.5rem;
             }
 
-            .question-text {
-                font-size: 1.1rem;
+            .control-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .stat-badge {
+                text-align: center;
+            }
+
+            .question-header {
+                flex-direction: column;
+                align-items: flex-start;
             }
 
             .flashcard {
-                height: 250px;
+                height: 240px;
             }
 
-            .flashcard-front, .flashcard-back {
-                font-size: 1.1rem;
+            .shortcuts {
+                display: none;
             }
-        }
-
-        /* Start Screen */
-        .start-screen {
-            text-align: center;
-            padding: 40px 20px;
-        }
-
-        .start-screen h2 {
-            color: #c9a227;
-            margin-bottom: 20px;
-        }
-
-        .start-screen p {
-            color: #bbb;
-            margin-bottom: 10px;
-            line-height: 1.6;
-        }
-
-        .level-info {
-            background: rgba(255,255,255,0.05);
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: left;
-        }
-
-        .level-info h3 {
-            color: #c9a227;
-            margin-bottom: 10px;
-        }
-
-        .level-info ul {
-            color: #ddd;
-            margin-left: 20px;
-        }
-
-        .level-info li {
-            margin-bottom: 8px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>WSET Study Hub</h1>
-            <p>Master your wine knowledge with quizzes, mock exams, and flash cards</p>
-        </header>
-
-        <div class="level-selector">
-            <button class="level-btn active" data-level="1">Level 1</button>
-            <button class="level-btn" data-level="2">Level 2</button>
-            <button class="level-btn" data-level="3">Level 3</button>
+        <div class="header">
+            <h1>WSET Study Practice</h1>
+            <div class="level-tabs">
+                <button class="level-tab active" data-level="1">Level 1</button>
+                <button class="level-tab" data-level="2">Level 2</button>
+                <button class="level-tab" data-level="3">Level 3</button>
+            </div>
         </div>
 
-        <div class="mode-tabs">
-            <button class="mode-tab active" data-mode="quiz">Quiz</button>
-            <button class="mode-tab" data-mode="exam">Mock Exam</button>
-            <button class="mode-tab" data-mode="flashcards">Flash Cards</button>
+        <div class="card">
+            <div class="mode-toggle">
+                <button class="mode-btn active" data-mode="exam">Mock Exam</button>
+                <button class="mode-btn" data-mode="quiz">Quick Quiz</button>
+                <button class="mode-btn" data-mode="flashcards">Flashcards</button>
+            </div>
+
+            <div id="welcome-section">
+                <p class="welcome-text">
+                    <strong>Welcome!</strong> Prepare for the <em>WSET Level 1 Award in Wines</em> with timed mock exams, quick quizzes, or flashcards that track your progress.
+                </p>
+                <p class="scope-text">
+                    Content covers: wine types and styles, grape varieties, wine storage and service, food and wine pairing, and labeling basics.
+                </p>
+            </div>
+
+            <div class="control-bar" id="control-bar">
+                <button class="btn-primary" id="start-btn" onclick="startSession()">Start 30-Question Exam</button>
+                <button class="btn-secondary" id="reset-btn" onclick="resetSession()" style="display: none;">Reset</button>
+                <span class="stat-badge">Pass mark: <strong id="pass-mark">70%</strong></span>
+                <span class="stat-badge">Timer: <strong id="timer-display">45:00</strong></span>
+            </div>
+
+            <div class="progress-container" id="progress-container" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+                </div>
+                <div class="progress-text">
+                    <span id="progress-text-left">Question 1 of 30</span>
+                    <span id="progress-text-right">0% complete</span>
+                </div>
+            </div>
         </div>
 
-        <div class="content-area">
-            <!-- Quiz Container -->
-            <div id="quiz-container" class="quiz-container active">
-                <div class="start-screen" id="quiz-start">
-                    <h2>WSET Level 1 Quiz</h2>
-                    <div class="level-info">
-                        <h3>About This Level</h3>
-                        <ul>
-                            <li>Introduction to wine styles and types</li>
-                            <li>Basic food and wine pairing</li>
-                            <li>Wine storage and service</li>
-                            <li>Main grape varieties</li>
-                        </ul>
-                    </div>
-                    <p>Test your knowledge with 10 random questions.</p>
-                    <button class="btn-primary" onclick="startQuiz()">Start Quiz</button>
-                </div>
-                <div id="quiz-questions" style="display: none;"></div>
-                <div id="quiz-results" class="results" style="display: none;"></div>
+        <!-- Question Container -->
+        <div class="card question-container" id="question-container">
+            <div class="question-header">
+                <span class="question-number" id="question-number">Question 1 of 30</span>
+                <span class="timer" id="live-timer">45:00</span>
+                <span class="accuracy-badge" id="accuracy-badge">Accuracy: --</span>
             </div>
 
-            <!-- Exam Container -->
-            <div id="exam-container" class="exam-container">
-                <div class="start-screen" id="exam-start">
-                    <h2>WSET Level 1 Mock Exam</h2>
-                    <div class="level-info">
-                        <h3>Exam Format</h3>
-                        <ul>
-                            <li>30 multiple-choice questions</li>
-                            <li>45 minutes time limit</li>
-                            <li>70% required to pass</li>
-                            <li>Simulates real WSET exam conditions</li>
-                        </ul>
-                    </div>
-                    <button class="btn-primary" onclick="startExam()">Start Mock Exam</button>
-                </div>
-                <div id="exam-questions" style="display: none;">
-                    <div class="exam-header">
-                        <span class="timer" id="exam-timer">45:00</span>
-                        <span id="exam-progress-text">Question 1 of 30</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="exam-progress" style="width: 0%;"></div>
-                    </div>
-                    <div id="current-exam-question"></div>
-                    <div style="display: flex; justify-content: space-between; margin-top: 20px;">
-                        <button class="btn-primary" id="prev-exam-btn" onclick="prevExamQuestion()" style="opacity: 0.5;">Previous</button>
-                        <button class="btn-primary" id="next-exam-btn" onclick="nextExamQuestion()">Next</button>
-                    </div>
-                </div>
-                <div id="exam-results" class="results" style="display: none;"></div>
+            <div class="question-text" id="question-text"></div>
+
+            <div class="options" id="options-container"></div>
+
+            <div class="explanation" id="explanation">
+                <div class="explanation-title">💡 Explanation</div>
+                <div class="explanation-text" id="explanation-text"></div>
             </div>
 
-            <!-- Flashcards Container -->
-            <div id="flashcards-container" class="flashcard-container">
-                <div class="start-screen" id="flashcard-start">
-                    <h2>WSET Level 1 Flash Cards</h2>
-                    <div class="level-info">
-                        <h3>Study Topics</h3>
-                        <ul>
-                            <li>Key grape varieties and their characteristics</li>
-                            <li>Wine regions and their styles</li>
-                            <li>Winemaking techniques</li>
-                            <li>Tasting vocabulary</li>
-                        </ul>
-                    </div>
-                    <button class="btn-primary" onclick="startFlashcards()">Start Studying</button>
+            <div class="question-nav">
+                <button class="btn-secondary" id="prev-btn" onclick="prevQuestion()">← Previous</button>
+                <button class="btn-danger" id="end-btn" onclick="endExamEarly()">End Exam</button>
+                <button class="btn-primary" id="next-btn" onclick="nextQuestion()">Next →</button>
+            </div>
+
+            <div class="shortcuts">
+                <span class="shortcut">Use <kbd>1</kbd>-<kbd>4</kbd> to choose</span>
+                <span class="shortcut"><kbd>Enter</kbd> to continue</span>
+                <span class="shortcut"><kbd>←</kbd><kbd>→</kbd> to navigate</span>
+            </div>
+        </div>
+
+        <!-- Results Container -->
+        <div class="card results" id="results-container">
+            <div class="results-icon" id="results-icon">🍷</div>
+            <h2 id="results-title">Exam Complete!</h2>
+            <div class="results-score" id="results-score">75%</div>
+            <p class="results-details" id="results-details">You passed! Great work.</p>
+
+            <div class="results-breakdown">
+                <div class="breakdown-item">
+                    <div class="breakdown-value" id="correct-count" style="color: var(--success);">22</div>
+                    <div class="breakdown-label">Correct</div>
                 </div>
-                <div id="flashcard-study" style="display: none;">
-                    <div class="flashcard" onclick="flipCard()">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front" id="card-front">
-                                Question will appear here
-                            </div>
-                            <div class="flashcard-back" id="card-back">
-                                Answer will appear here
-                            </div>
-                        </div>
+                <div class="breakdown-item">
+                    <div class="breakdown-value" id="incorrect-count" style="color: var(--error);">8</div>
+                    <div class="breakdown-label">Incorrect</div>
+                </div>
+                <div class="breakdown-item">
+                    <div class="breakdown-value" id="time-taken">32:15</div>
+                    <div class="breakdown-label">Time Taken</div>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="resetSession()">Try Again</button>
+            <button class="btn-secondary" onclick="reviewAnswers()" style="margin-left: 12px;">Review Answers</button>
+        </div>
+
+        <!-- Flashcard Container -->
+        <div class="card flashcard-container" id="flashcard-container">
+            <p class="flashcard-hint">Click the card to flip • Swipe or use arrows to navigate</p>
+
+            <div class="flashcard" id="flashcard" onclick="flipCard()">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front" id="card-front">
+                        What is fermentation?
                     </div>
-                    <p class="card-hint">Click the card to flip</p>
-                    <p class="card-counter" id="card-counter">Card 1 of 20</p>
-                    <div class="flashcard-nav">
-                        <button class="flashcard-btn" onclick="prevCard()">Previous</button>
-                        <button class="flashcard-btn" onclick="shuffleCards()">Shuffle</button>
-                        <button class="flashcard-btn" onclick="nextCard()">Next</button>
+                    <div class="flashcard-back" id="card-back">
+                        The process where yeast converts sugar into alcohol and CO₂
                     </div>
                 </div>
+            </div>
+
+            <p class="flashcard-counter" id="flashcard-counter">Card 1 of 40</p>
+
+            <div class="flashcard-nav">
+                <button class="btn-secondary" onclick="prevCard()">← Previous</button>
+                <button class="btn-secondary" onclick="shuffleCards()">Shuffle</button>
+                <button class="btn-primary" onclick="nextCard()">Next →</button>
             </div>
         </div>
     </div>
 
     <script>
         // ========================================
-        // WSET QUESTION DATABASE
+        // COMPREHENSIVE WSET QUESTION DATABASE
         // ========================================
 
         const wsetData = {
-            // LEVEL 1 DATA
+            // ==================== LEVEL 1 ====================
             1: {
                 name: "Level 1",
-                description: "Award in Wines",
+                fullName: "WSET Level 1 Award in Wines",
+                examQuestions: 30,
+                examTime: 45,
+                passRate: 70,
+                scope: "wine types and styles, grape varieties, wine storage and service, food and wine pairing, and labeling basics",
                 questions: [
-                    {
-                        q: "What is the main factor that determines whether a wine is red or white?",
-                        options: ["The type of grape used", "Skin contact during fermentation", "The climate where grapes are grown", "The age of the wine"],
-                        correct: 1
-                    },
-                    {
-                        q: "At what temperature should full-bodied red wines typically be served?",
-                        options: ["6-8°C", "10-12°C", "15-18°C", "20-22°C"],
-                        correct: 2
-                    },
-                    {
-                        q: "Which grape variety is known for producing wines with high tannins?",
-                        options: ["Pinot Grigio", "Riesling", "Cabernet Sauvignon", "Moscato"],
-                        correct: 2
-                    },
-                    {
-                        q: "What does 'dry' mean when describing wine?",
-                        options: ["The wine has no sweetness", "The wine has rough texture", "The wine is acidic", "The wine is astringent"],
-                        correct: 0
-                    },
-                    {
-                        q: "Which of these is a white grape variety?",
-                        options: ["Merlot", "Syrah", "Chardonnay", "Cabernet Franc"],
-                        correct: 2
-                    },
-                    {
-                        q: "What is the purpose of decanting wine?",
-                        options: ["To cool the wine faster", "To separate sediment and allow the wine to breathe", "To measure alcohol content", "To test for cork taint"],
-                        correct: 1
-                    },
-                    {
-                        q: "Which type of wine is Champagne?",
-                        options: ["Still white wine", "Sparkling wine", "Fortified wine", "Rosé wine"],
-                        correct: 1
-                    },
-                    {
-                        q: "What temperature should most white wines be served at?",
-                        options: ["Room temperature (20°C)", "Well chilled (6-8°C)", "Lightly chilled (10-13°C)", "Ice cold (0-4°C)"],
-                        correct: 2
-                    },
-                    {
-                        q: "What is tannin in wine?",
-                        options: ["A type of sugar", "A compound that creates a drying sensation", "A type of acid", "A flavoring additive"],
-                        correct: 1
-                    },
-                    {
-                        q: "Where does the sweetness in wine come from?",
-                        options: ["Added sugar after fermentation", "Residual grape sugar", "The oak barrels", "The yeast"],
-                        correct: 1
-                    },
-                    {
-                        q: "What does ABV stand for on a wine label?",
-                        options: ["Alcohol By Volume", "Average Bottle Value", "Appellation By Vineyard", "Aged Before Vintage"],
-                        correct: 0
-                    },
-                    {
-                        q: "Which food pairing principle suggests matching wine weight with food weight?",
-                        options: ["Contrast pairing", "Complementary pairing", "Weight matching", "Regional pairing"],
-                        correct: 2
-                    },
-                    {
-                        q: "What is rosé wine?",
-                        options: ["A blend of red and white wine", "White wine with color added", "Wine with limited skin contact from red grapes", "A sweet dessert wine"],
-                        correct: 2
-                    },
-                    {
-                        q: "How should opened wine be stored?",
-                        options: ["At room temperature without a cap", "In the refrigerator with the cork replaced", "In direct sunlight", "In the freezer"],
-                        correct: 1
-                    },
-                    {
-                        q: "What gives sparkling wine its bubbles?",
-                        options: ["Carbonation is added", "Natural fermentation produces CO2", "Oxygen in the bottle", "Chemical reaction with the cork"],
-                        correct: 1
-                    },
-                    {
-                        q: "Which grape is Burgundy's famous white wine made from?",
-                        options: ["Sauvignon Blanc", "Riesling", "Chardonnay", "Pinot Grigio"],
-                        correct: 2
-                    },
-                    {
-                        q: "What is fortified wine?",
-                        options: ["Wine aged in new oak", "Wine with added spirit", "Organic wine", "Unfiltered wine"],
-                        correct: 1
-                    },
-                    {
-                        q: "What does 'vintage' refer to on a wine bottle?",
-                        options: ["The year the grapes were harvested", "The age of the winery", "The quality rating", "The bottling date"],
-                        correct: 0
-                    },
-                    {
-                        q: "Which wine style typically has the highest acidity?",
-                        options: ["Full-bodied red wine", "Sweet dessert wine", "Sparkling wine", "Fortified wine"],
-                        correct: 2
-                    },
-                    {
-                        q: "What is the correct way to hold a wine glass?",
-                        options: ["By the bowl", "By the stem", "By the base only", "It doesn't matter"],
-                        correct: 1
-                    }
+                    // Wine Types & Styles
+                    { q: "What is the main factor that determines whether a wine is red or white?", options: ["The type of grape used", "Skin contact during fermentation", "The climate where grapes are grown", "The age of the wine"], correct: 1, explanation: "Red wines get their color from extended contact with grape skins during fermentation. White wines have little to no skin contact." },
+                    { q: "What does 'dry' mean when describing wine?", options: ["The wine lacks sweetness", "The wine has rough texture", "The wine is highly acidic", "The wine is astringent"], correct: 0, explanation: "A dry wine has little to no residual sugar. The term refers to sweetness level, not texture." },
+                    { q: "Which of these describes a rosé wine?", options: ["A blend of red and white wine", "A sweet dessert wine", "A wine with limited skin contact from red grapes", "A sparkling wine"], correct: 2, explanation: "Rosé gets its pink color from brief contact with red grape skins, typically just a few hours." },
+                    { q: "What is a fortified wine?", options: ["Wine aged in new oak", "Wine with added spirit", "Organic wine", "Unfiltered wine"], correct: 1, explanation: "Fortified wines like Port and Sherry have grape spirit added, raising their alcohol to 15-22% ABV." },
+                    { q: "What type of wine is Champagne?", options: ["Still white wine", "Sparkling wine", "Fortified wine", "Sweet dessert wine"], correct: 1, explanation: "Champagne is a sparkling wine from the Champagne region of France, known for its bubbles." },
+                    { q: "What gives sparkling wine its bubbles?", options: ["Carbonation is added artificially", "Natural CO₂ from fermentation", "Oxygen trapped in the bottle", "Chemical reaction with the cork"], correct: 1, explanation: "The bubbles in sparkling wine come from carbon dioxide (CO₂) produced naturally during fermentation." },
+                    { q: "What is a still wine?", options: ["Wine without bubbles", "Wine that has been aged", "Wine with low alcohol", "Wine from a single vineyard"], correct: 0, explanation: "Still wine is any wine that is not sparkling - it has no visible carbonation or bubbles." },
+                    { q: "Which best describes a medium-sweet wine?", options: ["No perceptible sweetness", "A hint of sweetness", "Noticeably sweet but not syrupy", "Very sweet and viscous"], correct: 2, explanation: "Medium-sweet wines have noticeable sweetness that balances acidity, but aren't as intense as dessert wines." },
+
+                    // Grape Varieties - White
+                    { q: "Which of these is a white grape variety?", options: ["Merlot", "Syrah", "Chardonnay", "Cabernet Franc"], correct: 2, explanation: "Chardonnay is one of the most popular white grape varieties, known for its versatility." },
+                    { q: "Chardonnay is known for producing wines that are:", options: ["Always light and crisp", "Versatile, from crisp to rich and oaky", "Always sweet", "Always sparkling"], correct: 1, explanation: "Chardonnay is extremely versatile - it can produce everything from crisp, unoaked wines to rich, buttery, oak-aged styles." },
+                    { q: "Which grape variety is known for high acidity and citrus/grassy flavors?", options: ["Chardonnay", "Sauvignon Blanc", "Pinot Grigio", "Viognier"], correct: 1, explanation: "Sauvignon Blanc is recognized for its refreshing acidity and distinctive citrus, grass, and sometimes tropical flavors." },
+                    { q: "Pinot Grigio typically produces wines that are:", options: ["Full-bodied and oaky", "Light, dry, and refreshing", "Always sweet", "Deep red in color"], correct: 1, explanation: "Pinot Grigio (Pinot Gris) typically makes light, crisp, dry white wines with subtle fruit flavors." },
+                    { q: "Riesling is known for:", options: ["Always being dry", "High acidity and aromatic qualities", "Low acidity", "Only being made in France"], correct: 1, explanation: "Riesling is famous for its high acidity and aromatic character, with styles ranging from bone-dry to very sweet." },
+                    { q: "Which white grape is most associated with Burgundy, France?", options: ["Sauvignon Blanc", "Riesling", "Chardonnay", "Pinot Grigio"], correct: 2, explanation: "Chardonnay is the classic white grape of Burgundy, producing the famous wines of Chablis, Meursault, and Montrachet." },
+
+                    // Grape Varieties - Red
+                    { q: "Which grape variety is known for producing wines with high tannins?", options: ["Pinot Grigio", "Riesling", "Cabernet Sauvignon", "Moscato"], correct: 2, explanation: "Cabernet Sauvignon is known for its thick skins, which produce wines with firm tannins and deep color." },
+                    { q: "What are typical flavors associated with Cabernet Sauvignon?", options: ["Strawberry and rose", "Blackcurrant, cedar, and mint", "Banana and bubblegum", "White pepper and olive"], correct: 1, explanation: "Cabernet Sauvignon is characterized by blackcurrant (cassis), cedar, mint, and often green pepper notes." },
+                    { q: "Merlot is generally described as:", options: ["Very high in tannin", "Soft and plummy", "Always sparkling", "Exclusively from Italy"], correct: 1, explanation: "Merlot typically produces softer, rounder wines with plum, cherry, and chocolate flavors." },
+                    { q: "Pinot Noir typically produces wines that are:", options: ["Full-bodied with high tannins", "Light to medium-bodied with red fruit flavors", "Always sweet", "Deep purple in color"], correct: 1, explanation: "Pinot Noir makes lighter, elegant red wines with cherry, raspberry, and strawberry flavors." },
+                    { q: "Which red grape is also known as Shiraz?", options: ["Merlot", "Cabernet Sauvignon", "Syrah", "Malbec"], correct: 2, explanation: "Syrah and Shiraz are the same grape variety - Syrah is used in France, Shiraz in Australia and other New World regions." },
+                    { q: "What flavors are typical of Syrah/Shiraz?", options: ["Light citrus notes", "Dark fruit, pepper, and spice", "Delicate floral aromas", "Tropical fruits"], correct: 1, explanation: "Syrah/Shiraz typically shows dark fruits like blackberry, along with black pepper and spice notes." },
+
+                    // Wine Service
+                    { q: "At what temperature should full-bodied red wines typically be served?", options: ["6-8°C", "10-12°C", "15-18°C", "20-22°C"], correct: 2, explanation: "Full-bodied reds are best at 15-18°C (59-64°F) - cool room temperature allows aromas to develop without alcohol being too prominent." },
+                    { q: "What is the ideal serving temperature for sparkling wines?", options: ["Room temperature (20°C)", "Well chilled (6-10°C)", "Warm (25°C)", "Frozen (0°C)"], correct: 1, explanation: "Sparkling wines should be served well chilled at 6-10°C to maintain their refreshing bubbles and crispness." },
+                    { q: "Light, sweet white wines should be served:", options: ["At room temperature", "Well chilled (6-8°C)", "Slightly warm", "It doesn't matter"], correct: 1, explanation: "Sweet white wines benefit from being well chilled, which balances the sweetness and enhances refreshment." },
+                    { q: "What is the correct way to hold a wine glass?", options: ["By the bowl", "By the stem", "By the base only", "It doesn't matter"], correct: 1, explanation: "Hold the glass by the stem to prevent warming the wine with your hand and to avoid fingerprints on the bowl." },
+                    { q: "What is the purpose of decanting wine?", options: ["To cool it faster", "To separate sediment and allow the wine to breathe", "To measure alcohol content", "To test for cork taint"], correct: 1, explanation: "Decanting separates wine from any sediment and exposes it to oxygen, which can soften tannins and release aromas." },
+                    { q: "Which wines benefit most from decanting?", options: ["Young white wines", "Older red wines with sediment", "Sparkling wines", "Rosé wines"], correct: 1, explanation: "Older red wines may have sediment that should be separated, and both old and young reds can benefit from aeration." },
+                    { q: "When pouring wine, how full should the glass be?", options: ["Completely full", "About one-third full", "Just a splash", "Half full"], correct: 1, explanation: "Fill the glass about one-third to allow room for swirling and to concentrate the aromas in the glass." },
+
+                    // Wine Storage
+                    { q: "What is the ideal temperature for storing wine long-term?", options: ["0-5°C (freezing)", "10-15°C (cool cellar)", "20-25°C (room temperature)", "30°C (warm)"], correct: 1, explanation: "Wine is best stored at 10-15°C (50-59°F) - cool enough to age slowly but not so cold it affects the wine." },
+                    { q: "Why should wine bottles with corks be stored on their side?", options: ["To save space", "To keep the cork moist", "To improve the flavor", "It looks better"], correct: 1, explanation: "Storing bottles on their side keeps the cork in contact with wine, preventing it from drying out and letting air in." },
+                    { q: "How should opened wine be stored?", options: ["At room temperature uncorked", "In the refrigerator with the cork replaced", "In direct sunlight", "In the freezer"], correct: 1, explanation: "Opened wine should be re-corked and refrigerated to slow oxidation - even red wines benefit from this." },
+                    { q: "What can cause wine to become 'corked'?", options: ["Too much sun exposure", "A chemical compound called TCA", "Being stored too cold", "Old age"], correct: 1, explanation: "Cork taint is caused by TCA (trichloroanisole), which gives wine a musty, wet cardboard smell." },
+                    { q: "Light can damage wine by:", options: ["Making it sweeter", "Causing premature aging and off-flavors", "Increasing alcohol", "Changing its color to white"], correct: 1, explanation: "UV light can cause chemical reactions in wine that lead to unpleasant aromas and premature aging." },
+                    { q: "Why are many wine bottles made with dark glass?", options: ["It's cheaper to produce", "To protect wine from light damage", "To hide sediment", "For marketing purposes"], correct: 1, explanation: "Dark glass filters out harmful UV light that can damage wine during storage and transport." },
+
+                    // Food & Wine Pairing
+                    { q: "Which wine would best complement a rich, creamy pasta dish?", options: ["Light, crisp white wine", "Full-bodied, oaked Chardonnay", "Sweet dessert wine", "Light red wine"], correct: 1, explanation: "The richness of oaked Chardonnay matches the weight and creaminess of the dish - like with like." },
+                    { q: "What type of wine pairs well with spicy Asian cuisine?", options: ["High-tannin red wine", "Off-dry Riesling or Gewürztraminer", "Full-bodied oaky wine", "Very dry Champagne"], correct: 1, explanation: "Slightly sweet wines with good acidity work well with spicy food - the sweetness tames heat while acidity refreshes." },
+                    { q: "When pairing wine with food, what does 'matching weight' mean?", options: ["Using a scale", "Pairing light wines with light food and full wines with rich food", "Choosing wines by bottle weight", "Adding weight to the wine"], correct: 1, explanation: "Weight matching means pairing the body of the wine with the richness of the dish - neither should overpower the other." },
+                    { q: "Which wine would pair well with grilled steak?", options: ["Light Pinot Grigio", "Sweet Riesling", "Full-bodied Cabernet Sauvignon", "Delicate rosé"], correct: 2, explanation: "The bold flavors and firm tannins of Cabernet Sauvignon complement the richness and char of grilled red meat." },
+                    { q: "Acidic wines pair well with:", options: ["Sweet desserts", "Fatty and oily foods", "Very spicy foods", "Bitter vegetables"], correct: 1, explanation: "Acidity in wine cuts through fat and oil, cleansing the palate - think Champagne with fried food." },
+                    { q: "What is the general rule for pairing wine with cheese?", options: ["Always use red wine", "Match intensity of wine with intensity of cheese", "Only white wine works", "Never pair wine with cheese"], correct: 1, explanation: "Match the intensity - mild cheeses with lighter wines, strong cheeses with more robust wines." },
+                    { q: "Sweet wines pair well with:", options: ["Salty foods and desserts sweeter than the wine", "Very acidic foods", "Plain steamed vegetables", "Rare red meat"], correct: 0, explanation: "Sweet wines work with salty foods (contrast) and with desserts - but the wine should be as sweet or sweeter than the food." },
+
+                    // Wine Labels & Regions
+                    { q: "What does 'vintage' mean on a wine label?", options: ["The year the grapes were harvested", "The age of the winery", "The quality rating", "The bottling date"], correct: 0, explanation: "The vintage indicates the year the grapes were harvested - this can significantly affect the wine's character." },
+                    { q: "What does ABV stand for on a wine label?", options: ["Alcohol By Volume", "Average Bottle Value", "Appellation By Vineyard", "Aged Before Vintage"], correct: 0, explanation: "ABV (Alcohol By Volume) shows the percentage of alcohol in the wine, typically ranging from 8-15% for table wines." },
+                    { q: "A wine labeled 'Bordeaux' must come from:", options: ["Anywhere in France", "The Bordeaux region of France", "Any country that grows grapes", "A specific vineyard called Bordeaux"], correct: 1, explanation: "Bordeaux is a protected name (appellation) that can only be used for wines from the Bordeaux region in southwest France." },
+                    { q: "Which country is famous for Chianti wine?", options: ["France", "Spain", "Italy", "Australia"], correct: 2, explanation: "Chianti is a famous wine region in Tuscany, Italy, known for red wines made primarily from Sangiovese grapes." },
+                    { q: "Rioja wines come from:", options: ["France", "Spain", "Portugal", "Italy"], correct: 1, explanation: "Rioja is Spain's most famous wine region, known for both traditional oak-aged reds and modern styles." },
+                    { q: "What does 'Reserve' or 'Reserva' typically indicate?", options: ["The wine is very young", "The wine has had additional aging", "The wine is organic", "The wine is sparkling"], correct: 1, explanation: "Reserve/Reserva usually indicates a wine has been aged longer than standard, though regulations vary by country." },
+
+                    // Wine Characteristics
+                    { q: "What is tannin in wine?", options: ["A type of sugar", "A compound that creates a drying sensation", "A type of acid", "A flavoring additive"], correct: 1, explanation: "Tannins come from grape skins, seeds, and oak, creating a drying, astringent sensation on your gums and tongue." },
+                    { q: "Where does the sweetness in wine come from?", options: ["Added sugar after fermentation", "Residual grape sugar from incomplete fermentation", "The oak barrels", "The bottle aging process"], correct: 1, explanation: "Sweetness comes from residual sugar - natural grape sugar that remains when fermentation stops before all sugar converts to alcohol." },
+                    { q: "What causes the high acidity in some wines?", options: ["Adding vinegar", "Natural acids present in grapes", "The cork", "The bottle color"], correct: 1, explanation: "Acidity comes from natural acids in grapes (tartaric, malic, citric) - cooler climates typically produce higher-acid wines." },
+                    { q: "What does 'body' refer to in wine?", options: ["The shape of the bottle", "The weight and texture on your palate", "The color intensity", "The alcohol content only"], correct: 1, explanation: "Body describes how the wine feels in your mouth - light (like water), medium, or full (like whole milk). It's influenced by alcohol, sugar, and extract." },
+                    { q: "A wine described as 'aromatic' means it:", options: ["Has no smell", "Has pronounced, distinctive aromas", "Is spoiled", "Is very old"], correct: 1, explanation: "Aromatic wines have intense, distinctive scents - grapes like Riesling, Gewürztraminer, and Muscat are considered aromatic varieties." },
+                    { q: "What creates the legs or tears on a wine glass?", options: ["Wine quality", "Alcohol and glycerol content", "Sugar level only", "How fast you swirl"], correct: 1, explanation: "Legs form due to the Gibbs-Marangoni effect - the interaction of alcohol and water. More legs can indicate higher alcohol." },
+
+                    // Additional Questions
+                    { q: "What is the most planted grape variety in the world?", options: ["Chardonnay", "Cabernet Sauvignon", "Merlot", "Kyoho (table grape)"], correct: 1, explanation: "Cabernet Sauvignon recently became the most planted wine grape variety globally, grown in virtually every wine-producing country." },
+                    { q: "Which wine style typically has the highest acidity?", options: ["Full-bodied red wine", "Sweet dessert wine", "Sparkling wine", "Fortified wine"], correct: 2, explanation: "Sparkling wines typically have high acidity to balance the effervescence and keep the wine fresh and refreshing." },
+                    { q: "Port wine traditionally comes from:", options: ["France", "Spain", "Portugal", "Italy"], correct: 2, explanation: "Port is a fortified wine from the Douro Valley in Portugal, named after the city of Porto where it was historically shipped from." },
+                    { q: "Sherry is a fortified wine from:", options: ["Portugal", "Spain", "France", "Italy"], correct: 1, explanation: "Sherry comes from the Jerez region in southern Spain, and ranges from bone-dry Fino to sweet Pedro Ximénez styles." }
                 ],
                 flashcards: [
-                    { front: "What is fermentation?", back: "The process where yeast converts sugar in grape juice into alcohol and carbon dioxide." },
-                    { front: "Chardonnay characteristics", back: "A versatile white grape producing wines ranging from crisp and fruity to rich and oaky. Common flavors: apple, citrus, tropical fruits, vanilla (if oaked)." },
-                    { front: "Cabernet Sauvignon characteristics", back: "A full-bodied red grape with high tannins. Common flavors: blackcurrant, cedar, green pepper, dark fruits." },
-                    { front: "What is acidity in wine?", back: "A natural component that gives wine freshness and makes your mouth water. High acidity wines taste crisp and refreshing." },
-                    { front: "What are tannins?", back: "Compounds from grape skins, seeds, and stems that create a drying, astringent sensation in the mouth. More prominent in red wines." },
-                    { front: "Pinot Noir characteristics", back: "A light to medium-bodied red grape. Delicate flavors of red fruits like cherry, raspberry, and strawberry. Lower tannins." },
-                    { front: "Sauvignon Blanc characteristics", back: "An aromatic white grape with high acidity. Flavors include citrus, green apple, grass, and sometimes tropical notes." },
-                    { front: "What is body in wine?", back: "The weight and texture of wine in your mouth. Can be light, medium, or full-bodied. Influenced by alcohol, sugar, and extract." },
-                    { front: "Merlot characteristics", back: "A medium to full-bodied red grape with softer tannins than Cabernet. Flavors of plum, black cherry, and chocolate." },
-                    { front: "What is residual sugar?", back: "The natural grape sugar remaining after fermentation stops. Determines if a wine is dry, off-dry, medium, or sweet." },
-                    { front: "Riesling characteristics", back: "An aromatic white grape with high acidity. Can be dry to very sweet. Flavors of citrus, apple, peach, and floral notes." },
-                    { front: "What is a vintage?", back: "The year in which the grapes were harvested. Shown on wine labels when at least 85% of grapes are from that year." },
-                    { front: "Serving temperature for sparkling wine", back: "Well chilled at 6-10°C (43-50°F). Colder temperatures help maintain the bubbles and freshness." },
-                    { front: "Serving temperature for full-bodied reds", back: "Room temperature or slightly below at 15-18°C (59-64°F). Allows complex flavors and aromas to develop." },
-                    { front: "What is Champagne?", back: "A sparkling wine from the Champagne region of France, made using the Traditional Method with Chardonnay, Pinot Noir, and/or Pinot Meunier." },
-                    { front: "What is Port?", back: "A sweet fortified wine from Portugal's Douro Valley. Spirit is added during fermentation to stop it early, leaving residual sweetness." },
-                    { front: "What is Sherry?", back: "A fortified wine from Jerez, Spain. Styles range from bone-dry Fino to sweet Pedro Ximénez." },
-                    { front: "Wine storage basics", back: "Store at 10-15°C, away from light and vibration. Keep cork-sealed bottles on their side to keep the cork moist." },
-                    { front: "What causes cork taint?", back: "A chemical compound called TCA (trichloroanisole) that gives wine a musty, wet cardboard smell." },
-                    { front: "Decanting purposes", back: "1) Separate wine from sediment in older wines. 2) Allow wine to breathe and open up (aeration). 3) Presentation." }
+                    { front: "What is fermentation?", back: "The process where yeast converts sugar in grape juice into alcohol and carbon dioxide (CO₂)." },
+                    { front: "What is the difference between dry and sweet wine?", back: "Dry wines have little to no residual sugar. Sweet wines have noticeable sugar remaining after fermentation." },
+                    { front: "What are tannins?", back: "Compounds from grape skins, seeds, and oak that create a drying, astringent sensation. More prominent in red wines." },
+                    { front: "What is acidity in wine?", back: "Natural acids that give wine freshness and make your mouth water. High acidity wines taste crisp and refreshing." },
+                    { front: "What is body in wine?", back: "The weight and texture on your palate. Can be light (like water), medium, or full (like whole milk)." },
+                    { front: "Chardonnay characteristics", back: "Versatile white grape. Styles range from crisp and fruity to rich and oaky. Flavors: apple, citrus, tropical fruits, vanilla (if oaked)." },
+                    { front: "Sauvignon Blanc characteristics", back: "Aromatic white with high acidity. Flavors: citrus, green apple, grass, gooseberry, sometimes tropical notes." },
+                    { front: "Riesling characteristics", back: "Aromatic white with high acidity. Can be dry to very sweet. Flavors: citrus, apple, peach, floral, petrol (with age)." },
+                    { front: "Pinot Grigio characteristics", back: "Light, dry white wine. Subtle flavors of citrus, pear, and light floral notes. Easy-drinking and refreshing." },
+                    { front: "Cabernet Sauvignon characteristics", back: "Full-bodied red with high tannins. Flavors: blackcurrant, cedar, mint, green pepper, dark fruits." },
+                    { front: "Merlot characteristics", back: "Medium to full-bodied red with softer tannins. Flavors: plum, black cherry, chocolate, herbs." },
+                    { front: "Pinot Noir characteristics", back: "Light to medium-bodied red. Delicate flavors of red fruits: cherry, raspberry, strawberry. Lower tannins." },
+                    { front: "Syrah/Shiraz characteristics", back: "Full-bodied red. Flavors: blackberry, plum, black pepper, spice, chocolate. Same grape, different names." },
+                    { front: "Ideal temperature for sparkling wine", back: "Well chilled at 6-10°C (43-50°F). Cold temperatures maintain bubbles and freshness." },
+                    { front: "Ideal temperature for white wines", back: "Chilled at 7-13°C (45-55°F). Lighter whites colder, fuller whites slightly warmer." },
+                    { front: "Ideal temperature for red wines", back: "Light reds: 13°C. Full-bodied reds: 15-18°C. Cooler than room temperature." },
+                    { front: "Why store wine bottles on their side?", back: "Keeps the cork moist, preventing it from drying out and letting air in, which would spoil the wine." },
+                    { front: "What is cork taint (TCA)?", back: "A fault caused by TCA chemical that gives wine a musty, wet cardboard smell. Makes wine unpleasant." },
+                    { front: "What is a vintage?", back: "The year the grapes were harvested. Vintage matters more in regions with variable weather." },
+                    { front: "What is ABV?", back: "Alcohol By Volume - the percentage of alcohol in wine. Most table wines are 11-15% ABV." },
+                    { front: "Basic food pairing principle: weight", back: "Match the body of wine with the richness of food. Light wine with light dishes, full wine with rich dishes." },
+                    { front: "Basic food pairing: acidity", back: "High-acid wines cut through fatty, oily foods. They cleanse the palate between bites." },
+                    { front: "Basic food pairing: sweetness", back: "Wine should be at least as sweet as the food. Sweet wines balance salty foods too." },
+                    { front: "Basic food pairing: tannins", back: "Tannic wines pair well with fatty meats - the fat softens the tannins' drying effect." },
+                    { front: "What is a fortified wine?", back: "Wine with grape spirit added, raising alcohol to 15-22%. Examples: Port, Sherry, Madeira." },
+                    { front: "What is sparkling wine?", back: "Wine with dissolved CO₂ creating bubbles. Made by secondary fermentation in tank or bottle." },
+                    { front: "What is rosé wine?", back: "Pink wine made from red grapes with brief skin contact (hours instead of weeks)." },
+                    { front: "What makes wine red vs white?", back: "Skin contact. Red wines ferment with skins for color and tannin. Whites have minimal skin contact." },
+                    { front: "What does decanting do?", back: "Separates wine from sediment and exposes it to oxygen, which can soften tannins and release aromas." },
+                    { front: "Why hold a wine glass by the stem?", back: "Prevents warming the wine with your hand and keeps fingerprints off the bowl for clear viewing." },
+                    { front: "What does 'Reserve' mean on a label?", back: "Usually indicates longer aging than standard wines. Regulations vary by country and region." },
+                    { front: "Where is Champagne from?", back: "The Champagne region of France. Only sparkling wine from here can legally be called Champagne." },
+                    { front: "Where is Chianti from?", back: "Tuscany, Italy. Made primarily from Sangiovese grapes. Known for food-friendly acidity." },
+                    { front: "Where is Rioja from?", back: "Northern Spain. Known for oak-aged red wines made primarily from Tempranillo grapes." },
+                    { front: "Where is Port from?", back: "The Douro Valley in Portugal. A sweet, fortified red wine with various styles." },
+                    { front: "Where is Sherry from?", back: "Jerez, southern Spain. Fortified wine ranging from bone-dry Fino to sweet PX." },
+                    { front: "What is an aromatic grape variety?", back: "Grapes with intense, distinctive scents. Examples: Riesling, Gewürztraminer, Muscat, Sauvignon Blanc." },
+                    { front: "What are wine 'legs' or 'tears'?", back: "The streams of wine that run down the glass after swirling. Related to alcohol and glycerol content." },
+                    { front: "How long does opened wine last?", back: "3-5 days if recorked and refrigerated. Sparkling wines only 1-2 days. Some wines decline within hours." },
+                    { front: "What is ideal wine storage temperature?", back: "10-15°C (50-59°F). Cool, dark, humid place with minimal vibration. Consistent temperature is key." }
                 ]
             },
 
-            // LEVEL 2 DATA
+            // ==================== LEVEL 2 ====================
             2: {
                 name: "Level 2",
-                description: "Award in Wines",
+                fullName: "WSET Level 2 Award in Wines",
+                examQuestions: 50,
+                examTime: 60,
+                passRate: 55,
+                scope: "grape varieties, wine regions and styles, winemaking, labeling, and food pairing at an intermediate level",
                 questions: [
-                    {
-                        q: "What is malolactic fermentation?",
-                        options: ["Primary fermentation using wild yeast", "Conversion of malic acid to lactic acid", "Secondary fermentation in bottle", "Fermentation at low temperatures"],
-                        correct: 1
-                    },
-                    {
-                        q: "Which region is Grüner Veltliner most associated with?",
-                        options: ["Germany", "Austria", "Switzerland", "Hungary"],
-                        correct: 1
-                    },
-                    {
-                        q: "What is the main grape variety in red Burgundy?",
-                        options: ["Gamay", "Cabernet Sauvignon", "Merlot", "Pinot Noir"],
-                        correct: 3
-                    },
-                    {
-                        q: "What climate type is Bordeaux classified as?",
-                        options: ["Continental", "Mediterranean", "Maritime", "Alpine"],
-                        correct: 2
-                    },
-                    {
-                        q: "What is 'terroir'?",
-                        options: ["A type of soil", "The complete natural environment of a vineyard", "A winemaking technique", "A French wine classification"],
-                        correct: 1
-                    },
-                    {
-                        q: "Which grape is known as Shiraz in Australia?",
-                        options: ["Grenache", "Mourvèdre", "Syrah", "Carignan"],
-                        correct: 2
-                    },
-                    {
-                        q: "What does 'Brut' mean on a Champagne label?",
-                        options: ["Sweet", "Very dry", "Semi-dry", "Extra sweet"],
-                        correct: 1
-                    },
-                    {
-                        q: "In which country is the Marlborough wine region located?",
-                        options: ["Australia", "South Africa", "Chile", "New Zealand"],
-                        correct: 3
-                    },
-                    {
-                        q: "What is the primary grape in Chianti?",
-                        options: ["Nebbiolo", "Barbera", "Sangiovese", "Montepulciano"],
-                        correct: 2
-                    },
-                    {
-                        q: "What is 'lees aging'?",
-                        options: ["Aging in new oak barrels", "Aging wine with dead yeast cells", "Aging in stainless steel", "Aging underground"],
-                        correct: 1
-                    },
-                    {
-                        q: "Which grape variety is used to make Sauternes?",
-                        options: ["Chardonnay", "Sémillon", "Riesling", "Chenin Blanc"],
-                        correct: 1
-                    },
-                    {
-                        q: "What is 'botrytis cinerea' also known as?",
-                        options: ["Cork taint", "Noble rot", "Oxidation", "Refermentation"],
-                        correct: 1
-                    },
-                    {
-                        q: "What is the Douro Valley famous for producing?",
-                        options: ["Sherry", "Madeira", "Port", "Marsala"],
-                        correct: 2
-                    },
-                    {
-                        q: "What does DOCG stand for in Italian wine classification?",
-                        options: ["Denominazione di Origine Controllata e Garantita", "Denominazione Origine Controllata Generale", "Designation of Origin Certified Grade", "Documento Origine Certificato Garantito"],
-                        correct: 0
-                    },
-                    {
-                        q: "Which grape variety is Barolo made from?",
-                        options: ["Barbera", "Dolcetto", "Nebbiolo", "Corvina"],
-                        correct: 2
-                    },
-                    {
-                        q: "What is the traditional method of sparkling wine production?",
-                        options: ["Carbonation", "Tank method", "Second fermentation in bottle", "First fermentation only"],
-                        correct: 2
-                    },
-                    {
-                        q: "What is 'assemblage' in winemaking?",
-                        options: ["Harvesting grapes", "Blending different wines", "Pressing grapes", "Bottling wine"],
-                        correct: 1
-                    },
-                    {
-                        q: "Which region produces Rioja?",
-                        options: ["Portugal", "Spain", "Italy", "France"],
-                        correct: 1
-                    },
-                    {
-                        q: "What is the effect of oak aging on wine?",
-                        options: ["Increases acidity", "Adds vanilla and spice flavors, softens tannins", "Makes wine more fruity", "Increases alcohol content"],
-                        correct: 1
-                    },
-                    {
-                        q: "What grape variety is Chablis made from?",
-                        options: ["Sauvignon Blanc", "Chardonnay", "Aligoté", "Melon de Bourgogne"],
-                        correct: 1
-                    },
-                    {
-                        q: "What is the primary red grape of the Rhône Valley's southern region?",
-                        options: ["Syrah", "Grenache", "Mourvèdre", "Carignan"],
-                        correct: 1
-                    },
-                    {
-                        q: "What does 'Reserva' mean on a Spanish wine label?",
-                        options: ["The best vineyard", "Extended aging requirements", "Organic production", "Single vineyard wine"],
-                        correct: 1
-                    },
-                    {
-                        q: "Which grape is used to make Muscadet?",
-                        options: ["Muscadelle", "Muscat", "Melon de Bourgogne", "Müller-Thurgau"],
-                        correct: 2
-                    },
-                    {
-                        q: "What is a 'cru' in Burgundy?",
-                        options: ["A type of grape", "A quality classification for vineyards", "A winemaking cooperative", "A style of wine"],
-                        correct: 1
-                    },
-                    {
-                        q: "What characterizes a continental climate for viticulture?",
-                        options: ["Warm, wet winters", "Large temperature variations between seasons", "Constant temperatures year-round", "Cool, rainy summers"],
-                        correct: 1
-                    },
-                    {
-                        q: "What is 'Crémant'?",
-                        options: ["Sweet wine", "French sparkling wine made outside Champagne", "Dessert wine", "Fortified wine"],
-                        correct: 1
-                    },
-                    {
-                        q: "What is the main grape in Vinho Verde?",
-                        options: ["Touriga Nacional", "Alvarinho", "Tempranillo", "Verdejo"],
-                        correct: 1
-                    },
-                    {
-                        q: "What does 'vintage variation' refer to?",
-                        options: ["Different bottle sizes", "Differences in wine between years due to weather", "Variation in grape varieties", "Changes in winemaking style"],
-                        correct: 1
-                    },
-                    {
-                        q: "Which Bordeaux appellation is known for sweet wines?",
-                        options: ["Margaux", "Pauillac", "Sauternes", "Saint-Émilion"],
-                        correct: 2
-                    },
-                    {
-                        q: "What is the purpose of riddling in Champagne production?",
-                        options: ["To add sweetness", "To collect sediment in the bottle neck", "To increase carbonation", "To blend wines"],
-                        correct: 1
-                    }
+                    // Winemaking
+                    { q: "What is malolactic fermentation (MLF)?", options: ["Primary fermentation using wild yeast", "Conversion of malic acid to lactic acid", "Second fermentation in bottle", "Fermentation at low temperatures"], correct: 1, explanation: "MLF converts sharp malic acid (like green apples) to softer lactic acid (like milk), adding creaminess to wine." },
+                    { q: "What is the purpose of oak aging?", options: ["To increase acidity", "To add flavor compounds and allow controlled oxidation", "To increase sweetness", "To remove tannins"], correct: 1, explanation: "Oak adds vanilla, toast, and spice flavors while allowing slow oxygen exposure that softens tannins." },
+                    { q: "What is 'lees aging'?", options: ["Aging in new oak barrels", "Aging wine with dead yeast cells", "Aging in stainless steel", "Aging underground"], correct: 1, explanation: "Lees (dead yeast) add creaminess, body, and bready/nutty complexity. Common in Champagne and Muscadet sur lie." },
+                    { q: "What is cold stabilization used for?", options: ["Killing bacteria", "Precipitating tartrate crystals before bottling", "Adding acidity", "Increasing color"], correct: 1, explanation: "Cold stabilization removes tartrate crystals that might otherwise form in bottled wine when chilled." },
+                    { q: "What does 'batonnage' mean?", options: ["Pressing grapes", "Stirring the lees", "Blending wines", "Adding sulfites"], correct: 1, explanation: "Batonnage is stirring the lees to increase wine's contact with yeast, adding richness and texture." },
+                    { q: "What is the effect of new oak versus old oak?", options: ["Old oak adds more flavor", "New oak imparts stronger flavors; old oak is more neutral", "They are identical", "Old oak increases tannins more"], correct: 1, explanation: "New oak barrels impart stronger vanilla, toast, and spice flavors. Older barrels are more neutral but still allow oxidation." },
+                    { q: "What is 'assemblage' in winemaking?", options: ["Harvesting grapes", "Blending different wines or batches", "Pressing grapes", "Bottling wine"], correct: 1, explanation: "Assemblage is the art of blending different grape varieties, vineyards, or vintages to create the final wine." },
+                    { q: "What is carbonic maceration?", options: ["Extended skin contact", "Whole grape fermentation in CO₂ atmosphere", "Fermentation in new oak", "Aging on lees"], correct: 1, explanation: "Carbonic maceration ferments whole berries in CO₂, creating fruity, low-tannin wines. Classic for Beaujolais." },
+
+                    // Sparkling Wine
+                    { q: "What is the Traditional Method of sparkling wine production?", options: ["Carbonation is added", "Tank fermentation", "Second fermentation in bottle", "First fermentation only"], correct: 2, explanation: "The Traditional Method (Méthode Traditionnelle) involves second fermentation in bottle, creating fine, persistent bubbles." },
+                    { q: "What is the purpose of riddling (remuage) in Champagne?", options: ["To add sweetness", "To gradually collect sediment in the bottle neck", "To increase carbonation", "To blend wines"], correct: 1, explanation: "Riddling slowly rotates and tilts bottles to move sediment into the neck for removal (disgorgement)." },
+                    { q: "What does 'Brut' mean on a Champagne label?", options: ["Sweet", "Dry (low dosage)", "Semi-dry", "Extra sweet"], correct: 1, explanation: "Brut indicates a dry style with less than 12g/L dosage (added sugar). Most Champagnes are Brut." },
+                    { q: "What grapes are used in Champagne?", options: ["Only Chardonnay", "Chardonnay, Pinot Noir, Pinot Meunier", "Only red grapes", "Sauvignon Blanc and Semillon"], correct: 1, explanation: "Champagne uses Chardonnay (elegance), Pinot Noir (body), and Pinot Meunier (fruitiness)." },
+                    { q: "What is a 'Blanc de Blancs' Champagne?", options: ["Made only from red grapes", "Made only from Chardonnay (white grapes)", "A rosé style", "Non-vintage blend"], correct: 1, explanation: "Blanc de Blancs means 'white from whites' - made exclusively from Chardonnay grapes." },
+                    { q: "What is 'Crémant'?", options: ["Sweet wine", "French sparkling wine made outside Champagne using Traditional Method", "Dessert wine", "Fortified wine"], correct: 1, explanation: "Crémant is quality French sparkling wine from regions like Loire, Alsace, or Burgundy, using Traditional Method." },
+
+                    // France - Bordeaux
+                    { q: "What is the main grape of Left Bank Bordeaux?", options: ["Merlot", "Cabernet Sauvignon", "Cabernet Franc", "Malbec"], correct: 1, explanation: "Left Bank (Médoc, Graves) is dominated by Cabernet Sauvignon, which thrives in the gravelly soils." },
+                    { q: "What is the main grape of Right Bank Bordeaux?", options: ["Cabernet Sauvignon", "Merlot", "Petit Verdot", "Carmenère"], correct: 1, explanation: "Right Bank (Saint-Émilion, Pomerol) features Merlot, which suits the clay and limestone soils." },
+                    { q: "Which Bordeaux appellation is famous for sweet wines?", options: ["Margaux", "Pauillac", "Sauternes", "Saint-Émilion"], correct: 2, explanation: "Sauternes produces world-famous sweet wines from botrytis-affected Sémillon and Sauvignon Blanc." },
+                    { q: "What is 'botrytis cinerea' (noble rot)?", options: ["A grape disease that ruins wine", "A beneficial fungus that concentrates sugars for sweet wine", "A type of yeast", "Oak fungus"], correct: 1, explanation: "Noble rot dehydrates grapes, concentrating sugars and adding honey, marmalade, and apricot flavors." },
+
+                    // France - Burgundy
+                    { q: "What is the main red grape of Burgundy?", options: ["Gamay", "Cabernet Sauvignon", "Merlot", "Pinot Noir"], correct: 3, explanation: "Pinot Noir is the sole red grape of the Côte d'Or and produces Burgundy's most prestigious reds." },
+                    { q: "What grape is used for Chablis?", options: ["Sauvignon Blanc", "Chardonnay", "Aligoté", "Riesling"], correct: 1, explanation: "Chablis is made exclusively from Chardonnay, typically unoaked with mineral, citrus character." },
+                    { q: "In Burgundy classification, what is the highest quality level?", options: ["Village", "Regional", "Premier Cru", "Grand Cru"], correct: 3, explanation: "Grand Cru represents the finest vineyard sites. Hierarchy: Regional → Village → Premier Cru → Grand Cru." },
+                    { q: "What makes Burgundy's 'terroir' concept important?", options: ["Marketing only", "Specific vineyards produce distinctive wines due to soil, aspect, and microclimate", "All Burgundy tastes the same", "It refers to wine color"], correct: 1, explanation: "Burgundy pioneered terroir expression - the same grape variety produces distinctly different wines from different plots." },
+
+                    // France - Rhône
+                    { q: "What is the primary grape of Northern Rhône reds?", options: ["Grenache", "Syrah", "Mourvèdre", "Carignan"], correct: 1, explanation: "Northern Rhône (Côte-Rôtie, Hermitage) is exclusively Syrah for reds, producing elegant, peppery wines." },
+                    { q: "What is the primary grape of Southern Rhône reds?", options: ["Syrah", "Grenache", "Pinot Noir", "Merlot"], correct: 1, explanation: "Southern Rhône (Châteauneuf-du-Pape, Côtes du Rhône) is dominated by Grenache, often blended with Syrah and Mourvèdre." },
+                    { q: "What is a GSM blend?", options: ["A German wine classification", "Grenache, Syrah, Mourvèdre blend", "A type of sparkling wine", "Grand Selection Method"], correct: 1, explanation: "GSM (Grenache-Syrah-Mourvèdre) is a classic Southern Rhône blend also popular in Australia." },
+
+                    // France - Loire
+                    { q: "What grape is Sancerre famous for?", options: ["Chardonnay", "Sauvignon Blanc", "Chenin Blanc", "Muscadet"], correct: 1, explanation: "Sancerre and Pouilly-Fumé are Loire's most famous Sauvignon Blancs, known for citrus and mineral notes." },
+                    { q: "What grape is Vouvray made from?", options: ["Sauvignon Blanc", "Chardonnay", "Chenin Blanc", "Riesling"], correct: 2, explanation: "Vouvray is made from Chenin Blanc, produced in styles from dry to sweet, still to sparkling." },
+                    { q: "What grape makes Muscadet?", options: ["Muscat", "Muscadelle", "Melon de Bourgogne", "Müller-Thurgau"], correct: 2, explanation: "Despite the name, Muscadet is made from Melon de Bourgogne - a crisp, neutral grape perfect with seafood." },
+
+                    // France - Alsace
+                    { q: "What makes Alsace wines distinctive in France?", options: ["They are all red", "Single variety wines in tall bottles, Germanic influence", "They are always sweet", "They use only French grapes"], correct: 1, explanation: "Alsace produces single-variety wines (unusual for France) in distinctive tall bottles, with Germanic grape varieties." },
+                    { q: "Which grape varieties is Alsace famous for?", options: ["Chardonnay and Pinot Noir", "Riesling, Gewürztraminer, Pinot Gris, Muscat", "Sauvignon Blanc and Sémillon", "Syrah and Grenache"], correct: 1, explanation: "Alsace is known for aromatic varieties: Riesling, Gewürztraminer, Pinot Gris, and Muscat." },
+
+                    // Italy
+                    { q: "What is the primary grape in Chianti?", options: ["Nebbiolo", "Barbera", "Sangiovese", "Montepulciano"], correct: 2, explanation: "Chianti is made primarily from Sangiovese, known for cherry flavors, high acidity, and firm tannins." },
+                    { q: "Which grape is Barolo made from?", options: ["Sangiovese", "Nebbiolo", "Barbera", "Corvina"], correct: 1, explanation: "Barolo is made from Nebbiolo in Piedmont - powerful wines with high tannin and acidity, needing aging." },
+                    { q: "What does DOCG mean in Italian wine classification?", options: ["Denominazione di Origine Controllata e Garantita - highest quality level", "A grape variety", "A region name", "A winemaking method"], correct: 0, explanation: "DOCG is Italy's highest quality designation, with stricter rules than DOC, including tasting approval." },
+                    { q: "What is Prosecco?", options: ["A red wine from Tuscany", "Italian sparkling wine, mostly from Glera grape", "A fortified wine", "A still white wine"], correct: 1, explanation: "Prosecco is Italian sparkling wine from Veneto, made mostly from Glera grapes using the tank method." },
+                    { q: "What is Amarone della Valpolicella?", options: ["Light, fresh red wine", "Sweet sparkling wine", "Full-bodied red made from dried grapes (appassimento)", "White wine"], correct: 2, explanation: "Amarone uses dried grapes (appassimento) to concentrate sugars and flavors, producing rich, powerful reds." },
+                    { q: "Where is Pinot Grigio most commonly produced in Italy?", options: ["Sicily", "Veneto and Friuli in the northeast", "Tuscany", "Piedmont"], correct: 1, explanation: "Italian Pinot Grigio comes mainly from the northeast (Veneto, Friuli), producing light, crisp styles." },
+
+                    // Spain
+                    { q: "What is the main red grape of Rioja?", options: ["Garnacha", "Tempranillo", "Monastrell", "Bobal"], correct: 1, explanation: "Tempranillo is Rioja's signature grape, producing medium-bodied wines with cherry and leather notes." },
+                    { q: "What does 'Crianza' mean on a Spanish wine label?", options: ["Unoaked wine", "Minimum 2 years aging, at least 1 year in oak", "Sweet wine", "Single vineyard"], correct: 1, explanation: "Crianza requires 2 years aging with at least 1 year in oak. Reserva and Gran Reserva require longer." },
+                    { q: "What is Cava?", options: ["A Spanish red wine", "Spanish sparkling wine made by Traditional Method", "A grape variety", "A fortified wine"], correct: 1, explanation: "Cava is Spanish Traditional Method sparkling wine, mainly from Catalonia, using Macabeo, Parellada, and Xarel·lo." },
+                    { q: "What grape is used in Albariño wines?", options: ["Albariño (Alvarinho)", "Verdejo", "Airén", "Garnacha Blanca"], correct: 0, explanation: "Albariño from Rías Baixas in northwest Spain produces aromatic whites with peach and citrus notes." },
+
+                    // Portugal
+                    { q: "What is Port wine?", options: ["A dry table wine", "A sweet fortified wine from the Douro Valley", "Sparkling wine", "A white wine from Porto"], correct: 1, explanation: "Port is sweet fortified wine from Portugal's Douro Valley, with spirit added during fermentation." },
+                    { q: "What is the difference between Ruby and Tawny Port?", options: ["Ruby is white, Tawny is red", "Ruby ages in bottle (fruity), Tawny ages in barrel (nutty)", "They're the same", "Tawny is sweeter"], correct: 1, explanation: "Ruby Port ages briefly in bottle, retaining fruit. Tawny Port ages in barrel, developing nutty, caramel flavors." },
+                    { q: "What is Vinho Verde?", options: ["A red wine", "A light, fresh, slightly spritzy white wine from northern Portugal", "A sweet dessert wine", "An aged red wine"], correct: 1, explanation: "Vinho Verde ('green wine') is fresh, light, often slightly effervescent white wine from northwest Portugal." },
+
+                    // Germany
+                    { q: "What is the most important grape variety in Germany?", options: ["Chardonnay", "Riesling", "Pinot Noir", "Gewürztraminer"], correct: 1, explanation: "Riesling is Germany's signature grape, producing wines from bone-dry to intensely sweet, with high acidity." },
+                    { q: "What does 'Trocken' mean on a German wine label?", options: ["Sweet", "Off-dry", "Dry", "Sparkling"], correct: 2, explanation: "Trocken means dry - the wine has little to no residual sugar." },
+                    { q: "In German Prädikat classifications, which indicates the ripest grapes?", options: ["Kabinett", "Spätlese", "Auslese", "Trockenbeerenauslese"], correct: 3, explanation: "Trockenbeerenauslese (TBA) is made from individually selected dried berries, producing intensely sweet, rare wines." },
+                    { q: "What is Spätlese?", options: ["Late harvest wine, riper than Kabinett", "Early harvest wine", "Dry wine only", "Sparkling wine"], correct: 0, explanation: "Spätlese means 'late harvest' - grapes picked later for more ripeness, though wines can be dry or sweet." },
+
+                    // Austria
+                    { q: "Which grape variety is Austria most famous for?", options: ["Riesling", "Grüner Veltliner", "Chardonnay", "Sauvignon Blanc"], correct: 1, explanation: "Grüner Veltliner is Austria's signature white grape, producing wines with white pepper and citrus notes." },
+                    { q: "What flavors are typical of Grüner Veltliner?", options: ["Tropical and oaky", "White pepper, citrus, and herbs", "Red fruit and chocolate", "Only floral notes"], correct: 1, explanation: "Grüner Veltliner typically shows white pepper spice, citrus, green herbs, and sometimes lentil notes." },
+
+                    // New World Regions
+                    { q: "What grape variety is Marlborough, New Zealand, famous for?", options: ["Pinot Noir", "Chardonnay", "Sauvignon Blanc", "Riesling"], correct: 2, explanation: "Marlborough Sauvignon Blanc is intensely aromatic with tropical fruit, citrus, and distinctive herbal notes." },
+                    { q: "What is Margaret River, Australia known for?", options: ["Shiraz only", "Cabernet Sauvignon and Chardonnay blends similar to Bordeaux", "Only sweet wines", "Riesling"], correct: 1, explanation: "Margaret River produces elegant Cabernet Sauvignon and Chardonnay, often compared to Bordeaux and Burgundy." },
+                    { q: "Which Australian region is most famous for Shiraz?", options: ["Margaret River", "Barossa Valley", "Yarra Valley", "Tasmania"], correct: 1, explanation: "Barossa Valley is famous for powerful, rich Shiraz from old vines, often with chocolate and spice notes." },
+                    { q: "What is Napa Valley most famous for?", options: ["Pinot Noir", "Riesling", "Cabernet Sauvignon", "Sauvignon Blanc"], correct: 2, explanation: "Napa Valley is California's most prestigious region for Cabernet Sauvignon, producing powerful, age-worthy wines." },
+                    { q: "What is Sonoma County known for?", options: ["Only Cabernet Sauvignon", "Diverse styles including excellent Pinot Noir and Chardonnay", "Only sparkling wine", "Only sweet wines"], correct: 1, explanation: "Sonoma has diverse climates producing excellent Pinot Noir, Chardonnay, Zinfandel, and Cabernet Sauvignon." },
+                    { q: "What grape is Argentina most famous for?", options: ["Carmenère", "Malbec", "Tannat", "Cabernet Sauvignon"], correct: 1, explanation: "Malbec is Argentina's signature grape, producing fuller, riper, fruitier wines than its French homeland Cahors." },
+                    { q: "What grape is Chile most famous for?", options: ["Malbec", "Tannat", "Carmenère", "Bonarda"], correct: 2, explanation: "Carmenère is Chile's signature grape, once thought to be Merlot, with red fruit and distinctive herbal notes." },
+                    { q: "What is South Africa's signature grape?", options: ["Pinotage", "Shiraz", "Chenin Blanc", "Both Pinotage and Chenin Blanc are considered signature varieties"], correct: 3, explanation: "South Africa claims both Pinotage (a local crossing) and Chenin Blanc (locally called Steen) as signature varieties." },
+
+                    // Climate and Viticulture
+                    { q: "What climate type is Bordeaux classified as?", options: ["Continental", "Mediterranean", "Maritime", "Alpine"], correct: 2, explanation: "Bordeaux has a maritime climate, moderated by the Atlantic Ocean and Gironde estuary." },
+                    { q: "What characterizes a continental climate?", options: ["Moderated by ocean", "Large temperature variation between seasons, cold winters", "Constant temperatures", "Always hot and dry"], correct: 1, explanation: "Continental climates have hot summers and cold winters, with significant temperature variation (e.g., Burgundy, Austria)." },
+                    { q: "What does high altitude do to vineyards?", options: ["Always makes wine sweeter", "Cools temperatures and increases UV exposure", "Has no effect", "Makes vines grow faster"], correct: 1, explanation: "Higher altitude means cooler temperatures and more UV light, which can preserve acidity and develop color/flavor." },
+                    { q: "What does 'terroir' mean?", options: ["A type of soil", "The complete natural environment of a vineyard", "A winemaking technique", "A French classification"], correct: 1, explanation: "Terroir encompasses climate, soil, topography, and all environmental factors that make a vineyard site unique." },
+                    { q: "What is 'vintage variation'?", options: ["Different bottle sizes", "Differences in wine between years due to weather conditions", "Variation in grape varieties", "Changes in winemaking style"], correct: 1, explanation: "Vintage variation refers to how weather differences each year affect grape ripeness and resulting wine quality/style." },
+
+                    // Fortified Wines
+                    { q: "What is Fino Sherry?", options: ["A sweet style", "A dry style aged under flor yeast", "A red fortified wine", "A sparkling wine"], correct: 1, explanation: "Fino is dry Sherry aged under flor (a film of yeast) that protects from oxidation and adds nutty, yeasty character." },
+                    { q: "What makes Oloroso Sherry different from Fino?", options: ["It's aged under flor", "It's aged oxidatively without flor", "It's always sweet", "It's unfortified"], correct: 1, explanation: "Oloroso is fortified higher (17%+) to prevent flor growth, aging oxidatively for rich, nutty flavors." },
+                    { q: "What is an LBV Port?", options: ["A cheap Port style", "Late Bottled Vintage - single vintage, aged 4-6 years, ready to drink", "A white Port", "An unfortified wine"], correct: 1, explanation: "LBV (Late Bottled Vintage) is single-vintage Port aged 4-6 years in cask, offering Vintage Port character at lower cost." },
+
+                    // Additional Questions
+                    { q: "What is the purpose of chaptalization?", options: ["Adding color", "Adding sugar before fermentation to increase alcohol", "Adding acid", "Adding tannin"], correct: 1, explanation: "Chaptalization adds sugar before fermentation to boost potential alcohol in cooler regions. Illegal in some places." },
+                    { q: "What does 'residual sugar' (RS) mean?", options: ["Sugar added after fermentation", "Grape sugar remaining after fermentation", "Artificial sweetener", "Sugar from oak"], correct: 1, explanation: "Residual sugar is natural grape sugar left when fermentation stops, determining sweetness level." },
+                    { q: "Why might a winemaker use stainless steel tanks?", options: ["To add oak flavor", "To preserve fresh fruit flavors and prevent oxidation", "To increase tannins", "To add sweetness"], correct: 1, explanation: "Stainless steel is inert, preserving fresh, fruity characteristics without adding oak flavors or allowing oxidation." }
                 ],
                 flashcards: [
-                    { front: "What is terroir?", back: "The complete natural environment in which a wine is produced, including climate, soil, topography, and local traditions. Believed to give wines their unique characteristics." },
-                    { front: "Malolactic fermentation (MLF)", back: "A secondary fermentation where harsh malic acid converts to softer lactic acid. Adds creaminess and buttery notes. Common in Chardonnay and most red wines." },
-                    { front: "Left Bank vs Right Bank Bordeaux", back: "Left Bank: Médoc, Graves - Cabernet Sauvignon dominant, gravelly soils. Right Bank: Saint-Émilion, Pomerol - Merlot dominant, clay and limestone soils." },
-                    { front: "Burgundy classification hierarchy", back: "Regional → Village → Premier Cru → Grand Cru. Quality and specificity increase up the hierarchy. Grand Cru represents the finest vineyard sites." },
-                    { front: "Traditional Method (Méthode Traditionnelle)", back: "Sparkling wine production with second fermentation in bottle. Used for Champagne, Crémant, Cava, and quality sparkling wines. Creates fine, persistent bubbles." },
-                    { front: "Syrah vs Shiraz", back: "Same grape, different names. Syrah (French style): Elegant, peppery, violet notes. Shiraz (Australian style): Richer, riper, more fruit-forward with chocolate and licorice." },
-                    { front: "Noble rot (Botrytis cinerea)", back: "Beneficial fungus that dehydrates grapes, concentrating sugars and adding honey, marmalade flavors. Essential for Sauternes, Tokaji, and German TBA wines." },
-                    { front: "Climate types in viticulture", back: "Continental: Large seasonal temperature variation, cold winters. Maritime: Moderated by ocean, mild temperatures. Mediterranean: Warm, dry summers; mild, wet winters." },
-                    { front: "Oak aging effects", back: "Adds flavors: vanilla, toast, spice, coconut. Allows slow oxidation, softening tannins. New oak has stronger flavor impact than older oak." },
-                    { front: "German Prädikat levels", back: "In ascending ripeness: Kabinett → Spätlese → Auslese → Beerenauslese → Trockenbeerenauslese → Eiswein. Higher levels = riper/sweeter grapes." },
-                    { front: "Nebbiolo characteristics", back: "Piedmont's noble grape (Barolo, Barbaresco). High tannin, high acid. Flavors of tar, roses, cherry, dried herbs. Needs extended aging." },
-                    { front: "Sangiovese characteristics", back: "Tuscany's primary grape (Chianti, Brunello). High acid, medium-high tannin. Flavors of sour cherry, herbs, earth, tea leaf." },
-                    { front: "Tempranillo characteristics", back: "Spain's noble grape (Rioja, Ribera del Duero). Medium body, medium tannin. Flavors of cherry, plum, leather, tobacco (with age)." },
-                    { front: "Chenin Blanc characteristics", back: "Loire Valley white grape. High acidity, very versatile. Can be dry, sweet, or sparkling. Flavors of apple, quince, honey, wet wool." },
-                    { front: "What is lees aging?", back: "Aging wine on dead yeast cells (lees) adds texture, body, and bready/nutty complexity. Important for Champagne and Muscadet 'sur lie'." },
-                    { front: "Champagne grape varieties", back: "Chardonnay: Elegance, citrus, finesse. Pinot Noir: Body, red fruit. Pinot Meunier: Fruitiness, approachability. Most Champagnes are blends." },
-                    { front: "Rioja aging classifications", back: "Joven: Little/no oak. Crianza: 2 years aging, 1 in oak. Reserva: 3 years, 1 in oak. Gran Reserva: 5 years, 2 in oak." },
-                    { front: "Port styles", back: "Ruby: Young, fruity, affordable. Tawny: Aged in barrel, nutty, caramel. Vintage: Single year, aged in bottle. LBV: Single year, ready to drink." },
-                    { front: "Sherry styles", back: "Fino: Pale, dry, yeasty (under flor). Manzanilla: Fino from Sanlúcar. Amontillado: Aged Fino. Oloroso: Oxidative, rich, dry. PX: Very sweet." },
-                    { front: "What is Cru Classé?", back: "French classification of quality vineyards/estates. Most famous: 1855 Bordeaux Classification ranking estates from First to Fifth Growth (Premier to Cinquième Cru)." }
+                    { front: "What is terroir?", back: "The complete natural environment affecting a vineyard: climate, soil, topography, and local traditions. Believed to give wines unique characteristics." },
+                    { front: "Malolactic Fermentation (MLF)", back: "Secondary fermentation converting sharp malic acid to softer lactic acid. Adds creaminess and buttery notes. Common in Chardonnay and most reds." },
+                    { front: "Left Bank vs Right Bank Bordeaux", back: "Left Bank (Médoc, Graves): Cabernet Sauvignon dominant, gravel soils. Right Bank (Saint-Émilion, Pomerol): Merlot dominant, clay/limestone soils." },
+                    { front: "Burgundy classification hierarchy", back: "Regional → Village → Premier Cru → Grand Cru. Quality and specificity increase up the hierarchy. Grand Cru = finest sites." },
+                    { front: "Traditional Method sparkling wine", back: "Second fermentation in bottle creates bubbles. Used for Champagne, Crémant, Cava. Creates fine, persistent bubbles with bready complexity." },
+                    { front: "Tank Method (Charmat)", back: "Second fermentation in large tanks. Faster and cheaper than Traditional Method. Used for Prosecco. Preserves fresh, fruity character." },
+                    { front: "Noble rot (Botrytis cinerea)", back: "Beneficial fungus that dehydrates grapes, concentrating sugars. Adds honey, marmalade, dried apricot flavors. Essential for Sauternes, Tokaji, TBA." },
+                    { front: "Climate types: Maritime", back: "Moderated by ocean. Mild temperatures, consistent weather. Examples: Bordeaux, Marlborough. Risk: rain during harvest." },
+                    { front: "Climate types: Continental", back: "Large seasonal temperature variation. Hot summers, cold winters. Examples: Burgundy, Austria. Risk: spring frost, short season." },
+                    { front: "Climate types: Mediterranean", back: "Warm, dry summers; mild, wet winters. Reliable ripening. Examples: Southern Rhône, most of Spain/Italy. Risk: drought stress." },
+                    { front: "Nebbiolo characteristics", back: "Piedmont's noble grape (Barolo, Barbaresco). High tannin, high acid. Tar, roses, cherry, dried herbs. Needs extended aging." },
+                    { front: "Sangiovese characteristics", back: "Tuscany's main grape (Chianti, Brunello). High acid, medium-high tannin. Sour cherry, herbs, earth, tea leaf." },
+                    { front: "Tempranillo characteristics", back: "Spain's noble grape (Rioja, Ribera del Duero). Medium body, medium tannin. Cherry, plum, leather, tobacco with age." },
+                    { front: "Chenin Blanc characteristics", back: "Loire Valley white grape. High acidity, very versatile: dry, sweet, or sparkling. Apple, quince, honey, wet wool." },
+                    { front: "What is lees aging?", back: "Aging wine on dead yeast cells adds texture, body, and bready/nutty complexity. Important for Champagne and Muscadet 'sur lie'." },
+                    { front: "Rioja aging classifications", back: "Joven: Little/no oak. Crianza: 2 years, 1 in oak. Reserva: 3 years, 1 in oak. Gran Reserva: 5 years, 2 in oak." },
+                    { front: "Port styles overview", back: "Ruby: Young, fruity. Tawny: Barrel-aged, nutty. Vintage/Vintage Port: Single year, bottle aged. LBV: Single year, ready to drink." },
+                    { front: "Sherry styles overview", back: "Fino/Manzanilla: Dry, flor-aged, yeasty. Amontillado: Aged Fino, nutty. Oloroso: Oxidative, rich. PX: Very sweet." },
+                    { front: "German Prädikat levels", back: "In ascending ripeness: Kabinett → Spätlese → Auslese → Beerenauslese → Trockenbeerenauslese → Eiswein." },
+                    { front: "What does Trocken mean?", back: "German for 'dry'. Indicates a wine with minimal residual sugar." },
+                    { front: "Key Champagne terms: NV vs Vintage", back: "NV (Non-Vintage): Blend of multiple years for consistent house style. Vintage: Single exceptional year, aged longer." },
+                    { front: "Blanc de Blancs vs Blanc de Noirs", back: "Blanc de Blancs: White from white grapes (Chardonnay only). Blanc de Noirs: White from red grapes (Pinot Noir/Meunier)." },
+                    { front: "Grüner Veltliner characteristics", back: "Austria's signature white. White pepper, citrus, herbs. Good acidity. Versatile with food." },
+                    { front: "Malbec: France vs Argentina", back: "France (Cahors): Tannic, rustic, often austere. Argentina (Mendoza): Riper, fruitier, plum and violet notes, softer tannins." },
+                    { front: "Marlborough Sauvignon Blanc style", back: "Intensely aromatic. Tropical fruit (passionfruit), citrus, and distinctive herbal/grassy notes. High acidity. Unoaked." },
+                    { front: "What is Prosecco made from?", back: "Primarily Glera grape. Made by Tank Method (Charmat). Light, fruity, fresh sparkling wine from Veneto, Italy." },
+                    { front: "What is appassimento?", back: "Drying harvested grapes to concentrate sugars and flavors. Used for Amarone in Valpolicella. Grapes lose 30-40% weight." },
+                    { front: "Northern vs Southern Rhône", back: "Northern: Syrah only for reds, steep slopes, elegant wines. Southern: Grenache-based blends, flatter terrain, warmer." },
+                    { front: "Alsace's 'noble' grape varieties", back: "Riesling, Gewürztraminer, Pinot Gris, Muscat. These can be labeled Grand Cru and made as Vendange Tardive or Sélection de Grains Nobles." },
+                    { front: "What is Cru Classé?", back: "French classification of quality estates/vineyards. Most famous: 1855 Bordeaux Classification ranking estates First to Fifth Growth." },
+                    { front: "What determines wine color intensity?", back: "Skin contact time, grape variety (thick vs thin skinned), age (reds fade, whites deepen), and climate (warmer = more color)." },
+                    { front: "Oak aging effects on wine", back: "Adds: vanilla, toast, spice, coconut, clove. Allows slow oxidation, softening tannins. New oak = stronger flavor than old oak." },
+                    { front: "Why use oak alternatives?", back: "Oak chips/staves are cheaper and faster than barrels. Add oak flavor without the cost, but less oxidative benefit." },
+                    { front: "Carmenère characteristics", back: "Chile's signature grape. Red fruit, herbal notes (green pepper if unripe), medium body. Originally from Bordeaux." },
+                    { front: "Pinotage characteristics", back: "South African crossing (Pinot Noir x Cinsault). Can show smoke, coffee, banana, red fruit. Controversial quality range." }
                 ]
             },
 
-            // LEVEL 3 DATA
+            // ==================== LEVEL 3 ====================
             3: {
                 name: "Level 3",
-                description: "Award in Wines",
+                fullName: "WSET Level 3 Award in Wines",
+                examQuestions: 50,
+                examTime: 90,
+                passRate: 55,
+                scope: "in-depth knowledge of wine production, regions, grape growing, quality assessment, and professional tasting",
                 questions: [
-                    {
-                        q: "What is the significance of diurnal temperature variation in viticulture?",
-                        options: ["It only affects irrigation needs", "Warm days promote ripening while cool nights preserve acidity", "It determines vine spacing", "It only affects harvest timing"],
-                        correct: 1
-                    },
-                    {
-                        q: "Which soil type is most associated with the great wines of Pomerol?",
-                        options: ["Chalk", "Gravel", "Blue clay", "Volcanic"],
-                        correct: 2
-                    },
-                    {
-                        q: "What is the primary purpose of whole cluster fermentation?",
-                        options: ["Faster fermentation", "Adding stem tannins and freshness", "Higher alcohol levels", "Reducing acidity"],
-                        correct: 1
-                    },
-                    {
-                        q: "In the WSET Systematic Approach to Tasting, what does 'development' assess?",
-                        options: ["Alcohol level", "The wine's age and evolution", "Sugar content", "Tannin quality"],
-                        correct: 1
-                    },
-                    {
-                        q: "What characterizes the phylloxera-resistant American rootstocks?",
-                        options: ["Higher sugar production", "Resistance to the phylloxera louse", "Better drought tolerance only", "Enhanced flavor profiles"],
-                        correct: 1
-                    },
-                    {
-                        q: "What is 'batonnage'?",
-                        options: ["Pressing grapes", "Stirring the lees", "Blending wines", "Adding sulfites"],
-                        correct: 1
-                    },
-                    {
-                        q: "Which factor most influences the style of Alsace wines?",
-                        options: ["High rainfall", "Rain shadow effect of Vosges Mountains", "Coastal influence", "High altitude vineyards"],
-                        correct: 1
-                    },
-                    {
-                        q: "What distinguishes Amarone della Valpolicella production?",
-                        options: ["Early harvest", "Carbonic maceration", "Appassimento (grape drying)", "Cold fermentation"],
-                        correct: 2
-                    },
-                    {
-                        q: "What is the effect of massal selection vs clonal selection?",
-                        options: ["Massal provides genetic diversity; clonal ensures uniformity", "Both produce identical results", "Clonal provides more diversity", "Massal is only for red grapes"],
-                        correct: 0
-                    },
-                    {
-                        q: "What role does flor yeast play in Fino Sherry production?",
-                        options: ["Adds sweetness", "Creates oxidative character", "Protects wine from oxidation, adds nutty character", "Increases alcohol"],
-                        correct: 2
-                    },
-                    {
-                        q: "What is the significance of the Mistral wind in the Southern Rhône?",
-                        options: ["Increases humidity", "Dries vineyards reducing disease, but can damage vines", "Creates fog", "Brings warm air"],
-                        correct: 1
-                    },
-                    {
-                        q: "What is the key difference between Premier Cru and Grand Cru in Burgundy?",
-                        options: ["Only winemaking techniques differ", "Grand Cru vineyards have superior terroir and stricter regulations", "Premier Cru is always more expensive", "There is no legal difference"],
-                        correct: 1
-                    },
-                    {
-                        q: "What is 'pigeage'?",
-                        options: ["Punching down the cap during fermentation", "Pumping juice over the cap", "Cold soaking grapes", "Racking wine off lees"],
-                        correct: 0
-                    },
-                    {
-                        q: "What characterizes the wines of Priorat, Spain?",
-                        options: ["High acidity, light body", "Licorella (slate) soils, concentrated wines, old vine Garnacha", "Cool climate, delicate wines", "Predominantly white wine production"],
-                        correct: 1
-                    },
-                    {
-                        q: "What is the significance of véraison?",
-                        options: ["Bud break in spring", "The onset of grape ripening when berries change color", "Harvest time", "Leaf fall in autumn"],
-                        correct: 1
-                    },
-                    {
-                        q: "What is the traditional Champagne blend ratio?",
-                        options: ["Equal parts all three varieties", "Chardonnay dominant", "Often Pinot Noir and Pinot Meunier heavy, varies by house", "Only Chardonnay used"],
-                        correct: 2
-                    },
-                    {
-                        q: "What distinguishes biodynamic viticulture from organic?",
-                        options: ["Use of synthetic chemicals", "Following lunar/cosmic calendar, use of specific preparations", "Higher yields", "Less strict certification"],
-                        correct: 1
-                    },
-                    {
-                        q: "What is the role of potassium in vine health?",
-                        options: ["Creates acidity", "Essential for photosynthesis and sugar transport", "Produces tannins", "Controls alcohol levels"],
-                        correct: 1
-                    },
-                    {
-                        q: "What is micro-oxygenation used for?",
-                        options: ["Increasing alcohol", "Controlled oxygen exposure to soften tannins and develop wine", "Carbonating wine", "Removing sulfites"],
-                        correct: 1
-                    },
-                    {
-                        q: "What characterizes the great terroirs of the Mosel?",
-                        options: ["Flat, fertile plains", "Steep slate slopes providing excellent drainage and heat reflection", "Rich clay soils", "Mediterranean climate"],
-                        correct: 1
-                    },
-                    {
-                        q: "What is the purpose of 'cold stabilization'?",
-                        options: ["Increasing color", "Precipitating tartrate crystals before bottling", "Adding acidity", "Killing bacteria"],
-                        correct: 1
-                    },
-                    {
-                        q: "What is 'reduction' in wine?",
-                        options: ["Lowering alcohol", "Sulfur compounds causing unpleasant aromas from lack of oxygen", "Decreasing sugar", "Color loss"],
-                        correct: 1
-                    },
-                    {
-                        q: "What distinguishes Grosses Gewächs (GG) in Germany?",
-                        options: ["Sweet wine designation", "Dry wines from top classified vineyard sites", "Sparkling wine only", "Entry-level wines"],
-                        correct: 1
-                    },
-                    {
-                        q: "What is the significance of 'gobelet' training?",
-                        options: ["Maximizing yield", "Bush vine training suited to hot, dry climates", "Cold climate adaptation", "Machine harvesting"],
-                        correct: 1
-                    },
-                    {
-                        q: "What causes 'volatile acidity' in wine?",
-                        options: ["Cold temperatures", "Acetic acid produced by bacteria, causing vinegar-like smell", "High sugar levels", "Extended aging"],
-                        correct: 1
-                    },
-                    {
-                        q: "What is the 'solera' system?",
-                        options: ["Single vintage aging", "Fractional blending system averaging multiple vintages", "Cold fermentation method", "Organic certification"],
-                        correct: 1
-                    },
-                    {
-                        q: "What is the effect of high vine density?",
-                        options: ["Increased vigor and yield per vine", "Competition between vines, smaller berries with concentrated flavors", "Easier mechanical harvesting", "Lower quality wines"],
-                        correct: 1
-                    },
-                    {
-                        q: "What does 'MLF' add to wine texture?",
-                        options: ["Crispness", "Creaminess and roundness", "Astringency", "Bitterness"],
-                        correct: 1
-                    },
-                    {
-                        q: "What characterizes the best sites in Côte-Rôtie?",
-                        options: ["Flat, fertile land", "Steep slopes with mica-schist soils and southern exposure", "Deep clay soils", "High altitude plateaus"],
-                        correct: 1
-                    },
-                    {
-                        q: "What is 'extended maceration' used for?",
-                        options: ["White wine production", "Prolonged skin contact to extract more tannin, color, and complexity", "Quick fermentation", "Sparkling wine"],
-                        correct: 1
-                    }
+                    // Viticulture
+                    { q: "What is the significance of diurnal temperature variation?", options: ["Only affects irrigation", "Warm days promote ripening while cool nights preserve acidity", "Determines vine spacing", "Only affects harvest timing"], correct: 1, explanation: "Large day-night temperature difference allows grapes to ripen fully while retaining acidity for balance and freshness." },
+                    { q: "What is véraison?", options: ["Bud break in spring", "The onset of grape ripening when berries change color", "Harvest time", "Leaf fall in autumn"], correct: 1, explanation: "Véraison marks the beginning of ripening when red grapes turn from green to red and white grapes become translucent." },
+                    { q: "What effect does high vine density have?", options: ["Increased vigor", "Competition between vines, smaller berries with concentrated flavors", "Easier mechanical harvesting", "Lower quality wines"], correct: 1, explanation: "High density forces vines to compete for nutrients, reducing vigor and berry size, potentially concentrating flavors." },
+                    { q: "What is the significance of the Mistral wind in Southern Rhône?", options: ["Increases humidity", "Dries vineyards reducing disease risk, but can stress/damage vines", "Creates fog", "Brings warm air"], correct: 1, explanation: "The Mistral is a cold, dry wind that reduces disease pressure but can be so strong it damages vines and stresses plants." },
+                    { q: "What characterizes phylloxera-resistant rootstocks?", options: ["Higher sugar production", "American Vitis species roots resist the phylloxera louse", "Better drought tolerance only", "Enhanced flavor"], correct: 1, explanation: "American vine species evolved with phylloxera and developed resistance. European vinifera vines are grafted onto these rootstocks." },
+                    { q: "What is massal selection vs clonal selection?", options: ["Both produce identical results", "Massal provides genetic diversity from a vineyard; clonal ensures uniformity from single vine", "Clonal provides more diversity", "Massal is only for reds"], correct: 1, explanation: "Massal selection uses cuttings from multiple superior vines (diversity). Clonal selection propagates one single vine (uniformity)." },
+                    { q: "What does 'gobelet' (bush vine) training suit?", options: ["Cool, wet climates", "Hot, dry climates with low vigor", "Machine harvesting", "High-yielding vineyards"], correct: 1, explanation: "Bush vines are self-supporting, shading grapes from intense sun. Suited to hot, dry areas with low-vigor soils (e.g., old Châteauneuf vines)." },
+                    { q: "What is green harvesting?", options: ["Harvesting unripe grapes", "Removing excess grape bunches to concentrate remaining fruit", "Early morning harvest", "Harvesting by hand"], correct: 1, explanation: "Green harvest (crop thinning) removes some bunches during summer so the vine concentrates energy into fewer, higher-quality grapes." },
+                    { q: "What role does potassium play in vine health?", options: ["Creates acidity", "Essential for photosynthesis and sugar transport within the vine", "Produces tannins", "Controls alcohol"], correct: 1, explanation: "Potassium is crucial for photosynthesis, sugar movement within the vine, and overall plant health. Excess can reduce acidity." },
+
+                    // Winemaking Advanced
+                    { q: "What is the purpose of whole cluster fermentation?", options: ["Faster fermentation", "Adding stem tannins, freshness, and herbal/spicy complexity", "Higher alcohol", "Reducing acidity"], correct: 1, explanation: "Including grape stems adds tannin structure, freshness, and spicy/herbal notes. Common in premium Burgundy and Rhône wines." },
+                    { q: "What is 'pigeage'?", options: ["Punching down the cap during fermentation", "Pumping juice over the cap", "Cold soaking grapes", "Racking wine off lees"], correct: 0, explanation: "Pigeage is manually or mechanically punching down the cap of skins, giving gentler extraction than pumping over." },
+                    { q: "What is 'remontage'?", options: ["Punching down", "Pumping juice from bottom over the cap", "Adding sulfites", "Barrel aging"], correct: 1, explanation: "Remontage pumps juice from the bottom of the tank over the floating cap, extracting color and tannin." },
+                    { q: "What is micro-oxygenation used for?", options: ["Increasing alcohol", "Controlled oxygen exposure to soften tannins and develop wine", "Carbonating wine", "Removing sulfites"], correct: 1, explanation: "Micro-ox introduces tiny amounts of oxygen to mimic barrel aging effects, softening tannins and stabilizing color." },
+                    { q: "What is 'cold soak' (cold maceration)?", options: ["Fermenting at cold temperatures", "Pre-fermentation skin contact at low temperature to extract color and fruit", "Chilling finished wine", "Cold stabilization"], correct: 1, explanation: "Cold soak extracts color and fruity flavors from skins before fermentation begins, without extracting harsh tannins." },
+                    { q: "What is 'extended maceration'?", options: ["Longer alcoholic fermentation", "Prolonged skin contact after fermentation for more tannin and complexity", "Longer pressing", "Extended lees contact"], correct: 1, explanation: "Extended maceration leaves wine on skins after fermentation ends, extracting more tannin structure for ageworthy wines." },
+                    { q: "What causes 'reduction' in wine?", options: ["Lowering alcohol", "Sulfur compounds from lack of oxygen, causing unpleasant aromas", "Decreasing sugar", "Color loss"], correct: 1, explanation: "Reductive winemaking can produce volatile sulfur compounds (rotten egg, struck match) if taken too far. Often fixable by aeration." },
+                    { q: "What is 'volatile acidity' (VA)?", options: ["Normal fruit acidity", "Acetic acid and ethyl acetate giving vinegar/nail polish aromas", "Tartaric acid", "Carbonic acid"], correct: 1, explanation: "VA is acetic acid (vinegar) and ethyl acetate (nail polish remover) from bacterial spoilage. Low levels add complexity; high levels are faults." },
+
+                    // Regions - Burgundy Deep Dive
+                    { q: "What distinguishes Premier Cru from Grand Cru in Burgundy?", options: ["Only winemaking differs", "Grand Cru vineyards have superior terroir and stricter regulations", "Premier Cru is more expensive", "No legal difference"], correct: 1, explanation: "Grand Cru sites have historically proven superior terroir. They have their own appellations; Premier Crus are listed under village names." },
+                    { q: "What soil type dominates the Côte de Nuits?", options: ["Pure chalk", "Limestone and marl with varied exposures", "Sandy loam", "Volcanic"], correct: 1, explanation: "The Côte de Nuits has complex limestone and marl soils with different proportions giving each climat its character." },
+                    { q: "What characterizes Chablis terroir?", options: ["Warm climate", "Cool climate with Kimmeridgian limestone/marl soil", "Volcanic soil", "Mediterranean influence"], correct: 1, explanation: "Chablis is cool with Kimmeridgian limestone rich in fossilized oyster shells, giving wines mineral, steely character." },
+
+                    // Regions - Bordeaux Deep Dive
+                    { q: "What soil type is most associated with Pomerol's best wines?", options: ["Gravel", "Blue clay with iron-rich 'crasse de fer'", "Chalk", "Sandstone"], correct: 1, explanation: "Pomerol's plateau has blue clay with an iron-rich subsoil called 'crasse de fer' that Merlot thrives in." },
+                    { q: "What is 'encépagement'?", options: ["A disease", "The grape variety blend/composition of a vineyard or wine", "A winemaking tool", "A bottle size"], correct: 1, explanation: "Encépagement refers to the proportions of different grape varieties planted or used in a blend." },
+                    { q: "What defines the 1855 Classification?", options: ["Quality ranking of Médoc (and Sauternes) estates based on price", "Annual quality assessment", "A grape variety", "A winemaking law"], correct: 0, explanation: "The 1855 Classification ranked Médoc châteaux by price at the time (proxy for quality). Still largely used today despite being unchanged." },
+
+                    // Regions - Northern Rhône
+                    { q: "What characterizes the best sites in Côte-Rôtie?", options: ["Flat, fertile land", "Steep south-facing slopes with mica-schist soils", "Deep clay", "High-altitude plateaus"], correct: 1, explanation: "Côte-Rôtie ('roasted slope') has extremely steep terraces with mica-schist and gneiss soils facing south for maximum sun exposure." },
+                    { q: "What distinguishes Côte Brune from Côte Blonde in Côte-Rôtie?", options: ["Different grapes", "Côte Brune has darker, iron-rich soils; Côte Blonde has lighter, limestone soils", "One is for white wine", "Only marketing"], correct: 1, explanation: "Côte Brune (darker, more tannic wines) has iron-rich schist; Côte Blonde (softer wines) has more limestone and lighter soils." },
+                    { q: "What white grape can be blended into Côte-Rôtie?", options: ["Chardonnay", "Viognier (up to 20%)", "Marsanne", "Roussanne"], correct: 1, explanation: "Up to 20% Viognier can be co-fermented with Syrah in Côte-Rôtie, adding aromatics and softening tannins." },
+
+                    // Regions - Germany Advanced
+                    { q: "What characterizes the great terroirs of the Mosel?", options: ["Flat plains", "Steep slate slopes providing drainage and heat reflection", "Rich clay", "Hot Mediterranean climate"], correct: 1, explanation: "Mosel's best vineyards are on impossibly steep slate slopes that reflect heat, drain perfectly, and stress vines beneficially." },
+                    { q: "What is Grosses Gewächs (GG)?", options: ["Sweet wine", "VDP designation for dry wines from top classified sites", "Sparkling wine", "Entry-level wine"], correct: 1, explanation: "GG is the VDP's designation for top dry wines from Grosse Lage (Grand Cru equivalent) sites, released after extended aging." },
+                    { q: "What is the VDP classification system?", options: ["Official German law", "Private quality association ranking sites: Gutswein → Ortswein → Erste Lage → Grosse Lage", "A grape variety", "A sparkling wine method"], correct: 1, explanation: "VDP is a private association of top estates using a quality pyramid based on vineyard site, similar to Burgundy's model." },
+
+                    // Regions - Spain Advanced
+                    { q: "What characterizes Priorat wines?", options: ["Light and fresh", "Concentrated wines from llicorella (slate) soils and old-vine Garnacha/Cariñena", "White wine only", "Cool climate, high acid"], correct: 1, explanation: "Priorat's llicorella (slate/schist) soils force vines to struggle, producing tiny yields of incredibly concentrated wines." },
+                    { q: "What is the difference between Rioja's sub-regions?", options: ["None", "Rioja Alta and Alavesa are cooler, higher; Rioja Oriental is warmer, lower", "Only grape varieties differ", "Only soil differs"], correct: 1, explanation: "Rioja Alta and Alavesa (Atlantic influence) produce more elegant wines; Rioja Oriental (Mediterranean influence) produces riper, fuller wines." },
+
+                    // Regions - Italy Advanced
+                    { q: "What is the difference between Barolo and Barbaresco?", options: ["Different grapes", "Both Nebbiolo but Barbaresco is typically lighter, earlier-maturing", "Barolo is white", "Same wine, different names"], correct: 1, explanation: "Both use Nebbiolo, but Barbaresco vineyards are slightly warmer and lower, producing wines that mature sooner." },
+                    { q: "What soil types dominate Barolo?", options: ["All identical", "Tortonian (sandier, aromatic wines) vs Helvetian (calcareous, more structured)", "Only volcanic", "Only clay"], correct: 1, explanation: "Barolo has two main soil types: Tortonian (sandier, fragrant wines) and Helvetian/Serravallian (calcareous, more powerful, ageworthy)." },
+                    { q: "What makes Brunello di Montalcino different from Chianti Classico?", options: ["Different grape", "Both Sangiovese but warmer climate, longer aging, 100% Sangiovese required in Brunello", "Different region", "Brunello is a blend"], correct: 1, explanation: "Brunello uses only Sangiovese Grosso in a warmer area, with mandatory 5 years aging (2 in oak), producing more powerful wines." },
+
+                    // Fortified Wines Advanced
+                    { q: "What role does flor play in Fino Sherry?", options: ["Adds sweetness", "Protects wine from oxidation and adds nutty, yeasty character", "Increases alcohol", "Creates bubbles"], correct: 1, explanation: "Flor is a film of yeast that grows on Fino/Manzanilla, consuming nutrients, preventing oxidation, and adding distinctive flavors." },
+                    { q: "What is the solera system?", options: ["Single vintage aging", "Fractional blending where older wine refreshes younger, averaging many vintages", "Cold fermentation", "Organic certification"], correct: 1, explanation: "Solera fractionally blends wines of different ages. Wine is drawn from oldest barrels, refreshed from younger ones, creating consistency." },
+                    { q: "What determines whether Port becomes Ruby or Tawny style?", options: ["Grape variety", "Aging vessel: bottle (Ruby) vs barrel (Tawny)", "Sugar level", "When spirit is added"], correct: 1, explanation: "Ruby ages in bottle/large vessels, retaining fruit and color. Tawny ages in small barrels, oxidizing to develop nutty, toffee character." },
+                    { q: "What is Vintage Port?", options: ["Any Port with a date", "Port from a single exceptional vintage, aged in bottle, declared by the house", "Everyday Port", "White Port"], correct: 1, explanation: "Vintage Port (Vintage Port) is declared only in exceptional years, bottled after 2 years, and aged in bottle for decades." },
+
+                    // Climate and Quality
+                    { q: "What distinguishes biodynamic from organic viticulture?", options: ["Use of chemicals", "Biodynamic follows lunar calendar and uses specific preparations based on Steiner's philosophy", "Higher yields", "Less strict"], correct: 1, explanation: "Biodynamic farming follows Rudolf Steiner's philosophy, using preparations, cosmic rhythms, and viewing the vineyard as a holistic organism." },
+                    { q: "What is 'minerality' in wine?", options: ["Taste of soil minerals", "Controversial term for non-fruit flavors - possibly from low pH, reduction, or terroir expression", "A wine fault", "Only in white wines"], correct: 1, explanation: "Minerality is debated - vines don't absorb soil minerals directly. May relate to reduction, low pH, certain yeasts, or undefined terroir factors." },
+                    { q: "What is climate change's impact on wine regions?", options: ["No impact", "Earlier harvests, higher alcohol, lower acidity, new viable regions", "Cooler temperatures", "More rain everywhere"], correct: 1, explanation: "Climate change causes earlier ripening, higher potential alcohol, acid loss, and is making cooler regions more viable while challenging warm ones." },
+
+                    // Systematic Tasting
+                    { q: "In the SAT, what does 'development' assess?", options: ["Alcohol level", "The wine's evolutionary state: youthful, developing, or fully developed", "Sugar content", "Tannin level"], correct: 1, explanation: "Development assesses where a wine is in its evolution - from youthful primary fruit through developing secondary aromas to fully mature tertiary character." },
+                    { q: "What indicates a wine is 'faulty'?", options: ["Any unusual aroma", "Specific off-aromas like TCA (cork), volatile acidity, or oxidation at unacceptable levels", "Low acidity", "High alcohol"], correct: 1, explanation: "Faults are specific chemical problems: TCA (musty), excess VA (vinegar), premature oxidation (sherry-like when unexpected), Brettanomyces (farmyard), etc." },
+                    { q: "What distinguishes 'good' from 'outstanding' quality in SAT assessment?", options: ["Price only", "Outstanding shows exceptional complexity, balance, length, and expressiveness", "Age only", "Region only"], correct: 1, explanation: "Outstanding wines have exceptional concentration, complexity, balance, finish length, and often terroir expression beyond merely 'good' wines." },
+                    { q: "What are 'tertiary' aromas in wine?", options: ["Primary grape aromas", "Aromas from extended bottle aging: leather, earth, mushroom, tobacco", "Fermentation aromas", "Oak aromas"], correct: 1, explanation: "Tertiary aromas develop with bottle age: dried fruit, leather, earth, forest floor, tobacco, coffee. Primary = grape, Secondary = fermentation/oak." },
+
+                    // Additional Advanced Questions
+                    { q: "What is 'lieu-dit'?", options: ["A winemaking technique", "A named vineyard site, smaller than a village appellation", "A grape clone", "A wine fault"], correct: 1, explanation: "Lieu-dit is a traditionally named plot of land, often indicating distinct terroir. May or may not have official classification." },
+                    { q: "What is 'clos' in wine terminology?", options: ["A closure type", "A walled vineyard, historically indicating quality and distinct terroir", "A wine style", "A classification"], correct: 1, explanation: "Clos refers to a walled vineyard, historically protecting valuable sites. Many famous Burgundy vineyards are called 'Clos.'" },
+                    { q: "What is 'négociant' vs 'domaine' wine?", options: ["Same thing", "Négociant buys grapes/wine from others; domaine grows and makes their own", "Négociant is organic", "Domaine is commercial"], correct: 1, explanation: "Domaine/estate wines are grown and made by the same producer. Négociants buy grapes, must, or wine from growers to make and sell." },
+                    { q: "What is 'reverse osmosis' used for in winemaking?", options: ["Adding water", "Concentrating wine by removing water, or reducing alcohol", "Filtering sediment", "Adding CO2"], correct: 1, explanation: "Reverse osmosis can concentrate must (removing water) or reduce alcohol in finished wine. Controversial as it's considered manipulative." },
+                    { q: "What factors determine a wine's aging potential?", options: ["Only price", "Acidity, tannin, sugar, alcohol, and concentration all contribute to longevity", "Color only", "Bottle size only"], correct: 1, explanation: "Age-worthy wines need structure: acidity (whites), tannin (reds), concentration, and often some residual sugar (sweet wines). Balance is key." },
+                    { q: "What is 'battonage' most used for?", options: ["Red wine fermentation", "Stirring lees in white wine and Champagne production for richness", "Pressing grapes", "Adding sulfites"], correct: 1, explanation: "Battonage (lees stirring) is mainly for white wines and Champagne, adding texture, richness, and protecting against oxidation." },
+                    { q: "What is 'skin contact' or 'orange' wine?", options: ["Wine made from oranges", "White wine made with extended skin contact like a red wine", "Sweet wine", "Faulty wine"], correct: 1, explanation: "Orange wine is white wine made with extended skin maceration, gaining color, tannin, and texture. Ancient method revived in natural winemaking." }
                 ],
                 flashcards: [
-                    { front: "Systematic Approach to Tasting (SAT) - Appearance", back: "Assess: Clarity (clear-hazy), Intensity (pale-deep), Color (specific hue and any rim variation), Other observations (legs/tears, bubbles, sediment)." },
-                    { front: "Systematic Approach to Tasting (SAT) - Nose", back: "Assess: Condition (clean, unclean), Intensity (light-pronounced), Aroma characteristics (primary: grape; secondary: fermentation/aging; tertiary: bottle aging), Development (youthful, developing, developed)." },
-                    { front: "Systematic Approach to Tasting (SAT) - Palate", back: "Assess: Sweetness, Acidity, Tannin (reds), Alcohol, Body, Flavor intensity, Flavor characteristics, Finish length. Then: Quality assessment and drinking window." },
-                    { front: "Terroir components", back: "Climate (macro, meso, micro), Soil (drainage, nutrients, water-holding capacity), Topography (altitude, aspect, slope), and Human influence (tradition, regulations, winemaking philosophy)." },
-                    { front: "Phylloxera and rootstocks", back: "Phylloxera vastatrix devastated European vines in late 1800s. Solution: grafting Vitis vinifera onto resistant American rootstocks. Different rootstocks suit different soils and climates." },
-                    { front: "Biodynamic viticulture principles", back: "Follows Rudolf Steiner's philosophy. Uses specific preparations (500-508), lunar/cosmic calendar for timing activities. Views vineyard as self-sustaining organism. More holistic than organic alone." },
-                    { front: "Appassimento process", back: "Drying harvested grapes (traditionally on straw mats) to concentrate sugars and flavors. Used for Amarone and Recioto in Valpolicella. Grapes lose 30-40% weight over 3-4 months." },
-                    { front: "Carbonic maceration", back: "Whole grape fermentation in CO2 atmosphere. Creates fruity, low-tannin wines. Classic technique for Beaujolais. Produces banana, bubblegum, cherry aromas." },
-                    { front: "Flor in Sherry production", back: "Film-forming yeast (Saccharomyces) that protects Fino/Manzanilla from oxidation. Grows on wine surface in partially filled barrels. Adds nutty, yeasty character. Dies above 15.5% ABV." },
-                    { front: "Solera system explained", back: "Fractional blending: Older wines ('criaderas') refresh younger wines. Bottom row (solera) is oldest. Wine drawn from solera, refreshed from next criadera level up. Creates consistent house style." },
-                    { front: "Effects of whole cluster fermentation", back: "Including grape stems in fermentation. Adds tannin structure, freshness, and herbal/spicy notes. Can reduce overall fruitiness. Used in premium Burgundy, Rhône, Oregon Pinot." },
-                    { front: "Key Burgundy Grand Cru sites", back: "White: Montrachet, Corton-Charlemagne, Bâtard-Montrachet. Red: Romanée-Conti, La Tâche, Chambertin, Musigny, Richebourg, Clos de Vougeot." },
-                    { front: "Diurnal temperature variation importance", back: "Large difference between day and night temperatures. Warm days promote sugar accumulation (ripeness). Cool nights preserve acidity. Crucial for aromatic development and balance." },
-                    { front: "Reduction vs oxidation in winemaking", back: "Reduction: Limited oxygen exposure, preserves fruit, risk of sulfur compounds. Oxidation: Controlled oxygen exposure, develops nutty/bruised fruit character, softens tannins." },
-                    { front: "Pigeage vs remontage", back: "Pigeage: Punching down the cap of skins - gentler extraction, traditional. Remontage: Pumping juice over the cap - more vigorous extraction, easier to mechanize." },
-                    { front: "German classification VDP system", back: "Gutswein → Ortswein → Erste Lage → Grosse Lage. Quality pyramid with GG (Grosses Gewächs) as top dry wines from Grosse Lage sites." },
-                    { front: "Bâtonnage effects", back: "Stirring lees adds richness, creaminess, and body. Releases mannoproteins improving mouthfeel. Reduces oak impact. Common for white Burgundy, quality Muscadet." },
-                    { front: "Vine training systems", back: "Bush/Gobelet: Hot, dry climates, low vigor. Guyot: Cool climates, single/double cane. Cordon: Permanent arms, suited for mechanization. VSP: Vertical shoot positioning, easy management." },
-                    { front: "Minerality in wine", back: "Controversial term describing non-fruit flavors: wet stone, chalk, flint, salinity. Debated origin - soil minerals not directly absorbed. May relate to low pH, reduction, terroir expression." },
-                    { front: "Climate change impacts on viticulture", back: "Earlier harvest dates, higher alcohol, lower acidity. New regions becoming viable. Shifting varietal suitability. Increased drought and extreme weather events. Altitude and latitude becoming more important." }
+                    { front: "SAT: Appearance assessment", back: "Clarity (clear-hazy), Intensity (pale-deep), Color (specific hue, rim variation), Other (legs, bubbles, sediment)." },
+                    { front: "SAT: Nose assessment", back: "Condition (clean/faulty), Intensity (light-pronounced), Aroma characteristics (primary/secondary/tertiary), Development (youthful/developing/developed)." },
+                    { front: "SAT: Palate assessment", back: "Sweetness, Acidity, Tannin (reds), Alcohol, Body, Flavor intensity, Flavor characteristics, Finish length. Then: Quality level and drinking window." },
+                    { front: "Terroir components", back: "Climate (macro/meso/micro), Soil (drainage, nutrients, water), Topography (altitude, aspect, slope), Human influence (tradition, regulations)." },
+                    { front: "Phylloxera solution", back: "Phylloxera devastated European vines 1860s-1900s. Solution: graft Vitis vinifera onto resistant American rootstocks (V. riparia, V. rupestris, etc.)." },
+                    { front: "Biodynamic principles", back: "Rudolf Steiner's philosophy. Specific preparations (500-508), lunar calendar timing, vineyard as self-sustaining organism. Beyond organic." },
+                    { front: "Appassimento process", back: "Drying harvested grapes (traditionally on straw mats) for 3-4 months. Loses 30-40% weight. Concentrates sugar and flavor. Used for Amarone." },
+                    { front: "Flor in Sherry", back: "Film-forming yeast on Fino/Manzanilla surface. Protects from oxidation. Adds yeasty, nutty character. Dies above 15.5% ABV." },
+                    { front: "Solera system", back: "Fractional blending: oldest wine (solera) drawn for bottling, refreshed from younger criaderas above. Creates consistent, complex house style." },
+                    { front: "Whole cluster fermentation effects", back: "Including stems adds tannin structure, freshness, herbal/spicy notes. Can reduce fruitiness. Used in premium Burgundy, Rhône, Oregon Pinot." },
+                    { front: "Diurnal temperature variation", back: "Day-night temperature difference. Large variation: warm days ripen fruit, cool nights preserve acidity. Crucial for balance and aromatic development." },
+                    { front: "Reduction vs oxidation winemaking", back: "Reduction: Limited O2, preserves fruit, risk of sulfur faults. Oxidation: Controlled O2, develops nutty/complex character, softens tannins." },
+                    { front: "Pigeage vs remontage", back: "Pigeage: Punching cap down - gentler extraction. Remontage: Pumping juice over cap - more vigorous extraction, easier to automate." },
+                    { front: "VDP German classification", back: "Quality pyramid: Gutswein (regional) → Ortswein (village) → Erste Lage (Premier Cru) → Grosse Lage (Grand Cru). GG = dry Grosse Lage." },
+                    { front: "Bâtonnage effects", back: "Stirring lees increases wine's contact with yeast, adding richness, creaminess, protecting from oxidation. Used in white Burgundy, Champagne." },
+                    { front: "Training systems: VSP", back: "Vertical Shoot Positioning. Shoots trained upward between wires. Good sun exposure, easy management. Common in cool-moderate climates." },
+                    { front: "Training systems: Gobelet", back: "Bush vine, no trellis. Self-supporting. Shades fruit from intense sun. Low vigor, drought tolerant. Traditional Mediterranean method." },
+                    { front: "Minerality debate", back: "Non-fruit descriptor: wet stone, chalk, salinity. Origin debated - not direct mineral absorption. May relate to low pH, reduction, terroir expression." },
+                    { front: "Climate change wine impacts", back: "Earlier harvest, higher alcohol, lower acidity. New regions viable. Heat spikes, drought stress. Altitude and latitude gaining importance." },
+                    { front: "Massal vs clonal selection", back: "Massal: Cuttings from multiple vines = genetic diversity. Clonal: All vines from one mother vine = uniformity but less resilience." },
+                    { front: "Key Burgundy Grand Cru - White", back: "Montrachet, Corton-Charlemagne, Bâtard-Montrachet, Chevalier-Montrachet, Bienvenues-Bâtard-Montrachet, Criots-Bâtard-Montrachet." },
+                    { front: "Key Burgundy Grand Cru - Red", back: "Romanée-Conti, La Tâche, Chambertin, Musigny, Richebourg, Clos de Vougeot, Échézeaux, Grands-Échézeaux, Bonnes-Mares." },
+                    { front: "Côte-Rôtie characteristics", back: "Steep slopes, mica-schist soils. 100% Syrah or with up to 20% Viognier. Côte Brune (darker, structured) vs Côte Blonde (lighter, aromatic)." },
+                    { front: "Barolo soil types", back: "Tortonian (sandier, more fragrant, earlier drinking) vs Serravallian/Helvetian (calcareous marl, more structured, longer-lived)." },
+                    { front: "Vintage Port vs LBV", back: "Vintage: Declared exceptional years, 2 years cask, decades bottle aging needed. LBV: 4-6 years cask, ready to drink, more accessible." },
+                    { front: "What is micro-oxygenation?", back: "Controlled introduction of tiny oxygen amounts to tank wine. Mimics barrel aging, softens tannins, stabilizes color. Alternative to expensive oak." },
+                    { front: "Extended maceration", back: "Leaving wine on skins after fermentation. Extracts more tannin and color. Used for ageworthy reds. Risks: harsh tannins if overdone." },
+                    { front: "Cold soak (maceration)", back: "Pre-fermentation skin contact at low temperature. Extracts color and fruit without harsh tannins. Common in Pinot Noir production." },
+                    { front: "Primary vs Secondary vs Tertiary aromas", back: "Primary: Grape-derived (fruit, floral). Secondary: Winemaking (MLF butter, oak vanilla, yeast bread). Tertiary: Bottle aging (leather, earth, tobacco)." },
+                    { front: "Quality assessment factors (SAT)", back: "Balance (components in harmony), Length (finish persistence), Intensity, Complexity (layers of flavor), Expressiveness (typicity, terroir)." }
                 ]
             }
         };
@@ -1013,23 +1119,18 @@
         // ========================================
 
         let currentLevel = 1;
-        let currentMode = 'quiz';
-
-        // Quiz state
-        let quizQuestions = [];
-        let quizAnswers = {};
-        let quizSubmitted = false;
-
-        // Exam state
-        let examQuestions = [];
-        let examAnswers = {};
-        let examCurrentIndex = 0;
-        let examTimer = null;
-        let examTimeRemaining = 45 * 60; // 45 minutes in seconds
+        let currentMode = 'exam';
+        let questions = [];
+        let answers = {};
+        let currentIndex = 0;
+        let timer = null;
+        let timeRemaining = 0;
+        let startTime = null;
+        let sessionActive = false;
 
         // Flashcard state
         let flashcards = [];
-        let currentCardIndex = 0;
+        let cardIndex = 0;
         let cardFlipped = false;
 
         // ========================================
@@ -1037,338 +1138,337 @@
         // ========================================
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Level buttons
-            document.querySelectorAll('.level-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+            // Level tabs
+            document.querySelectorAll('.level-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    if (sessionActive) {
+                        if (!confirm('Changing levels will reset your current session. Continue?')) return;
+                    }
+                    document.querySelectorAll('.level-tab').forEach(t => t.classList.remove('active'));
                     this.classList.add('active');
                     currentLevel = parseInt(this.dataset.level);
-                    resetAllModes();
-                    updateStartScreens();
+                    resetSession();
+                    updateUI();
                 });
             });
 
-            // Mode tabs
-            document.querySelectorAll('.mode-tab').forEach(tab => {
-                tab.addEventListener('click', function() {
-                    document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+            // Mode buttons
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (sessionActive) {
+                        if (!confirm('Changing modes will reset your current session. Continue?')) return;
+                    }
+                    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
                     currentMode = this.dataset.mode;
-                    showCurrentMode();
+                    resetSession();
+                    updateUI();
                 });
             });
 
-            updateStartScreens();
+            // Keyboard shortcuts
+            document.addEventListener('keydown', handleKeyboard);
+
+            updateUI();
         });
 
-        function showCurrentMode() {
-            document.getElementById('quiz-container').classList.remove('active');
-            document.getElementById('exam-container').classList.remove('active');
-            document.getElementById('flashcards-container').classList.remove('active');
+        function updateUI() {
+            const data = wsetData[currentLevel];
 
-            if (currentMode === 'quiz') {
-                document.getElementById('quiz-container').classList.add('active');
-            } else if (currentMode === 'exam') {
-                document.getElementById('exam-container').classList.add('active');
-            } else {
-                document.getElementById('flashcards-container').classList.add('active');
-            }
-        }
-
-        function updateStartScreens() {
-            const levelData = wsetData[currentLevel];
-
-            // Update quiz start screen
-            document.querySelector('#quiz-start h2').textContent = `WSET ${levelData.name} Quiz`;
-
-            // Update exam start screen
-            document.querySelector('#exam-start h2').textContent = `WSET ${levelData.name} Mock Exam`;
-
-            // Update flashcard start screen
-            document.querySelector('#flashcard-start h2').textContent = `WSET ${levelData.name} Flash Cards`;
-
-            // Update level info based on level
-            const levelInfos = {
-                1: {
-                    quiz: ['Introduction to wine styles and types', 'Basic food and wine pairing', 'Wine storage and service', 'Main grape varieties'],
-                    exam: ['30 multiple-choice questions', '45 minutes time limit', '70% required to pass', 'Simulates real WSET exam conditions'],
-                    flashcard: ['Key grape varieties and their characteristics', 'Wine regions and their styles', 'Winemaking techniques', 'Tasting vocabulary']
-                },
-                2: {
-                    quiz: ['Wine production methods', 'Major wine regions of the world', 'Key grape varieties in depth', 'Factors affecting style and quality'],
-                    exam: ['50 multiple-choice questions', '60 minutes time limit', '55% required to pass', 'Covers all Level 2 specification topics'],
-                    flashcard: ['Detailed grape variety profiles', 'Regional characteristics', 'Winemaking processes', 'Food and wine pairing principles']
-                },
-                3: {
-                    quiz: ['In-depth regional knowledge', 'Wine production and business', 'Quality assessment', 'Complex food pairing'],
-                    exam: ['50 multiple-choice questions', '90 minutes time limit', '55% required to pass', 'Includes tasting assessment principles'],
-                    flashcard: ['Advanced terroir concepts', 'Detailed regional profiles', 'Winemaking decisions and impacts', 'Market and business factors']
-                }
-            };
-
-            const info = levelInfos[currentLevel];
-
-            document.querySelectorAll('#quiz-start .level-info ul')[0].innerHTML =
-                info.quiz.map(item => `<li>${item}</li>`).join('');
-            document.querySelectorAll('#exam-start .level-info ul')[0].innerHTML =
-                info.exam.map(item => `<li>${item}</li>`).join('');
-            document.querySelectorAll('#flashcard-start .level-info ul')[0].innerHTML =
-                info.flashcard.map(item => `<li>${item}</li>`).join('');
-        }
-
-        function resetAllModes() {
-            // Reset quiz
-            document.getElementById('quiz-start').style.display = 'block';
-            document.getElementById('quiz-questions').style.display = 'none';
-            document.getElementById('quiz-results').style.display = 'none';
-            quizQuestions = [];
-            quizAnswers = {};
-            quizSubmitted = false;
-
-            // Reset exam
-            document.getElementById('exam-start').style.display = 'block';
-            document.getElementById('exam-questions').style.display = 'none';
-            document.getElementById('exam-results').style.display = 'none';
-            examQuestions = [];
-            examAnswers = {};
-            examCurrentIndex = 0;
-            if (examTimer) clearInterval(examTimer);
-            examTimeRemaining = currentLevel === 1 ? 45 * 60 : (currentLevel === 2 ? 60 * 60 : 90 * 60);
-
-            // Reset flashcards
-            document.getElementById('flashcard-start').style.display = 'block';
-            document.getElementById('flashcard-study').style.display = 'none';
-            flashcards = [];
-            currentCardIndex = 0;
-            cardFlipped = false;
-        }
-
-        // ========================================
-        // QUIZ FUNCTIONS
-        // ========================================
-
-        function startQuiz() {
-            const levelData = wsetData[currentLevel];
-            quizQuestions = shuffleArray([...levelData.questions]).slice(0, 10);
-            quizAnswers = {};
-            quizSubmitted = false;
-
-            document.getElementById('quiz-start').style.display = 'none';
-            document.getElementById('quiz-questions').style.display = 'block';
-
-            renderQuizQuestions();
-        }
-
-        function renderQuizQuestions() {
-            const container = document.getElementById('quiz-questions');
-            let html = '';
-
-            quizQuestions.forEach((q, index) => {
-                html += `
-                    <div class="question-card">
-                        <div class="question-number">Question ${index + 1} of ${quizQuestions.length}</div>
-                        <div class="question-text">${q.q}</div>
-                        <div class="options">
-                            ${q.options.map((opt, optIndex) => `
-                                <div class="option ${quizAnswers[index] === optIndex ? 'selected' : ''}"
-                                     onclick="selectQuizAnswer(${index}, ${optIndex})">
-                                    ${opt}
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
-            });
-
-            html += `<button class="btn-primary" onclick="submitQuiz()">Submit Quiz</button>`;
-            container.innerHTML = html;
-        }
-
-        function selectQuizAnswer(questionIndex, optionIndex) {
-            if (quizSubmitted) return;
-            quizAnswers[questionIndex] = optionIndex;
-            renderQuizQuestions();
-        }
-
-        function submitQuiz() {
-            quizSubmitted = true;
-            let correct = 0;
-
-            quizQuestions.forEach((q, index) => {
-                if (quizAnswers[index] === q.correct) {
-                    correct++;
-                }
-            });
-
-            const percentage = Math.round((correct / quizQuestions.length) * 100);
-            const passed = percentage >= 70;
-
-            document.getElementById('quiz-questions').style.display = 'none';
-            document.getElementById('quiz-results').innerHTML = `
-                <h2>${passed ? 'Congratulations!' : 'Keep Practicing!'}</h2>
-                <div class="score">${percentage}%</div>
-                <p class="score-text">You got ${correct} out of ${quizQuestions.length} questions correct.</p>
-                <p class="score-text">${passed ? 'You passed! Great job!' : 'You need 70% to pass. Try again!'}</p>
-                <button class="btn-primary" onclick="resetQuiz()">Try Again</button>
+            // Update welcome text
+            document.getElementById('welcome-section').innerHTML = `
+                <p class="welcome-text">
+                    <strong>Welcome!</strong> Prepare for the <em>${data.fullName}</em> with ${currentMode === 'exam' ? 'a timed mock exam' : currentMode === 'quiz' ? 'quick practice quizzes' : 'flashcards'} that track your progress.
+                </p>
+                <p class="scope-text">
+                    Content covers: ${data.scope}.
+                </p>
             `;
-            document.getElementById('quiz-results').style.display = 'block';
-        }
 
-        function resetQuiz() {
-            document.getElementById('quiz-results').style.display = 'none';
-            document.getElementById('quiz-start').style.display = 'block';
+            // Update control bar
+            const questionCount = currentMode === 'exam' ? data.examQuestions : (currentMode === 'quiz' ? 15 : data.flashcards.length);
+            const timeDisplay = currentMode === 'flashcards' ? '∞' : (currentMode === 'exam' ? `${data.examTime}:00` : '15:00');
+
+            document.getElementById('start-btn').textContent = currentMode === 'flashcards'
+                ? `Start ${data.flashcards.length} Flashcards`
+                : `Start ${questionCount}-Question ${currentMode === 'exam' ? 'Exam' : 'Quiz'}`;
+
+            document.getElementById('pass-mark').textContent = currentMode === 'flashcards' ? 'N/A' : `${data.passRate}%`;
+            document.getElementById('timer-display').textContent = timeDisplay;
+
+            // Show/hide appropriate containers
+            document.getElementById('question-container').classList.remove('active');
+            document.getElementById('flashcard-container').classList.remove('active');
+            document.getElementById('results-container').classList.remove('show');
+            document.getElementById('welcome-section').style.display = 'block';
+            document.getElementById('control-bar').style.display = 'flex';
+            document.getElementById('progress-container').style.display = 'none';
         }
 
         // ========================================
-        // EXAM FUNCTIONS
+        // SESSION CONTROL
         // ========================================
 
-        function startExam() {
-            const levelData = wsetData[currentLevel];
-            const questionCount = currentLevel === 1 ? 30 : 50;
+        function startSession() {
+            const data = wsetData[currentLevel];
+            sessionActive = true;
+            startTime = Date.now();
 
-            // Generate more questions by repeating and shuffling
-            let allQuestions = [...levelData.questions];
-            while (allQuestions.length < questionCount) {
-                allQuestions = [...allQuestions, ...shuffleArray([...levelData.questions])];
+            if (currentMode === 'flashcards') {
+                startFlashcards();
+                return;
             }
-            examQuestions = shuffleArray(allQuestions).slice(0, questionCount);
 
-            examAnswers = {};
-            examCurrentIndex = 0;
-            examTimeRemaining = currentLevel === 1 ? 45 * 60 : (currentLevel === 2 ? 60 * 60 : 90 * 60);
+            // Prepare questions
+            const questionCount = currentMode === 'exam' ? data.examQuestions : 15;
+            questions = shuffleArray([...data.questions]).slice(0, questionCount);
+            answers = {};
+            currentIndex = 0;
 
-            document.getElementById('exam-start').style.display = 'none';
-            document.getElementById('exam-questions').style.display = 'block';
+            // Set timer
+            timeRemaining = currentMode === 'exam' ? data.examTime * 60 : 15 * 60;
 
-            renderExamQuestion();
-            startExamTimer();
+            // Update UI
+            document.getElementById('welcome-section').style.display = 'none';
+            document.getElementById('start-btn').style.display = 'none';
+            document.getElementById('reset-btn').style.display = 'inline-block';
+            document.getElementById('progress-container').style.display = 'block';
+            document.getElementById('question-container').classList.add('active');
+
+            renderQuestion();
+            startTimer();
         }
 
-        function startExamTimer() {
+        function resetSession() {
+            sessionActive = false;
+            if (timer) clearInterval(timer);
+            timer = null;
+            questions = [];
+            answers = {};
+            currentIndex = 0;
+
+            document.getElementById('start-btn').style.display = 'inline-block';
+            document.getElementById('reset-btn').style.display = 'none';
+            document.getElementById('question-container').classList.remove('active');
+            document.getElementById('flashcard-container').classList.remove('active');
+            document.getElementById('results-container').classList.remove('show');
+            document.getElementById('progress-container').style.display = 'none';
+            document.getElementById('welcome-section').style.display = 'block';
+
+            updateUI();
+        }
+
+        // ========================================
+        // TIMER
+        // ========================================
+
+        function startTimer() {
             updateTimerDisplay();
-            examTimer = setInterval(() => {
-                examTimeRemaining--;
+            timer = setInterval(() => {
+                timeRemaining--;
                 updateTimerDisplay();
-                if (examTimeRemaining <= 0) {
-                    submitExam();
+                if (timeRemaining <= 0) {
+                    finishSession();
                 }
             }, 1000);
         }
 
         function updateTimerDisplay() {
-            const minutes = Math.floor(examTimeRemaining / 60);
-            const seconds = examTimeRemaining % 60;
-            document.getElementById('exam-timer').textContent =
-                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            const mins = Math.floor(timeRemaining / 60);
+            const secs = timeRemaining % 60;
+            const display = `${mins}:${secs.toString().padStart(2, '0')}`;
 
-            if (examTimeRemaining < 300) {
-                document.getElementById('exam-timer').style.color = '#e74c3c';
-            }
-        }
+            document.getElementById('live-timer').textContent = display;
+            document.getElementById('timer-display').textContent = display;
 
-        function renderExamQuestion() {
-            const q = examQuestions[examCurrentIndex];
-            const progress = ((examCurrentIndex + 1) / examQuestions.length) * 100;
-
-            document.getElementById('exam-progress').style.width = `${progress}%`;
-            document.getElementById('exam-progress-text').textContent =
-                `Question ${examCurrentIndex + 1} of ${examQuestions.length}`;
-
-            document.getElementById('current-exam-question').innerHTML = `
-                <div class="question-card">
-                    <div class="question-text">${q.q}</div>
-                    <div class="options">
-                        ${q.options.map((opt, optIndex) => `
-                            <div class="option ${examAnswers[examCurrentIndex] === optIndex ? 'selected' : ''}"
-                                 onclick="selectExamAnswer(${optIndex})">
-                                ${opt}
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-
-            document.getElementById('prev-exam-btn').style.opacity = examCurrentIndex === 0 ? '0.5' : '1';
-            document.getElementById('next-exam-btn').textContent =
-                examCurrentIndex === examQuestions.length - 1 ? 'Submit Exam' : 'Next';
-        }
-
-        function selectExamAnswer(optionIndex) {
-            examAnswers[examCurrentIndex] = optionIndex;
-            renderExamQuestion();
-        }
-
-        function prevExamQuestion() {
-            if (examCurrentIndex > 0) {
-                examCurrentIndex--;
-                renderExamQuestion();
-            }
-        }
-
-        function nextExamQuestion() {
-            if (examCurrentIndex < examQuestions.length - 1) {
-                examCurrentIndex++;
-                renderExamQuestion();
+            if (timeRemaining < 300) {
+                document.getElementById('live-timer').classList.add('warning');
             } else {
-                submitExam();
+                document.getElementById('live-timer').classList.remove('warning');
             }
-        }
-
-        function submitExam() {
-            clearInterval(examTimer);
-
-            let correct = 0;
-            examQuestions.forEach((q, index) => {
-                if (examAnswers[index] === q.correct) {
-                    correct++;
-                }
-            });
-
-            const percentage = Math.round((correct / examQuestions.length) * 100);
-            const passThreshold = currentLevel === 1 ? 70 : 55;
-            const passed = percentage >= passThreshold;
-
-            document.getElementById('exam-questions').style.display = 'none';
-            document.getElementById('exam-results').innerHTML = `
-                <h2>${passed ? 'PASSED!' : 'Not Yet - Keep Studying!'}</h2>
-                <div class="score">${percentage}%</div>
-                <p class="score-text">You answered ${correct} out of ${examQuestions.length} questions correctly.</p>
-                <p class="score-text">${passed ? `Congratulations! You passed the Level ${currentLevel} mock exam!` : `You need ${passThreshold}% to pass. Review the material and try again.`}</p>
-                <button class="btn-primary" onclick="resetExam()">Take Again</button>
-            `;
-            document.getElementById('exam-results').style.display = 'block';
-        }
-
-        function resetExam() {
-            document.getElementById('exam-results').style.display = 'none';
-            document.getElementById('exam-start').style.display = 'block';
         }
 
         // ========================================
-        // FLASHCARD FUNCTIONS
+        // QUESTION RENDERING
+        // ========================================
+
+        function renderQuestion() {
+            const q = questions[currentIndex];
+            const progress = ((currentIndex + 1) / questions.length) * 100;
+
+            // Update progress
+            document.getElementById('progress-fill').style.width = `${progress}%`;
+            document.getElementById('progress-text-left').textContent = `Question ${currentIndex + 1} of ${questions.length}`;
+            document.getElementById('progress-text-right').textContent = `${Math.round(progress)}% complete`;
+            document.getElementById('question-number').textContent = `Question ${currentIndex + 1} of ${questions.length}`;
+
+            // Update accuracy
+            updateAccuracy();
+
+            // Question text
+            document.getElementById('question-text').textContent = q.q;
+
+            // Options
+            const answered = answers[currentIndex] !== undefined;
+            const optionsHtml = q.options.map((opt, i) => {
+                let className = 'option';
+                if (answered) {
+                    if (i === q.correct) className += ' correct';
+                    else if (i === answers[currentIndex] && i !== q.correct) className += ' incorrect';
+                } else if (answers[currentIndex] === i) {
+                    className += ' selected';
+                }
+                return `<div class="${className}" onclick="selectAnswer(${i})">${opt}</div>`;
+            }).join('');
+            document.getElementById('options-container').innerHTML = optionsHtml;
+
+            // Explanation
+            const explanation = document.getElementById('explanation');
+            if (answered && q.explanation) {
+                document.getElementById('explanation-text').textContent = q.explanation;
+                explanation.classList.add('show');
+            } else {
+                explanation.classList.remove('show');
+            }
+
+            // Navigation buttons
+            document.getElementById('prev-btn').style.visibility = currentIndex === 0 ? 'hidden' : 'visible';
+            document.getElementById('next-btn').textContent = currentIndex === questions.length - 1 ? 'Finish' : 'Next →';
+        }
+
+        function selectAnswer(index) {
+            if (answers[currentIndex] !== undefined) return; // Already answered
+            answers[currentIndex] = index;
+            renderQuestion();
+        }
+
+        function updateAccuracy() {
+            const answered = Object.keys(answers).length;
+            if (answered === 0) {
+                document.getElementById('accuracy-badge').textContent = 'Accuracy: --';
+                document.getElementById('accuracy-badge').className = 'accuracy-badge';
+                return;
+            }
+
+            let correct = 0;
+            for (let i in answers) {
+                if (answers[i] === questions[i].correct) correct++;
+            }
+            const accuracy = Math.round((correct / answered) * 100);
+
+            document.getElementById('accuracy-badge').textContent = `Accuracy: ${accuracy}%`;
+            document.getElementById('accuracy-badge').className = 'accuracy-badge ' + (accuracy >= wsetData[currentLevel].passRate ? 'good' : 'needs-work');
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentIndex < questions.length - 1) {
+                currentIndex++;
+                renderQuestion();
+            } else {
+                finishSession();
+            }
+        }
+
+        function endExamEarly() {
+            const answered = Object.keys(answers).length;
+            const total = questions.length;
+            const message = answered === 0
+                ? 'You haven\'t answered any questions yet. Are you sure you want to end the exam?'
+                : `You've answered ${answered} of ${total} questions. End exam and see your results?`;
+
+            if (confirm(message)) {
+                finishSession();
+            }
+        }
+
+        // ========================================
+        // RESULTS
+        // ========================================
+
+        function finishSession() {
+            if (timer) clearInterval(timer);
+            sessionActive = false;
+
+            const data = wsetData[currentLevel];
+            let correct = 0;
+            for (let i in answers) {
+                if (answers[i] === questions[i].correct) correct++;
+            }
+
+            const answered = Object.keys(answers).length;
+            const total = questions.length;
+            const percentage = Math.round((correct / total) * 100);
+            const passed = percentage >= data.passRate;
+            const endedEarly = answered < total;
+
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const mins = Math.floor(elapsed / 60);
+            const secs = elapsed % 60;
+
+            document.getElementById('question-container').classList.remove('active');
+            document.getElementById('progress-container').style.display = 'none';
+
+            document.getElementById('results-icon').textContent = passed ? '🎉' : '📚';
+            document.getElementById('results-title').textContent = passed ? 'Congratulations!' : 'Keep Practicing';
+            document.getElementById('results-score').textContent = `${percentage}%`;
+            document.getElementById('results-score').className = 'results-score ' + (passed ? 'passed' : 'failed');
+
+            let detailsText;
+            if (endedEarly) {
+                detailsText = `You answered ${answered} of ${total} questions. ${passed ? 'You passed!' : `You need ${data.passRate}% to pass.`}`;
+            } else {
+                detailsText = passed
+                    ? `You passed the Level ${currentLevel} ${currentMode}! Great work.`
+                    : `You need ${data.passRate}% to pass. Review the material and try again.`;
+            }
+            document.getElementById('results-details').textContent = detailsText;
+
+            document.getElementById('correct-count').textContent = correct;
+            document.getElementById('incorrect-count').textContent = total - correct;
+            document.getElementById('time-taken').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+
+            document.getElementById('results-container').classList.add('show');
+        }
+
+        function reviewAnswers() {
+            document.getElementById('results-container').classList.remove('show');
+            document.getElementById('question-container').classList.add('active');
+            document.getElementById('progress-container').style.display = 'block';
+            currentIndex = 0;
+            renderQuestion();
+        }
+
+        // ========================================
+        // FLASHCARDS
         // ========================================
 
         function startFlashcards() {
-            const levelData = wsetData[currentLevel];
-            flashcards = shuffleArray([...levelData.flashcards]);
-            currentCardIndex = 0;
+            const data = wsetData[currentLevel];
+            flashcards = shuffleArray([...data.flashcards]);
+            cardIndex = 0;
             cardFlipped = false;
 
-            document.getElementById('flashcard-start').style.display = 'none';
-            document.getElementById('flashcard-study').style.display = 'block';
+            document.getElementById('welcome-section').style.display = 'none';
+            document.getElementById('control-bar').style.display = 'none';
+            document.getElementById('flashcard-container').classList.add('active');
 
             renderFlashcard();
         }
 
         function renderFlashcard() {
-            const card = flashcards[currentCardIndex];
+            const card = flashcards[cardIndex];
             document.getElementById('card-front').textContent = card.front;
             document.getElementById('card-back').textContent = card.back;
-            document.getElementById('card-counter').textContent =
-                `Card ${currentCardIndex + 1} of ${flashcards.length}`;
+            document.getElementById('flashcard-counter').textContent = `Card ${cardIndex + 1} of ${flashcards.length}`;
 
-            const flashcardEl = document.querySelector('.flashcard');
+            const flashcardEl = document.getElementById('flashcard');
             if (cardFlipped) {
                 flashcardEl.classList.add('flipped');
             } else {
@@ -1378,30 +1478,66 @@
 
         function flipCard() {
             cardFlipped = !cardFlipped;
-            document.querySelector('.flashcard').classList.toggle('flipped');
+            document.getElementById('flashcard').classList.toggle('flipped');
         }
 
         function nextCard() {
             cardFlipped = false;
-            currentCardIndex = (currentCardIndex + 1) % flashcards.length;
+            cardIndex = (cardIndex + 1) % flashcards.length;
             renderFlashcard();
         }
 
         function prevCard() {
             cardFlipped = false;
-            currentCardIndex = (currentCardIndex - 1 + flashcards.length) % flashcards.length;
+            cardIndex = (cardIndex - 1 + flashcards.length) % flashcards.length;
             renderFlashcard();
         }
 
         function shuffleCards() {
             flashcards = shuffleArray([...flashcards]);
-            currentCardIndex = 0;
+            cardIndex = 0;
             cardFlipped = false;
             renderFlashcard();
         }
 
         // ========================================
-        // UTILITY FUNCTIONS
+        // KEYBOARD SHORTCUTS
+        // ========================================
+
+        function handleKeyboard(e) {
+            if (!sessionActive) return;
+
+            if (currentMode === 'flashcards') {
+                if (e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault();
+                    flipCard();
+                } else if (e.key === 'ArrowRight') {
+                    nextCard();
+                } else if (e.key === 'ArrowLeft') {
+                    prevCard();
+                }
+                return;
+            }
+
+            // Quiz/Exam mode
+            if (e.key >= '1' && e.key <= '4') {
+                const index = parseInt(e.key) - 1;
+                if (index < questions[currentIndex].options.length) {
+                    selectAnswer(index);
+                }
+            } else if (e.key === 'Enter') {
+                if (answers[currentIndex] !== undefined) {
+                    nextQuestion();
+                }
+            } else if (e.key === 'ArrowRight') {
+                nextQuestion();
+            } else if (e.key === 'ArrowLeft') {
+                prevQuestion();
+            }
+        }
+
+        // ========================================
+        // UTILITIES
         // ========================================
 
         function shuffleArray(array) {
