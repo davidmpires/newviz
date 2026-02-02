@@ -368,9 +368,28 @@
         .question-nav {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-top: 24px;
             padding-top: 20px;
             border-top: 1px solid var(--border);
+        }
+
+        .btn-danger {
+            padding: 10px 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            font-family: inherit;
+            border: 1px solid var(--error);
+            background: transparent;
+            color: var(--error);
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-danger:hover {
+            background: var(--error);
+            color: white;
         }
 
         /* Results */
@@ -632,6 +651,7 @@
 
             <div class="question-nav">
                 <button class="btn-secondary" id="prev-btn" onclick="prevQuestion()">← Previous</button>
+                <button class="btn-danger" id="end-btn" onclick="endExamEarly()">End Exam</button>
                 <button class="btn-primary" id="next-btn" onclick="nextQuestion()">Next →</button>
             </div>
 
@@ -1356,6 +1376,18 @@
             }
         }
 
+        function endExamEarly() {
+            const answered = Object.keys(answers).length;
+            const total = questions.length;
+            const message = answered === 0
+                ? 'You haven\'t answered any questions yet. Are you sure you want to end the exam?'
+                : `You've answered ${answered} of ${total} questions. End exam and see your results?`;
+
+            if (confirm(message)) {
+                finishSession();
+            }
+        }
+
         // ========================================
         // RESULTS
         // ========================================
@@ -1370,9 +1402,11 @@
                 if (answers[i] === questions[i].correct) correct++;
             }
 
+            const answered = Object.keys(answers).length;
             const total = questions.length;
             const percentage = Math.round((correct / total) * 100);
             const passed = percentage >= data.passRate;
+            const endedEarly = answered < total;
 
             const elapsed = Math.floor((Date.now() - startTime) / 1000);
             const mins = Math.floor(elapsed / 60);
@@ -1385,9 +1419,17 @@
             document.getElementById('results-title').textContent = passed ? 'Congratulations!' : 'Keep Practicing';
             document.getElementById('results-score').textContent = `${percentage}%`;
             document.getElementById('results-score').className = 'results-score ' + (passed ? 'passed' : 'failed');
-            document.getElementById('results-details').textContent = passed
-                ? `You passed the Level ${currentLevel} ${currentMode}! Great work.`
-                : `You need ${data.passRate}% to pass. Review the material and try again.`;
+
+            let detailsText;
+            if (endedEarly) {
+                detailsText = `You answered ${answered} of ${total} questions. ${passed ? 'You passed!' : `You need ${data.passRate}% to pass.`}`;
+            } else {
+                detailsText = passed
+                    ? `You passed the Level ${currentLevel} ${currentMode}! Great work.`
+                    : `You need ${data.passRate}% to pass. Review the material and try again.`;
+            }
+            document.getElementById('results-details').textContent = detailsText;
+
             document.getElementById('correct-count').textContent = correct;
             document.getElementById('incorrect-count').textContent = total - correct;
             document.getElementById('time-taken').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
