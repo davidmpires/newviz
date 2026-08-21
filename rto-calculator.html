@@ -153,7 +153,7 @@ p{margin:0}
 .phase-mark:first-child{border-top:0; padding-top:0; margin-top:0}
 
 /* blocks form */
-.blocks{display:grid; grid-template-columns:repeat(auto-fit,minmax(206px,1fr)); gap:12px}
+.blocks{display:grid; grid-template-columns:repeat(auto-fit,minmax(194px,1fr)); gap:12px}
 .block{border:1px solid var(--rule); border-radius:3px; padding:12px 14px; background:var(--card-2)}
 .block .lbl{font-weight:600; font-size:14px}
 .block .hint{font-size:12.5px; color:var(--ink-3); margin-top:2px; line-height:1.4}
@@ -176,6 +176,18 @@ details summary::-webkit-details-marker{display:none}
 details summary::before{content:"+  "; color:var(--accent)}
 details[open] summary::before{content:"\2212  "}
 .det-body{display:flex; gap:18px; flex-wrap:wrap; padding-bottom:16px}
+.policy-quote{
+  margin:0 0 16px; padding:0 0 0 14px; border-left:2px solid var(--rule);
+  font-size:13.5px; color:var(--ink-2); line-height:1.6; max-width:78ch;
+}
+.policy-quote p{margin:0 0 9px}
+.policy-quote ul{margin:0; padding-left:18px}
+.policy-quote li{margin-bottom:7px}
+.wk.lead{opacity:.72}
+.warn-note{
+  margin-top:12px; font-size:13px; color:var(--amber-ink); background:var(--amber-wash);
+  border-radius:3px; padding:8px 11px;
+}
 .foot{margin-top:8px; font-size:12.5px; color:var(--ink-3); line-height:1.6}
 .foot b{color:var(--ink-2); font-weight:600}
 [hidden]{display:none !important}
@@ -193,7 +205,7 @@ details[open] summary::before{content:"\2212  "}
     <div class="eyebrow">Return-to-office attendance</div>
     <h1 style="margin-top:5px">24 of 24</h1>
     <div class="rule-say">
-      Best <b>8</b> of the last <b>12</b> weeks, averaging <b>3</b> days &rarr; <b>24 office days</b> across those 8.
+      Best <b>8</b> of the last <b>12</b> weeks, averaging <b>3</b> days &rarr; <b>24 badge-ins</b> across those 8.
     </div>
     <div class="tabs" role="tablist">
       <button class="tab" id="tabNow" role="tab" aria-selected="true" aria-controls="panelNow">Where I am</button>
@@ -218,7 +230,7 @@ details[open] summary::before{content:"\2212  "}
       <div class="card-head">
         <div>
           <h2>The last 12 weeks</h2>
-          <p class="sub">Days you were in the office each week, up to and including this one.</p>
+          <p class="sub">Days you badged in each week, up to and including this one. Five is the most that counts in any week.</p>
         </div>
         <div class="btn-row">
           <button class="btn" id="nowFill3" type="button">Set all to 3</button>
@@ -235,14 +247,25 @@ details[open] summary::before{content:"\2212  "}
       <div class="card-head">
         <div>
           <h2>Build the run</h2>
-          <p class="sub">Three stretches, back to back. The first 12 weeks are the period being judged; everything after is the recovery.</p>
+          <p class="sub">Stretches, back to back. The lead-in is what you have already done — without it the first weeks of the run have no window to be judged against.</p>
         </div>
       </div>
       <div class="card-body">
         <div class="blocks">
           <div class="block">
+            <div class="lbl">Lead-in</div>
+            <div class="hint">The weeks already behind you when the run starts.</div>
+            <div class="fields">
+              <span class="field"><input type="number" id="ldW" min="0" max="12" step="1"> weeks</span>
+              <span class="field">at <input type="number" id="ldD" min="0" max="5" step="1"> days</span>
+            </div>
+            <div class="btn-row" style="margin-top:9px">
+              <button class="btn" id="useReal" type="button" style="font-size:12px; padding:5px 10px">Use my real weeks</button>
+            </div>
+          </div>
+          <div class="block">
             <div class="lbl">Run-up</div>
-            <div class="hint">Before you go, banking days.</div>
+            <div class="hint">Banking badge-ins before you go.</div>
             <div class="fields">
               <span class="field"><input type="number" id="rwW" min="0" max="26" step="1"> weeks</span>
               <span class="field">at <input type="number" id="rwD" min="0" max="5" step="1"> days</span>
@@ -250,7 +273,7 @@ details[open] summary::before{content:"\2212  "}
           </div>
           <div class="block">
             <div class="lbl">Away</div>
-            <div class="hint">Holiday, or simply not going in.</div>
+            <div class="hint">Leave, sickness, travel, or simply not going in.</div>
             <div class="fields">
               <span class="field"><input type="number" id="awW" min="0" max="26" step="1"> weeks</span>
               <span class="field">at <input type="number" id="awD" min="0" max="5" step="1"> days</span>
@@ -266,10 +289,11 @@ details[open] summary::before{content:"\2212  "}
           </div>
         </div>
         <div class="startline">
-          <label for="startDate">Week 1 starts</label>
+          <label for="startDate">Week 1 of the run-up starts</label>
           <input type="date" id="startDate">
           <span class="tiny" id="startNote"></span>
         </div>
+        <div class="warn-note" id="leadWarn" hidden></div>
       </div>
     </div>
 
@@ -285,13 +309,34 @@ details[open] summary::before{content:"\2212  "}
       <div class="card-head">
         <div>
           <h2>Week by week</h2>
-          <p class="sub">Each week shows the running total for the 12 weeks ending there. Nudge any week to change it.</p>
+          <p class="sub">The running best-8 total for the 12 weeks ending at each week. Nudge any week and it sticks — changing a stretch will not wipe it.</p>
         </div>
-        <div class="btn-row"><button class="btn" id="whatRebuild" type="button">Rebuild from the stretches</button></div>
+        <div class="btn-row"><button class="btn" id="whatRebuild" type="button">Undo my week edits</button></div>
       </div>
       <div class="card-body"><div class="weeks" id="whatGrid"></div></div>
     </div>
   </section>
+
+  <details>
+    <summary>The policy, as written</summary>
+    <div class="det-body" style="display:block">
+      <blockquote class="policy-quote">
+        <p>For employees subject to this policy, individual badge-in data (including use of a loaner badge) will be used
+        to measure attendance in offices where employees are able to swipe their EG issued badge for entry.</p>
+        <p>Your office presence is calculated using badge-in data and a methodology called
+        &ldquo;Best Eight, Last Twelve&rdquo;:</p>
+        <ul>
+          <li>Your badge-in data is collected over a rolling 12-week period and we eliminate the 4 weeks with your
+          lowest attendance. This accounts for paid time off, holidays, sick time, travel to EG offices and offsite
+          business events where badge data isn&rsquo;t available.</li>
+          <li>We count the number of days you badged into the office over the remaining 8 weeks (with a maximum
+          5 badge-ins counted per week).</li>
+          <li>If you work a 5-day work week and you badged into an EG office 24 days or more over those &ldquo;best&rdquo;
+          8 weeks (3+ days on average per week), you are in compliance with the policy.</li>
+        </ul>
+      </blockquote>
+    </div>
+  </details>
 
   <details>
     <summary>Policy settings</summary>
@@ -350,9 +395,10 @@ var state = {
   tab:"now",
   win:12, keep:8, target:3,
   now:[3,3,3,3,3,3,3,3,3,3,3,3],   // days in office, oldest first, last entry = this week
+  leadW:11, leadD:3,                // the weeks already behind you when the run starts
   runW:4, runD:5, awayW:3, awayD:0, backW:20, backD:3,
-  start:null,                       // week 1 of the scenario, ISO Monday
-  what:null                         // per-week overrides for the scenario, or null to follow the stretches
+  start:null,                       // Monday of run-up week 1, ISO
+  edits:{}                          // week index -> days, kept across changes to the stretches
 };
 function load(){
   try{
@@ -360,13 +406,13 @@ function load(){
     if(!raw) return;
     var s = JSON.parse(raw);
     if(!s || typeof s !== "object") return;
-    ["win","keep","runW","runD","awayW","awayD","backW","backD"].forEach(function(k){
+    ["win","keep","leadW","leadD","runW","runD","awayW","awayD","backW","backD"].forEach(function(k){
       if(s[k] != null && isFinite(+s[k])) state[k] = +s[k];
     });
     if(s.target != null && isFinite(+s.target)) state.target = +s.target;
     if(s.tab === "now" || s.tab === "what") state.tab = s.tab;
     if(Array.isArray(s.now)) state.now = s.now.map(Number);
-    if(Array.isArray(s.what)) state.what = s.what.map(Number);
+    if(s.edits && typeof s.edits === "object") state.edits = s.edits;
     if(typeof s.start === "string") state.start = s.start;
   }catch(e){ /* blocked storage — run with defaults */ }
 }
@@ -397,33 +443,48 @@ function sizeNow(){
 }
 
 /* ---------- the scenario timeline ---------- */
+/* The policy never stops running, so the weeks before the plan starts are already
+   inside the window being judged. Without a lead-in, the first eleven weeks of any
+   run would show no score at all — and the damage from a spell away lands earlier
+   than that. */
 function stretches(){
   return [
-    { name:"Run-up", weeks:Math.max(0, state.runW|0),  days:clampDay(state.runD|0) },
-    { name:"Away",   weeks:Math.max(0, state.awayW|0), days:clampDay(state.awayD|0) },
-    { name:"Back",   weeks:Math.max(1, state.backW|0), days:clampDay(state.backD|0) }
+    { name:"Lead-in", weeks:Math.max(0, state.leadW|0), days:clampDay(state.leadD|0) },
+    { name:"Run-up",  weeks:Math.max(0, state.runW|0),  days:clampDay(state.runD|0) },
+    { name:"Away",    weeks:Math.max(0, state.awayW|0), days:clampDay(state.awayD|0) },
+    { name:"Back",    weeks:Math.max(1, state.backW|0), days:clampDay(state.backD|0) }
   ];
 }
-function buildFromStretches(){
+function baseTimeline(){
   var st = stretches(), out = [], i, k;
   for(i=0;i<st.length;i++) for(k=0;k<st[i].weeks;k++) out.push(st[i].days);
-  while(out.length < state.win) out.push(st[2].days);      // always enough for one full window
-  return out.slice(0, 60);
+  while(out.length < state.win) out.push(st[3].days);
+  return out.slice(0, 70);
 }
+/* Edits are held per week index and survive changes to the stretches. */
 function whatDays(){
-  if(!state.what || state.what.length !== buildFromStretches().length) state.what = buildFromStretches();
-  return state.what;
+  var base = baseTimeline(), i;
+  for(i=0;i<base.length;i++)
+    if(Object.prototype.hasOwnProperty.call(state.edits, i)) base[i] = clampDay(state.edits[i]);
+  return base;
 }
-/* Label each week with the stretch it belongs to. */
+function leadCount(){ return Math.max(0, state.leadW|0); }
 function phaseAt(i){
   var st = stretches(), n = 0, s;
   for(s=0;s<st.length;s++){ n += st[s].weeks; if(i < n) return st[s].name; }
   return "Back";
 }
-function returnWeek(){ return Math.max(0, state.runW|0) + Math.max(0, state.awayW|0); }  // 0-based index of first week back
-function startMonday(){
+/* 0-based index of the first week back in the office. */
+function returnIdx(){ return leadCount() + Math.max(0, state.runW|0) + Math.max(0, state.awayW|0); }
+/* Week 1 is the first run-up week; the lead-in runs backwards from it. */
+function runStartMonday(){
   var d = state.start ? parseISO(state.start) : null;
   return mondayOf(d || addDays(mondayOf(todayUTC()), 7));
+}
+function mondayAt(i){ return addDays(runStartMonday(), (i - leadCount())*7); }
+function weekLabel(i){
+  var n = i - leadCount() + 1;
+  return n <= 0 ? "before" : "wk " + n;
 }
 
 /* ---------- rendering ---------- */
@@ -460,10 +521,10 @@ function renderNow(){
   $("nowChip").innerHTML = '<span class="dot"></span>' + (w.ok ? "Compliant" : "Not compliant");
   var margin = w.sum - need();
   $("nowSay").innerHTML = w.ok
-    ? 'Your best ' + state.keep + ' weeks add up to <b>' + w.sum + ' days</b>, which is <b>' +
+    ? 'Your best ' + state.keep + ' weeks add up to <b>' + plural(w.sum,"badge-in") + '</b>, which is <b>' +
       (margin === 0 ? 'exactly the ' + need() + ' you need' : plural(margin,"day") + ' clear') + '</b>. ' +
       'The other ' + (state.win - state.keep) + ' weeks (' + plural(total - w.sum,"day") + ') are thrown away and cost you nothing.'
-    : 'Your best ' + state.keep + ' weeks add up to <b>' + w.sum + ' days</b>, <b>' +
+    : 'Your best ' + state.keep + ' weeks add up to <b>' + plural(w.sum,"badge-in") + '</b>, <b>' +
       plural(Math.abs(margin),"day") + ' short</b> of ' + need() + '. You need those back before the window rolls on.';
 
   var html = "";
@@ -484,77 +545,100 @@ function renderNow(){
 
 /* ---------- tab 2 ---------- */
 function renderWhat(){
-  var days = whatDays(), n = days.length, mon0 = startMonday();
-  $("startDate").value = iso(mon0);
-  $("startNote").textContent = "week commencing " + fmtLong(mon0);
+  var days = whatDays(), n = days.length, lead = leadCount(), back = returnIdx();
+  $("startDate").value = iso(runStartMonday());
+  $("startNote").textContent = "week commencing " + fmtLong(runStartMonday());
 
-  var period = windowAt(days, state.win - 1);
-  var back = returnWeek();                 // 0-based index of the first week back
-  var firstBad = -1, recovered = -1, worst = null, worstAt = -1, i;
+  var firstBad = -1, recovered = -1, worst = null, worstAt = -1, i, w;
   for(i=state.win-1;i<n;i++){
-    var w = windowAt(days, i);
+    w = windowAt(days, i);
     if(worst === null || w.sum < worst){ worst = w.sum; worstAt = i; }
     if(!w.ok && firstBad < 0) firstBad = i;
     if(firstBad >= 0 && recovered < 0 && w.ok && i > firstBad) recovered = i;
   }
+  var ok = firstBad < 0;
 
-  $("whatBig").innerHTML = period.sum + '<small> / ' + need() + '</small>';
-  $("whatBig").className = "big " + (period.ok ? "ok" : "bad");
-  $("whatHead").className = "headline " + (period.ok ? "ok" : "bad");
-  $("whatChip").className = "chip " + (period.ok ? "ok" : "bad");
-  $("whatChip").innerHTML = '<span class="dot"></span>' +
-    (period.ok ? "Weeks 1&ndash;12 compliant" : "Weeks 1&ndash;12 not compliant");
+  $("whatBig").innerHTML = worst + '<small> / ' + need() + '</small>';
+  $("whatBig").className = "big " + (ok ? "ok" : "bad");
+  $("whatHead").className = "headline " + (ok ? "ok" : "bad");
+  $("whatChip").className = "chip " + (ok ? "ok" : "bad");
+  $("whatChip").innerHTML = '<span class="dot"></span>' + (ok ? "Never drops below " + need() : "Falls below " + need());
 
   var say;
-  if(firstBad < 0){
-    say = 'You never drop below ' + need() + '. The lowest you get is <b>' + worst + ' days</b> in week ' +
-          (worstAt+1) + ', so nothing here breaks the policy.';
+  if(ok){
+    say = 'The lowest you ever get is <b>' + worst + ' of ' + need() + '</b>, at ' +
+          weekLabel(worstAt) + ' (' + fmtShort(mondayAt(worstAt)) + '). Nothing in this run breaks the policy.';
   }else{
-    say = 'You first fall short in <b>week ' + (firstBad+1) + '</b> (' + fmtShort(addDays(mon0, firstBad*7)) +
-          '), bottoming out at <b>' + worst + ' of ' + need() + '</b> in week ' + (worstAt+1) + '. ';
+    say = 'You first fall short at <b>' + weekLabel(firstBad) + '</b> (' + fmtShort(mondayAt(firstBad)) +
+          '), bottoming out at <b>' + worst + ' of ' + need() + '</b> at ' + weekLabel(worstAt) + '. ';
     if(recovered >= 0){
-      say += 'You are back to ' + need() + ' in <b>week ' + (recovered+1) + '</b> — <b>' +
-             plural(recovered - back + 1, "week") + ' after you return</b>, at ' + plural(state.backD|0,"day") + ' a week.';
+      say += 'You are back to ' + need() + ' at <b>' + weekLabel(recovered) + '</b> — <b>' +
+             plural(recovered - back + 1, "week") + ' after you return</b>, at ' +
+             plural(clampDay(state.backD|0),"badge-in") + ' a week.';
     }else{
-      say += 'You are <b>still short</b> at the end of week ' + n + '. Give the Back stretch more weeks, or more days.';
+      say += 'You are <b>still short</b> at the end of the run. Give the Back stretch more weeks, or more days.';
     }
+  }
+  /* Once more than (win - keep) weeks in a window are empty, the empties stop being
+     free and the surviving weeks have to carry the whole 24. */
+  var awayLen = Math.max(0, state.awayW|0), spare = state.win - state.keep;
+  if(awayLen > spare && clampDay(state.awayD|0) === 0){
+    var counted = state.keep - (awayLen - spare);
+    say += counted > 0
+      ? ' <br><br>' + awayLen + ' empty weeks is ' + (awayLen - spare) + ' more than the ' + spare +
+        ' the policy throws away, so ' + (awayLen - spare) + ' of them get counted as zeros. That leaves only <b>' +
+        counted + ' real weeks</b> to carry all ' + need() + ' — <b>' +
+        (Math.round(need()/counted*10)/10) + ' badge-ins a week</b>' +
+        (need()/counted > 5 ? ', which is more than a week holds. No run-up can save it.' : ' every one of them.')
+      : ' <br><br>' + awayLen + ' empty weeks fills the whole window. Nothing can reach ' + need() + '.';
   }
   $("whatSay").innerHTML = say;
 
+  var note = $("leadWarn");
+  if(lead < state.win - 1){
+    note.hidden = false;
+    note.innerHTML = 'With only ' + plural(lead,"lead-in week") + ', the first ' + (state.win - 1 - lead) +
+      ' weeks of the run have no full ' + state.win + '-week window behind them, so they show no score. ' +
+      'The policy is still measuring them. Set the lead-in to ' + (state.win - 1) + ' to see every week.';
+  }else{ note.hidden = true; }
+
   var html = "", lastPhase = null;
   for(i=0;i<n;i++){
-    var ph = phaseAt(i), mon = addDays(mon0, i*7), hols = holsOf(mon), w2 = windowAt(days, i);
+    var ph = phaseAt(i), mon = mondayAt(i), hols = holsOf(mon), w2 = windowAt(days, i);
     if(ph !== lastPhase){
-      html += '<div class="phase-mark">' + ph + (i === back && back > 0 ? " — back in the office" : "") + '</div>';
+      html += '<div class="phase-mark">' + ph + (i === back && back > lead ? " — back in the office" : "") + '</div>';
       lastPhase = ph;
     }
     html += weekCard({
-      grid:"what", i:i, value:days[i], title:"Wk " + (i+1),
+      grid:"what", i:i, value:days[i], title:fmtShort(mon),
       bh: hols.length ? hols.join(", ") : "",
-      side: fmtShort(mon),
-      aria: "week " + (i+1),
-      cls: w2 && !w2.ok ? "bad" : "",
+      side: weekLabel(i),
+      aria: "week of " + fmtLong(mon),
+      cls: (w2 && !w2.ok ? "bad" : "") + (i < lead ? " lead" : ""),
       bot: '<div class="bot"><span>best ' + state.keep + '</span>' +
            (w2 ? '<span class="n' + (w2.ok ? "" : " bad") + '">' + w2.sum + '/' + need() + '</span>'
-               : '<span class="n" title="Not 12 weeks of history yet">&mdash;</span>') + '</div>'
+               : '<span class="n" title="No full window behind it yet">&mdash;</span>') + '</div>'
     });
   }
   $("whatGrid").innerHTML = html;
 }
 
 function renderChrome(){
-  $("polNote").textContent = "so " + need() + " office days across your best " + state.keep + ".";
+  $("polNote").textContent = "so " + need() + " badge-ins across your best " + state.keep + ".";
   document.querySelector(".rule-say").innerHTML =
     "Best <b>" + state.keep + "</b> of the last <b>" + state.win + "</b> weeks, averaging <b>" + state.target +
-    "</b> days &rarr; <b>" + need() + " office days</b> across those " + state.keep + ".";
+    "</b> days &rarr; <b>" + need() + " badge-ins</b> across those " + state.keep + ".";
   $("foot").innerHTML =
-    '<b>The sum.</b> Rank the last ' + state.win + ' weeks by days in the office, keep the best ' + state.keep +
-    ', add them up. That total has to reach <b>' + need() + '</b>. The bottom ' + (state.win - state.keep) +
-    ' weeks are ignored entirely, which is where all your slack comes from.<br><br>' +
-    '<b>Days out.</b> Holidays, bank holidays, sickness and days at home all count the same — as days you were not in. ' +
-    'Nothing is excluded or deducted; the best-' + state.keep + '-of-' + state.win + ' rule is what absorbs them. ' +
-    'BH marks a week containing a bank holiday, as a reminder only. Dates cover England &amp; Wales 2025&ndash;2028; ' +
-    'check gov.uk/bank-holidays for Scotland and Northern Ireland, or before you rely on a close call.';
+    '<b>The sum.</b> Rank the last ' + state.win + ' weeks by badge-ins, drop the ' + (state.win - state.keep) +
+    ' lowest, add up the rest. That total has to reach <b>' + need() + '</b>. No week can contribute more than 5.<br><br>' +
+    '<b>Why the ' + (state.win - state.keep) + ' dropped weeks exist.</b> The policy drops them precisely to cover paid time off, ' +
+    'holidays, sick time, travel to other offices and offsite events where there is no badge data. So none of that is ' +
+    'deducted or excluded anywhere — a week you were not badging in is simply a low week, and the drop is what absorbs it. ' +
+    'BH marks a week containing an England &amp; Wales bank holiday, as a reminder only; it changes no arithmetic.<br><br>' +
+    '<b>It never stops rolling.</b> Every week is judged against the ' + state.win + ' behind it, which is why the What if tab ' +
+    'starts with a lead-in: without those weeks in place the start of a run looks unjudged when it is not. It also means a ' +
+    'good run-up only helps while it stays inside the window — a 5-badge week ' + state.win + ' weeks ago counts for nothing today.<br><br>' +
+    '<span style="opacity:.8">A planning aid, not the system of record. Check anything close against your own badge data.</span>';
 }
 
 function renderAll(){
@@ -580,7 +664,7 @@ function onStep(e){
   if(!b || b.disabled) return;
   var i = +b.getAttribute("data-i"), v = clampDay(+b.getAttribute("data-v"));
   if(b.getAttribute("data-g") === "now"){ state.now[i] = v; renderNow(); }
-  else { whatDays()[i] = v; renderWhat(); }
+  else { state.edits[i] = v; renderWhat(); }
   save();
 }
 $("nowGrid").addEventListener("click", onStep);
@@ -600,11 +684,11 @@ function blockInput(id, key, min, max){
     var v = parseInt(this.value, 10);
     if(!isFinite(v)) return;
     state[key] = Math.max(min, Math.min(max, v));
-    state.what = null;              // the stretches changed, so rebuild the timeline
-    renderWhat();
+    renderWhat();                   // week edits stay put; only the untouched weeks move
     save();
   });
 }
+blockInput("ldW","leadW",0,12);  blockInput("ldD","leadD",0,5);
 blockInput("rwW","runW",0,26);   blockInput("rwD","runD",0,5);
 blockInput("awW","awayW",0,26);  blockInput("awD","awayD",0,5);
 blockInput("bwW","backW",1,40);  blockInput("bwD","backD",0,5);
@@ -616,7 +700,18 @@ $("startDate").addEventListener("change", function(){
   save();
 });
 $("whatRebuild").addEventListener("click", function(){
-  state.what = null;
+  state.edits = {};
+  renderWhat();
+  save();
+});
+/* Drop the real last weeks straight into the lead-in, so the run starts from
+   where you actually are rather than from an assumption. */
+$("useReal").addEventListener("click", function(){
+  sizeNow();
+  var lead = state.win - 1, i;
+  state.leadW = lead;
+  $("ldW").value = lead;
+  for(i=0;i<lead;i++) state.edits[i] = clampDay(state.now[state.now.length - lead + i]);
   renderWhat();
   save();
 });
@@ -629,7 +724,6 @@ function policyInput(id, key, min, max, whole){
     state[key] = v;
     if(state.keep > state.win){ state.keep = state.win; $("keepIn").value = state.keep; }
     this.value = v;
-    state.what = null;
     renderAll();
   });
 }
@@ -640,11 +734,12 @@ policyInput("tgtIn","target",0,5,false);
 /* boot */
 load();
 sizeNow();
+$("ldW").value = state.leadW; $("ldD").value = state.leadD;
 $("rwW").value = state.runW;  $("rwD").value = state.runD;
 $("awW").value = state.awayW; $("awD").value = state.awayD;
 $("bwW").value = state.backW; $("bwD").value = state.backD;
 $("winIn").value = state.win; $("keepIn").value = state.keep; $("tgtIn").value = state.target;
-if(!state.start) state.start = iso(startMonday());
+if(!state.start) state.start = iso(runStartMonday());
 showTab(state.tab);
 
 })();
