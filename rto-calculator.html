@@ -7,42 +7,39 @@
   color-scheme: light;
   --plane:#f6f6f4; --card:#ffffff; --card-2:#fafaf8;
   --ink:#10141a; --ink-2:#4d545c; --ink-3:#868d93;
-  --rule:#e4e4de; --rule-2:#efefe9;
+  --rule:#e4e4de; --rule-2:#efefe9; --cell:#dcdcd4;
   --accent:#2a78d6; --accent-ink:#1c5cab; --accent-wash:rgba(42,120,214,.10); --accent-wash-2:rgba(42,120,214,.20);
   --good:#0ca30c; --good-ink:#006300; --good-wash:rgba(12,163,12,.10);
   --crit:#d03b3b; --crit-ink:#b02c2c; --crit-wash:rgba(208,59,59,.10);
   --amber-ink:#7d5600; --amber-wash:rgba(250,178,25,.16);
-  --grid:#e9e9e2; --axis:#c9c9c0; --bar:#b8c4cf; --cell:#dcdcd4;
+  --grid:#e9e9e2; --axis:#c9c9c0; --bar:#b8c4cf;
   --shadow:0 1px 2px rgba(16,20,26,.05), 0 8px 24px -16px rgba(16,20,26,.22);
-  --hatch:rgba(16,20,26,.16);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     color-scheme: dark;
     --plane:#0d0e0f; --card:#191a1b; --card-2:#1f2021;
     --ink:#f4f5f5; --ink-2:#b7bcc1; --ink-3:#8b9096;
-    --rule:#2c2d2e; --rule-2:#242526;
+    --rule:#2c2d2e; --rule-2:#242526; --cell:#3e4042;
     --accent:#3987e5; --accent-ink:#79b1f0; --accent-wash:rgba(57,135,229,.16); --accent-wash-2:rgba(57,135,229,.28);
     --good:#0ca30c; --good-ink:#3cc63c; --good-wash:rgba(12,163,12,.16);
     --crit:#d03b3b; --crit-ink:#ef8080; --crit-wash:rgba(208,59,59,.18);
     --amber-ink:#e2ad4a; --amber-wash:rgba(250,178,25,.14);
-    --grid:#2a2b2c; --axis:#3a3b3c; --bar:#4c5863; --cell:#3e4042;
+    --grid:#2a2b2c; --axis:#3a3b3c; --bar:#4c5863;
     --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
-    --hatch:rgba(244,245,245,.18);
   }
 }
 :root[data-theme="dark"]{
   color-scheme: dark;
   --plane:#0d0e0f; --card:#191a1b; --card-2:#1f2021;
   --ink:#f4f5f5; --ink-2:#b7bcc1; --ink-3:#8b9096;
-  --rule:#2c2d2e; --rule-2:#242526;
+  --rule:#2c2d2e; --rule-2:#242526; --cell:#3e4042;
   --accent:#3987e5; --accent-ink:#79b1f0; --accent-wash:rgba(57,135,229,.16); --accent-wash-2:rgba(57,135,229,.28);
   --good:#0ca30c; --good-ink:#3cc63c; --good-wash:rgba(12,163,12,.16);
   --crit:#d03b3b; --crit-ink:#ef8080; --crit-wash:rgba(208,59,59,.18);
   --amber-ink:#e2ad4a; --amber-wash:rgba(250,178,25,.14);
-  --grid:#2a2b2c; --axis:#3a3b3c; --bar:#4c5863; --cell:#3e4042;
+  --grid:#2a2b2c; --axis:#3a3b3c; --bar:#4c5863;
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
-  --hatch:rgba(244,245,245,.18);
 }
 
 *{box-sizing:border-box}
@@ -51,47 +48,42 @@ body{
   font-family:"IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased;
 }
-.wrap{max-width:1080px; margin:0 auto; padding:0 20px 96px}
+.wrap{max-width:1000px; margin:0 auto; padding:0 20px 90px}
 
-h1,h2,h3{font-family:"IBM Plex Sans Condensed", ui-sans-serif, system-ui, sans-serif; text-wrap:balance; margin:0}
+h1,h2{font-family:"IBM Plex Sans Condensed", ui-sans-serif, system-ui, sans-serif; text-wrap:balance; margin:0}
 h1{font-size:30px; font-weight:700; letter-spacing:-.015em}
 h2{font-size:19px; font-weight:600; letter-spacing:-.005em}
-h3{font-size:14px; font-weight:600}
 p{margin:0}
 .mono{font-family:"IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace; font-variant-numeric:tabular-nums}
 .eyebrow{
   font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:11px; font-weight:500;
   letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3);
 }
-.sub{color:var(--ink-2); font-size:14px}
-.tiny{font-size:12.5px; color:var(--ink-3); line-height:1.5}
+.sub{color:var(--ink-2); font-size:14px; max-width:66ch}
+.tiny{font-size:12.5px; color:var(--ink-3); line-height:1.55}
 
 /* ---------- masthead ---------- */
-.masthead{border-bottom:1px solid var(--rule); background:var(--card); }
+.masthead{border-bottom:1px solid var(--rule); background:var(--card)}
 .masthead .wrap{padding-top:26px; padding-bottom:22px}
-.mast-row{display:flex; flex-wrap:wrap; gap:16px; align-items:flex-start; justify-content:space-between}
 .rule-line{
-  display:flex; gap:8px; flex-wrap:wrap; margin-top:12px;
+  display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;
   font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:12px; color:var(--ink-2);
 }
-.rule-chip{
-  border:1px solid var(--rule); border-radius:2px; padding:3px 8px; background:var(--card-2);
-  white-space:nowrap;
-}
+.rule-chip{border:1px solid var(--rule); border-radius:2px; padding:3px 8px; background:var(--card-2); white-space:nowrap}
 .rule-chip b{color:var(--ink); font-weight:600}
 
 /* ---------- verdict ---------- */
 .verdict{
-  display:grid; grid-template-columns:minmax(220px,1fr) 2fr; gap:0;
+  display:grid; grid-template-columns:minmax(230px,1.15fr) 1fr 1fr;
   border:1px solid var(--rule); border-radius:4px; background:var(--card);
   box-shadow:var(--shadow); overflow:hidden; margin-top:24px;
 }
-.verdict-hero{padding:22px 24px; border-right:1px solid var(--rule)}
+.verdict-hero{padding:22px 24px}
 .hero-num{
-  font-family:"IBM Plex Sans Condensed", sans-serif; font-weight:700; font-size:66px;
-  line-height:.95; letter-spacing:-.03em; margin:6px 0 2px;
+  font-family:"IBM Plex Sans Condensed", sans-serif; font-weight:700; font-size:64px;
+  line-height:.95; letter-spacing:-.03em; margin:6px 0 2px; font-variant-numeric:tabular-nums;
 }
-.hero-of{font-size:14px; color:var(--ink-2)}
+.hero-of{font-size:13.5px; color:var(--ink-2)}
 .chip{
   display:inline-flex; align-items:center; gap:6px; border-radius:2px; padding:3px 9px;
   font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:11px; font-weight:600;
@@ -99,14 +91,8 @@ p{margin:0}
 }
 .chip.ok{color:var(--good-ink); background:var(--good-wash)}
 .chip.bad{color:var(--crit-ink); background:var(--crit-wash)}
-.chip.warn{color:var(--amber-ink); background:var(--amber-wash)}
-td .chip{font-size:10px; padding:2px 7px; letter-spacing:.07em}
-td .chip.ok, td .chip.warn{background:transparent}
-.chip.mute{color:var(--ink-3); background:transparent}
 .chip .dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
-.stat-grid{display:grid; grid-template-columns:repeat(3,1fr)}
 .stat{padding:22px 20px; border-left:1px solid var(--rule)}
-.stat:first-child{border-left:0}
 .stat-val{
   font-family:"IBM Plex Sans Condensed", sans-serif; font-weight:600; font-size:30px;
   line-height:1.1; letter-spacing:-.02em; margin-top:8px; font-variant-numeric:tabular-nums;
@@ -123,14 +109,15 @@ td .chip.ok, td .chip.warn{background:transparent}
   padding:16px 20px; border-bottom:1px solid var(--rule); background:var(--card-2);
   display:flex; gap:14px; align-items:baseline; justify-content:space-between; flex-wrap:wrap;
 }
-.card-head .sub{max-width:64ch}
 .card-body{padding:20px}
-.card-body.tight{padding:12px 20px 20px}
 
 /* ---------- controls ---------- */
 .ctl-row{display:flex; flex-wrap:wrap; gap:22px; align-items:flex-end}
 .ctl{display:flex; flex-direction:column; gap:7px}
-label.ctl-label{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3)}
+label.ctl-label, span.ctl-label{
+  font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--ink-3);
+}
 select, input[type="number"]{
   font-family:"IBM Plex Mono", monospace; font-size:13px; color:var(--ink);
   background:var(--card); border:1px solid var(--rule); border-radius:3px; padding:7px 9px;
@@ -139,7 +126,7 @@ input[type="number"]{width:62px}
 select:focus-visible, input:focus-visible, button:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
 .pattern{display:flex; gap:5px}
 .pat-btn{
-  width:40px; height:38px; border:1px solid var(--cell); border-radius:3px; background:var(--card);
+  width:41px; height:38px; border:1px solid var(--cell); border-radius:3px; background:var(--card);
   font-family:"IBM Plex Mono",monospace; font-size:12px; font-weight:600; color:var(--ink-3);
   cursor:pointer; transition:background .12s, color .12s, border-color .12s;
 }
@@ -150,76 +137,7 @@ select:focus-visible, input:focus-visible, button:focus-visible{outline:2px soli
   border-radius:3px; padding:8px 13px; transition:background .12s, border-color .12s;
 }
 .btn:hover{background:var(--card-2); border-color:var(--axis)}
-.btn.primary{background:var(--accent); border-color:var(--accent); color:#fff}
-.btn.primary:hover{background:var(--accent-ink); border-color:var(--accent-ink)}
 .btn-row{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
-
-/* ---------- ledger ---------- */
-.scroll{overflow-x:auto}
-table{border-collapse:collapse; width:100%; font-size:13px}
-th{
-  font-family:"IBM Plex Mono",monospace; font-size:10.5px; font-weight:500; letter-spacing:.1em;
-  text-transform:uppercase; color:var(--ink-3); text-align:left; padding:0 8px 9px;
-  border-bottom:1px solid var(--rule); white-space:nowrap; vertical-align:bottom;
-}
-th.c, td.c{text-align:center}
-th.r, td.r{text-align:right}
-td{padding:0 8px; border-bottom:1px solid var(--rule-2); vertical-align:middle; white-space:nowrap}
-tbody tr{height:34px}
-tr.now td{background:var(--accent-wash)}
-tr.future td{color:var(--ink-2)}
-tr.sep-now td{border-top:2px solid var(--accent)}
-.wk{font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:-.01em}
-.wk small{display:block; font-size:10px; color:var(--ink-3); letter-spacing:.06em; text-transform:uppercase}
-.daycells{display:flex; gap:3px}
-.dc{
-  width:33px; height:26px; border:1px solid var(--cell); border-radius:2px; background:var(--card);
-  font-family:"IBM Plex Mono",monospace; font-size:11.5px; font-weight:600; color:var(--ink-3);
-  cursor:pointer; padding:0; line-height:1; transition:background .1s, color .1s, border-color .1s;
-}
-.dc:hover{border-color:var(--axis)}
-.dc.o{background:var(--accent-wash-2); border-color:var(--accent); color:var(--accent-ink)}
-.dc.h{background:transparent; color:var(--ink-3)}
-.dc.l{background:var(--card-2); color:var(--ink-3); border-style:dashed}
-.dc.b{
-  color:var(--amber-ink); border-color:var(--cell); font-size:9.5px;
-  background-image:repeating-linear-gradient(45deg, transparent 0 3px, var(--hatch) 3px 4px);
-}
-.num{font-family:"IBM Plex Mono",monospace; font-weight:500; font-variant-numeric:tabular-nums}
-.num.big{font-size:14px; font-weight:600}
-.kept{color:var(--good-ink); font-weight:600}
-.drop{color:var(--ink-3)}
-.roll-bad{color:var(--crit-ink); font-weight:600}
-.legend-key{display:flex; gap:16px; flex-wrap:wrap; font-size:12px; color:var(--ink-2); align-items:center}
-.lk{display:inline-flex; align-items:center; gap:6px; white-space:nowrap}
-.lk .sw{width:16px;height:16px;border-radius:2px;border:1px solid var(--rule); flex:none}
-.lk .sw.o{background:var(--accent-wash-2); border-color:var(--accent)}
-.lk .sw.l{background:var(--card-2); border-style:dashed}
-.lk .sw.b{background-image:repeating-linear-gradient(45deg, transparent 0 3px, var(--hatch) 3px 4px)}
-
-/* ---------- chart ---------- */
-.chart-wrap{position:relative}
-svg{display:block; width:100%; height:auto}
-.tip{
-  position:absolute; pointer-events:none; opacity:0; transform:translate(-50%,-100%);
-  background:var(--card); border:1px solid var(--axis); border-radius:3px; padding:8px 10px;
-  box-shadow:var(--shadow); font-size:12px; min-width:172px; white-space:nowrap;
-  transition:opacity .1s; z-index:5;
-}
-.tip .t-wk{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3); letter-spacing:.05em}
-.tip .t-row{display:flex; justify-content:space-between; gap:14px; margin-top:5px}
-.tip .t-row b{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
-.chart-legend{display:flex; gap:18px; flex-wrap:wrap; font-size:12px; color:var(--ink-2); padding:0 20px 16px}
-.cl{display:inline-flex; align-items:center; gap:7px; white-space:nowrap}
-.cl .bar{width:14px;height:9px;border-radius:1px}
-.cl .ln{width:16px;height:2px;border-radius:1px}
-
-/* ---------- impact ---------- */
-.impact-note{
-  border-left:2px solid var(--accent); background:var(--accent-wash); padding:11px 14px;
-  border-radius:0 3px 3px 0; font-size:13px; color:var(--ink-2); margin-bottom:16px;
-}
-.impact-note b{color:var(--ink); font-weight:600}
 details{border-top:1px solid var(--rule)}
 details summary{
   cursor:pointer; padding:13px 20px; font-family:"IBM Plex Mono",monospace; font-size:11.5px;
@@ -230,129 +148,110 @@ details summary::before{content:"+  "; color:var(--accent)}
 details[open] summary::before{content:"\2212  "}
 details summary:hover{color:var(--ink)}
 .det-body{padding:0 20px 20px}
-.foot{margin-top:28px; padding-top:18px; border-top:1px solid var(--rule); font-size:12.5px; color:var(--ink-3); line-height:1.6}
-.foot b{color:var(--ink-2); font-weight:600}
-.bh-list{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:10px}
-.bh-item{border:1px solid var(--rule); border-radius:3px; padding:10px 12px; background:var(--card-2)}
-.bh-item .d{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink-2)}
-.bh-item .n{font-weight:600; font-size:13.5px; margin-top:1px}
-.bh-item .x{font-size:12px; margin-top:6px}
-.bh-item.hits{border-color:var(--amber-ink)}
 
-/* week steppers */
-.steppers{display:grid; grid-template-columns:repeat(auto-fill,minmax(132px,1fr)); gap:9px}
-.stp{border:1px solid var(--rule); border-radius:3px; padding:8px 10px 9px; background:var(--card-2)}
+/* ---------- week steppers ---------- */
+.steppers{display:grid; grid-template-columns:repeat(auto-fill,minmax(146px,1fr)); gap:9px}
+.stp{border:1px solid var(--rule); border-radius:3px; padding:9px 10px 10px; background:var(--card-2)}
 .stp.now{border-color:var(--accent); background:var(--accent-wash)}
-.stp .wkl{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3); letter-spacing:.03em; display:flex; justify-content:space-between; gap:6px}
-.stp .wkl b{color:var(--ink-2); font-weight:500}
-.stp .row{display:flex; align-items:center; justify-content:space-between; gap:6px; margin-top:5px}
-.stp .val{font-family:"IBM Plex Mono",monospace; font-size:20px; font-weight:600; font-variant-numeric:tabular-nums; line-height:1}
-.stp .val.low{color:var(--crit-ink)}
+.stp.fail{border-color:var(--crit); background:var(--crit-wash)}
+.stp .wkl{
+  font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3);
+  display:flex; justify-content:space-between; gap:6px; align-items:baseline;
+}
+.stp .wkl b{color:var(--ink-2); font-weight:500; font-size:12px}
+.stp .row{display:flex; align-items:center; justify-content:space-between; gap:6px; margin-top:6px}
+.stp .val{font-family:"IBM Plex Mono",monospace; font-size:21px; font-weight:600; font-variant-numeric:tabular-nums; line-height:1}
 .stp button{
-  width:27px; height:27px; border:1px solid var(--cell); border-radius:3px; background:var(--card);
+  width:28px; height:28px; border:1px solid var(--cell); border-radius:3px; background:var(--card);
   font-family:"IBM Plex Mono",monospace; font-size:15px; line-height:1; color:var(--ink-2); cursor:pointer; padding:0;
 }
 .stp button:hover:not(:disabled){background:var(--accent-wash); border-color:var(--accent); color:var(--accent-ink)}
-.stp button:disabled{opacity:.35; cursor:default}
+.stp button:disabled{opacity:.3; cursor:default}
+.stp .out{
+  display:flex; justify-content:space-between; gap:8px; align-items:baseline; margin-top:8px;
+  padding-top:7px; border-top:1px solid var(--rule); font-size:11.5px; color:var(--ink-3);
+}
+.stp .roll{font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:13px; font-variant-numeric:tabular-nums; color:var(--ink-2)}
+.stp .roll.bad{color:var(--crit-ink)}
+.stp .roll.ok{color:var(--good-ink)}
+.bh{
+  font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:600; letter-spacing:.06em;
+  color:var(--amber-ink); background:var(--amber-wash); border-radius:2px; padding:1px 4px; font-style:normal;
+}
 
-/* planner */
-input[type="date"], input[type="text"]{
-  font-family:"IBM Plex Mono", monospace; font-size:13px; color:var(--ink);
-  background:var(--card); border:1px solid var(--rule); border-radius:3px; padding:7px 9px;
+/* ---------- chart ---------- */
+.chart-wrap{position:relative}
+svg{display:block; width:100%; height:auto}
+.tip{
+  position:absolute; pointer-events:none; opacity:0; transform:translate(-50%,-100%);
+  background:var(--card); border:1px solid var(--axis); border-radius:3px; padding:8px 10px;
+  box-shadow:var(--shadow); font-size:12px; min-width:170px; white-space:nowrap;
+  transition:opacity .1s; z-index:5;
 }
-input[type="text"]{font-family:"IBM Plex Sans", sans-serif; width:150px}
-.btn.tiny-btn{padding:5px 10px; font-size:12px}
-.btn.ghost{border-style:dashed; color:var(--ink-2)}
-.verdict-box{
-  border:1px solid var(--rule); border-left-width:3px; border-radius:0 3px 3px 0;
-  padding:14px 16px; margin:18px 0 4px; background:var(--card-2);
-}
-.verdict-box.ok{border-left-color:var(--good)}
-.verdict-box.bad{border-left-color:var(--crit)}
-.verdict-box.warn{border-left-color:var(--amber-ink)}
-.verdict-box.none{border-left-color:var(--rule)}
-.vb-top{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
-.vb-num{font-family:"IBM Plex Sans Condensed",sans-serif; font-size:28px; font-weight:600; line-height:1; font-variant-numeric:tabular-nums}
-.vb-num.bad{color:var(--crit-ink)} .vb-num.ok{color:var(--good-ink)}
-.vb-body{font-size:13.5px; color:var(--ink-2); margin-top:9px; max-width:78ch}
-.vb-body b{color:var(--ink); font-weight:600}
-.rm{
-  border:0; background:none; color:var(--ink-3); cursor:pointer; font-size:16px; line-height:1;
-  padding:4px 7px; border-radius:3px;
-}
-.rm:hover{color:var(--crit-ink); background:var(--crit-wash)}
-.bh-item.hits .x{color:var(--amber-ink); font-weight:500}
+.tip .t-wk{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3); letter-spacing:.05em}
+.tip .t-row{display:flex; justify-content:space-between; gap:14px; margin-top:5px}
+.tip .t-row b{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+.chart-legend{display:flex; gap:18px; flex-wrap:wrap; font-size:12px; color:var(--ink-2); padding:0 20px 16px}
+.cl{display:inline-flex; align-items:center; gap:7px; white-space:nowrap}
+.cl .bar{width:14px;height:9px;border-radius:1px}
+.cl .ln{width:16px;height:2px;border-radius:1px}
 
-@media (max-width:820px){
+.foot{margin-top:28px; padding-top:18px; border-top:1px solid var(--rule); font-size:12.5px; color:var(--ink-3); line-height:1.6}
+.foot b{color:var(--ink-2); font-weight:600}
+
+@media (max-width:760px){
   .verdict{grid-template-columns:1fr}
-  .verdict-hero{border-right:0; border-bottom:1px solid var(--rule)}
-  .stat-grid{grid-template-columns:1fr}
   .stat{border-left:0; border-top:1px solid var(--rule)}
-  .stat:first-child{border-top:0}
   h1{font-size:25px}
-  .hero-num{font-size:56px}
+  .hero-num{font-size:54px}
 }
-@media (prefers-reduced-motion: reduce){*{transition:none !important; animation:none !important}}
+@media (prefers-reduced-motion: reduce){*{transition:none !important}}
 </style>
 
 <header class="masthead">
   <div class="wrap">
-    <div class="mast-row">
-      <div>
-        <div class="eyebrow">Return-to-office attendance</div>
-        <h1 style="margin-top:6px">Best 8 of 12</h1>
-        <p class="sub" style="margin-top:6px; max-width:62ch">
-          Work out what an absence actually costs you — and what it doesn't. Bank holidays are
-          counted as ordinary weeks, so they are treated here exactly as your policy treats them.
-        </p>
-      </div>
-      <div class="rule-line" id="ruleLine"></div>
-    </div>
+    <div class="eyebrow">Return-to-office attendance</div>
+    <h1 style="margin-top:6px">Best 8 of 12</h1>
+    <p class="sub" style="margin-top:6px">
+      Put in the weeks you have done, plan the days you will be out, and see which weeks the policy stops surviving.
+    </p>
+    <div class="rule-line" id="ruleLine"></div>
   </div>
 </header>
 
 <div class="wrap">
 
-  <!-- ================= VERDICT ================= -->
   <section class="verdict" aria-labelledby="verdictHead">
     <div class="verdict-hero">
-      <div class="eyebrow" id="verdictHead">Current score</div>
-      <div class="hero-num mono" id="heroNum">—</div>
+      <div class="eyebrow" id="verdictHead">Where you stand today</div>
+      <div class="hero-num" id="heroNum">—</div>
       <div class="hero-of" id="heroOf"></div>
-      <div style="margin-top:12px"><span class="chip mute" id="heroChip"><span class="dot"></span>—</span></div>
+      <div style="margin-top:12px"><span class="chip" id="heroChip"><span class="dot"></span>—</span></div>
     </div>
-    <div class="stat-grid">
-      <div class="stat">
-        <div class="eyebrow">Days you can still miss</div>
-        <div class="stat-val" id="sHeadroom">—</div>
-        <div class="stat-note" id="sHeadroomNote"></div>
-      </div>
-      <div class="stat">
-        <div class="eyebrow">Slack in the counted 8</div>
-        <div class="stat-val" id="sSlack">—</div>
-        <div class="stat-note" id="sSlackNote"></div>
-      </div>
-      <div class="stat">
-        <div class="eyebrow">Next breach ahead</div>
-        <div class="stat-val" id="sBreach">—</div>
-        <div class="stat-note" id="sBreachNote"></div>
-      </div>
+    <div class="stat">
+      <div class="eyebrow">Days you can still miss</div>
+      <div class="stat-val" id="sHeadroom">—</div>
+      <div class="stat-note" id="sHeadroomNote"></div>
+    </div>
+    <div class="stat">
+      <div class="eyebrow">First week it breaks</div>
+      <div class="stat-val" id="sBreach">—</div>
+      <div class="stat-note" id="sBreachNote"></div>
     </div>
   </section>
 
-  <!-- ================= SETUP ================= -->
   <section class="card" aria-labelledby="setupHead">
     <div class="card-head">
       <div>
-        <h2 id="setupHead">Your pattern and your policy</h2>
-        <p class="sub">Set the days you normally go in. Everything below fills from this, and you can override any single day.</p>
+        <h2 id="setupHead">Your usual week</h2>
+        <p class="sub">Sets the starting point for every week below. Change any week on its own afterwards.</p>
       </div>
     </div>
     <div class="card-body">
       <div class="ctl-row">
         <div class="ctl">
-          <span class="ctl-label">Usual office days</span>
-          <div class="pattern" id="patternBtns" role="group" aria-label="Usual office days"></div>
+          <span class="ctl-label">Days you are normally in</span>
+          <div class="pattern" id="patternBtns" role="group" aria-label="Days you are normally in the office"></div>
         </div>
         <div class="ctl">
           <label class="ctl-label" for="regionSel">Bank holidays</label>
@@ -360,7 +259,7 @@ input[type="text"]{font-family:"IBM Plex Sans", sans-serif; width:150px}
             <option value="ew">England &amp; Wales</option>
             <option value="sc">Scotland</option>
             <option value="ni">Northern Ireland</option>
-            <option value="none">Ignore bank holidays</option>
+            <option value="none">Ignore them</option>
           </select>
         </div>
         <div class="ctl">
@@ -372,118 +271,47 @@ input[type="text"]{font-family:"IBM Plex Sans", sans-serif; width:150px}
             <option value="39">39 weeks</option>
           </select>
         </div>
-        <div class="ctl">
-          <span class="ctl-label">&nbsp;</span>
-          <div class="btn-row">
-            <button class="btn" id="applyFuture" type="button">Refill future weeks</button>
-            <button class="btn" id="applyAll" type="button">Refill everything</button>
-          </div>
-        </div>
       </div>
     </div>
     <details>
       <summary>Policy settings</summary>
       <div class="det-body">
         <div class="ctl-row">
-          <div class="ctl">
-            <label class="ctl-label" for="winIn">Weeks reviewed</label>
-            <input type="number" id="winIn" min="2" max="26" step="1">
-          </div>
-          <div class="ctl">
-            <label class="ctl-label" for="keepIn">Best weeks kept</label>
-            <input type="number" id="keepIn" min="1" max="26" step="1">
-          </div>
-          <div class="ctl">
-            <label class="ctl-label" for="tgtIn">Required average</label>
-            <input type="number" id="tgtIn" min="0" max="5" step="0.5">
-          </div>
-          <p class="tiny" style="max-width:34ch">
-            Defaults match the stated policy: the last 12 weeks are reviewed, the best 8 are kept,
-            and those 8 must average 3 days.
-          </p>
+          <div class="ctl"><label class="ctl-label" for="winIn">Weeks reviewed</label><input type="number" id="winIn" min="2" max="26" step="1"></div>
+          <div class="ctl"><label class="ctl-label" for="keepIn">Best weeks kept</label><input type="number" id="keepIn" min="1" max="26" step="1"></div>
+          <div class="ctl"><label class="ctl-label" for="tgtIn">Required average</label><input type="number" id="tgtIn" min="0" max="5" step="0.5"></div>
         </div>
       </div>
     </details>
   </section>
 
-  <!-- ================= CURRENT STATUS ================= -->
-  <section class="card" aria-labelledby="statusHead">
+  <section class="card" aria-labelledby="pastHead">
     <div class="card-head">
       <div>
-        <h2 id="statusHead">Where you actually are</h2>
-        <p class="sub">Put in what you really did for each of the last <span id="statusWin">12</span> weeks. This is the half of the sum you can&rsquo;t change, and it sets the floor for everything you plan.</p>
+        <h2 id="pastHead">Where you actually are</h2>
+        <p class="sub">Days <b>in the office</b> for each of the last <span id="pastWin">12</span> weeks.</p>
       </div>
-      <div class="btn-row">
-        <button class="btn" id="statusPattern" type="button">Assume my usual pattern</button>
-      </div>
+      <button class="btn" id="resetPast" type="button">Back to my usual week</button>
     </div>
-    <div class="card-body">
-      <div class="steppers" id="statusGrid"></div>
-      <p class="tiny" style="margin-top:14px">
-        Setting a week here spreads the days across your usual office days first, skipping bank holidays.
-        Need a specific day instead? Change it in the ledger further down.
-      </p>
-    </div>
+    <div class="card-body"><div class="steppers" id="pastGrid"></div></div>
   </section>
 
-  <!-- ================= PLANNER ================= -->
   <section class="card" aria-labelledby="planHead">
     <div class="card-head">
       <div>
-        <h2 id="planHead">Time off you want to take</h2>
-        <p class="sub">Give it the dates. It works out the leave you&rsquo;d book, the office days you&rsquo;d lose, and whether the policy survives it.</p>
+        <h2 id="planHead">What you are planning</h2>
+        <p class="sub">Days <b>out of the office</b> for each week ahead — leave, bank holidays, working from home, all of it. Each week shows the score it leaves you with.</p>
       </div>
+      <button class="btn" id="resetPlan" type="button">Back to my usual week</button>
     </div>
-    <div class="card-body">
-      <div class="ctl-row">
-        <div class="ctl">
-          <label class="ctl-label" for="absFrom">First day off</label>
-          <input type="date" id="absFrom">
-        </div>
-        <div class="ctl">
-          <label class="ctl-label" for="absTo">Last day off</label>
-          <input type="date" id="absTo">
-        </div>
-        <div class="ctl">
-          <label class="ctl-label" for="absLabel">Call it</label>
-          <input type="text" id="absLabel" placeholder="Christmas" maxlength="28">
-        </div>
-        <div class="ctl">
-          <span class="ctl-label">&nbsp;</span>
-          <button class="btn primary" id="absAdd" type="button">Add to the plan</button>
-        </div>
-      </div>
-      <div class="btn-row" style="margin-top:14px">
-        <span class="tiny" style="margin-right:2px">Quick add</span>
-        <span class="btn-row" id="absPresets"></span>
-      </div>
-      <div id="absVerdict"></div>
-      <div class="scroll" id="absTableWrap">
-        <table>
-          <thead>
-            <tr>
-              <th style="width:1%">Time off</th>
-              <th style="width:1%">Dates</th>
-              <th class="c" style="width:1%">Working days</th>
-              <th class="c" style="width:1%">Bank holidays</th>
-              <th class="c" style="width:1%">Leave to book</th>
-              <th class="c" style="width:1%">Office days lost</th>
-              <th class="c" style="width:1%">This one alone</th>
-              <th style="width:99%"></th>
-            </tr>
-          </thead>
-          <tbody id="absBody"></tbody>
-        </table>
-      </div>
-    </div>
+    <div class="card-body"><div class="steppers" id="planGrid"></div></div>
   </section>
 
-  <!-- ================= CHART ================= -->
   <section class="card" aria-labelledby="chartHead">
     <div class="card-head">
       <div>
-        <h2 id="chartHead">Where the score goes from here</h2>
-        <p class="sub">Each point is the best-8-of-12 average for the window ending that week. The line has to stay on or above the required average.</p>
+        <h2 id="chartHead">Where the score goes</h2>
+        <p class="sub">The best-8-of-12 average for the window ending each week. It has to stay on or above the line.</p>
       </div>
     </div>
     <div class="chart-wrap" id="chartWrap">
@@ -491,129 +319,17 @@ input[type="text"]{font-family:"IBM Plex Sans", sans-serif; width:150px}
       <div class="tip" id="tip" role="status" aria-live="polite"></div>
     </div>
     <div class="chart-legend">
-      <span class="cl"><span class="bar" style="background:var(--bar)"></span> Days in office that week</span>
+      <span class="cl"><span class="bar" style="background:var(--bar)"></span> Days in office</span>
       <span class="cl"><span class="ln" style="background:var(--accent)"></span> Best-8 rolling average</span>
       <span class="cl"><span class="ln" style="background:var(--crit)"></span> Required average</span>
-      <span class="cl"><svg width="11" height="11" aria-hidden="true"><path d="M5.5 1 L10 5.5 L5.5 10 L1 5.5 Z" fill="none" stroke="var(--ink-3)" stroke-width="1.2"/></svg> Bank holiday week</span>
     </div>
   </section>
 
-  <!-- ================= LEDGER ================= -->
-  <section class="card" aria-labelledby="ledgerHead">
-    <div class="card-head">
-      <div>
-        <h2 id="ledgerHead">The week ledger</h2>
-        <p class="sub">Click any day to cycle it: office &rarr; home &rarr; leave. Bank holidays start locked out and can be clicked back in if you actually worked them.</p>
-      </div>
-      <div class="legend-key">
-        <span class="lk"><span class="sw o"></span> Office</span>
-        <span class="lk"><span class="sw"></span> Home</span>
-        <span class="lk"><span class="sw l"></span> Leave</span>
-        <span class="lk"><span class="sw b"></span> Bank holiday</span>
-      </div>
-    </div>
-    <div class="card-body tight">
-      <div class="scroll">
-        <table id="ledger">
-          <thead>
-            <tr>
-              <th style="width:1%">Week commencing</th>
-              <th class="c" style="width:1%">Mon Tue Wed Thu Fri</th>
-              <th class="c" style="width:1%">In office</th>
-              <th class="c" style="width:1%">Working days</th>
-              <th class="c" style="width:1%">In current 12</th>
-              <th class="r" style="width:1%">Rolling best-8</th>
-              <th style="width:99%" aria-hidden="true"></th>
-            </tr>
-          </thead>
-          <tbody id="ledgerBody"></tbody>
-        </table>
-      </div>
-      <div class="btn-row" style="margin-top:16px">
-        <button class="btn" id="copyBtn" type="button">Copy summary</button>
-        <button class="btn" id="resetBtn" type="button">Reset ledger</button>
-        <span class="tiny" id="saveNote">Your entries are saved in this browser only.</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= IMPACT: ONE DAY ================= -->
-  <section class="card" aria-labelledby="dayHead">
-    <div class="card-head">
-      <div>
-        <h2 id="dayHead">How much room each week has</h2>
-        <p class="sub">For each week ahead, how many office days you could drop from it before some window falls short.</p>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="impact-note" id="dayNote"></div>
-      <div class="scroll">
-        <table>
-          <thead>
-            <tr>
-              <th style="width:1%">Week</th>
-              <th class="c" style="width:1%">In office</th>
-              <th class="c" style="width:1%">Days you can drop</th>
-              <th class="c" style="width:1%">Worst window if you do</th>
-              <th class="c" style="width:1%">One day more</th>
-              <th style="width:99%">Verdict</th>
-            </tr>
-          </thead>
-          <tbody id="dayBody"></tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= IMPACT: WEEKS OFF ================= -->
-  <section class="card" aria-labelledby="wkHead">
-    <div class="card-head">
-      <div>
-        <h2 id="wkHead">Taking whole weeks off</h2>
-        <p class="sub">Pick a length, then read down for the best week to start. Assumes you go back to your usual pattern afterwards.</p>
-      </div>
-      <div class="ctl">
-        <label class="ctl-label" for="offLen">Weeks away</label>
-        <select id="offLen">
-          <option value="1">1 week</option>
-          <option value="2" selected>2 weeks</option>
-          <option value="3">3 weeks</option>
-          <option value="4">4 weeks</option>
-        </select>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="impact-note" id="wkNote"></div>
-      <div class="scroll">
-        <table>
-          <thead>
-            <tr>
-              <th style="width:1%">Away from</th>
-              <th style="width:1%">Back on</th>
-              <th class="c" style="width:1%">Office days lost</th>
-              <th class="c" style="width:1%">Worst rolling average</th>
-              <th style="width:99%">Verdict</th>
-            </tr>
-          </thead>
-          <tbody id="wkBody"></tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= BANK HOLIDAYS ================= -->
-  <section class="card" aria-labelledby="bhHead">
-    <div class="card-head">
-      <div>
-        <h2 id="bhHead">Bank holidays in your horizon</h2>
-        <p class="sub">A bank holiday week still needs the full quota, so it is worth more of your week than an ordinary one.</p>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="impact-note" id="bhNote"></div>
-      <div class="bh-list" id="bhList"></div>
-    </div>
-  </section>
+  <div class="btn-row" style="margin-top:20px">
+    <button class="btn" id="copyBtn" type="button">Copy summary</button>
+    <button class="btn" id="resetBtn" type="button">Start again</button>
+    <span class="tiny" id="saveNote">Saved in this browser only.</span>
+  </div>
 
   <p class="foot" id="foot"></p>
 </div>
@@ -622,10 +338,8 @@ input[type="text"]{font-family:"IBM Plex Sans", sans-serif; width:150px}
 (function(){
 "use strict";
 
-/* ============================================================
-   Bank holidays — England & Wales, Scotland, Northern Ireland.
-   Only Mon-Fri dates ever affect the maths.
-   ============================================================ */
+/* Bank holidays are not a separate category here — they simply take a day out of
+   the week, the same as any other day you are not in. Mon-Fri dates only. */
 var EW = {
   2025:[["2025-01-01","New Year's Day"],["2025-04-18","Good Friday"],["2025-04-21","Easter Monday"],
         ["2025-05-05","Early May"],["2025-05-26","Spring"],["2025-08-25","Summer"],
@@ -664,48 +378,37 @@ function buildHolidayMap(region){
   var map = {}, y, i, src;
   if(region === "none") return map;
   src = (region === "sc") ? SC : EW;
-  for(y in src){ for(i=0;i<src[y].length;i++){ map[src[y][i][0]] = src[y][i][1]; } }
-  if(region === "ni"){ for(y in NI_EXTRA){ for(i=0;i<NI_EXTRA[y].length;i++){ map[NI_EXTRA[y][i][0]] = NI_EXTRA[y][i][1]; } } }
+  for(y in src) for(i=0;i<src[y].length;i++) map[src[y][i][0]] = src[y][i][1];
+  if(region === "ni") for(y in NI_EXTRA) for(i=0;i<NI_EXTRA[y].length;i++) map[NI_EXTRA[y][i][0]] = NI_EXTRA[y][i][1];
   return map;
 }
 
-/* ============================================================
-   Dates (all UTC so daylight saving never shifts a week)
-   ============================================================ */
+/* ---------- dates, all UTC so daylight saving never shifts a week ---------- */
 var DAY = 86400000;
 var DOW = ["Mon","Tue","Wed","Thu","Fri"];
 var MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 function iso(d){ return d.toISOString().slice(0,10); }
 function addDays(d,n){ return new Date(d.getTime() + n*DAY); }
-function mondayOf(d){
-  var wd = d.getUTCDay();               // 0 = Sunday
-  return addDays(d, wd === 0 ? -6 : 1 - wd);
-}
-function todayUTC(){
-  var n = new Date();
-  return new Date(Date.UTC(n.getFullYear(), n.getMonth(), n.getDate()));
-}
+function mondayOf(d){ var wd = d.getUTCDay(); return addDays(d, wd === 0 ? -6 : 1 - wd); }
+function todayUTC(){ var n = new Date(); return new Date(Date.UTC(n.getFullYear(), n.getMonth(), n.getDate())); }
 function fmtShort(d){ return d.getUTCDate() + " " + MON[d.getUTCMonth()]; }
 function fmtLong(d){ return d.getUTCDate() + " " + MON[d.getUTCMonth()] + " " + d.getUTCFullYear(); }
+function fmtAvg(v){ return (Math.round(v*100)/100).toFixed(2); }
+function plural(n,s){ return n + " " + s + (Math.abs(n)===1 ? "" : "s"); }
 
-/* ============================================================
-   State
-   ============================================================ */
-var STORE = "rto-best8of12-v2";
-var LEGACY = "rto-best8of12-v1";
+/* ---------- state ---------- */
+var STORE = "rto-best8of12-v3";
 var state = {
-  pattern:[true,true,true,false,false],   // Mon Tue Wed Thu Fri
+  pattern:[true,true,true,false,false],  // Mon Tue Wed Thu Fri
   region:"ew",
-  ahead:18,
+  ahead:26,
   win:12, keep:8, target:3,
-  overrides:{},                           // dateISO -> "O"|"H"|"L"|"B"  (days you set by hand)
-  absences:[],                            // [{id, label, from, to}]  dated time off
-  seq:1
+  inDays:{},    // mondayISO -> days in the office   (weeks already gone)
+  outDays:{}    // mondayISO -> days out of the office (weeks ahead)
 };
 function load(){
   try{
-    var raw = localStorage.getItem(STORE), legacy = false;
-    if(!raw){ raw = localStorage.getItem(LEGACY); legacy = !!raw; }
+    var raw = localStorage.getItem(STORE);
     if(!raw) return;
     var s = JSON.parse(raw);
     if(!s || typeof s !== "object") return;
@@ -715,468 +418,201 @@ function load(){
     if(+s.win) state.win = +s.win;
     if(+s.keep) state.keep = +s.keep;
     if(s.target != null && isFinite(+s.target)) state.target = +s.target;
-    if(Array.isArray(s.absences)) state.absences = s.absences;
-    if(+s.seq) state.seq = +s.seq;
-    if(s.overrides && typeof s.overrides === "object"){
-      if(legacy){
-        // v1 kept one 5-character string per week; split it into single days
-        for(var wkKey in s.overrides){
-          var str = s.overrides[wkKey];
-          if(typeof str !== "string" || str.length !== 5) continue;
-          var mon = new Date(wkKey + "T00:00:00Z");
-          if(isNaN(mon.getTime())) continue;
-          for(var d=0;d<5;d++) state.overrides[iso(addDays(mon,d))] = str.charAt(d);
-        }
-      }else{
-        state.overrides = s.overrides;
-      }
-    }
-  }catch(e){ /* private window, blocked storage — run with defaults */ }
+    if(s.inDays && typeof s.inDays === "object") state.inDays = s.inDays;
+    if(s.outDays && typeof s.outDays === "object") state.outDays = s.outDays;
+  }catch(e){ /* blocked storage — run with defaults */ }
 }
 function save(){
-  try{ localStorage.setItem(STORE, JSON.stringify(state)); }
-  catch(e){ /* nothing to do; the page still works for this visit */ }
+  try{ localStorage.setItem(STORE, JSON.stringify(state)); }catch(e){}
 }
 
-/* ============================================================
-   Model
-   ============================================================ */
+/* ---------- model ---------- */
 var HOL = {};
-function weekDates(monday){
-  var out = [], i;
-  for(i=0;i<5;i++) out.push(addDays(monday,i));
-  return out;
-}
-/* Which absence, if any, covers a date. ISO strings sort as dates, so a plain
-   string compare is enough. */
-function absenceOn(k, list){
-  var a = list || state.absences, i;
-  for(i=0;i<a.length;i++){ if(k >= a[i].from && k <= a[i].to) return a[i]; }
-  return null;
-}
-/* Precedence: a day you set by hand beats everything, then bank holidays,
-   then booked time off, then your usual pattern. */
-function dayChar(k, wdIdx, list){
-  if(Object.prototype.hasOwnProperty.call(state.overrides,k)) return state.overrides[k];
-  if(HOL[k]) return "B";
-  if(absenceOn(k, list)) return "L";
-  return state.pattern[wdIdx] ? "O" : "H";
-}
-function cellsFor(monday, list){
-  var ds = weekDates(monday), out = "", i;
-  for(i=0;i<5;i++) out += dayChar(iso(ds[i]), i, list);
-  return out;
-}
-function countO(cells){
-  var n=0,i;
-  for(i=0;i<cells.length;i++) if(cells.charAt(i)==="O") n++;
+var weeks = [];
+var anchorIdx = 0;
+
+function weekDates(monday){ var o=[],i; for(i=0;i<5;i++) o.push(addDays(monday,i)); return o; }
+
+/* What a week looks like if nothing special happens: your usual days, minus any
+   that land on a bank holiday. */
+function usualIn(monday){
+  var ds = weekDates(monday), n = 0, i;
+  for(i=0;i<5;i++) if(state.pattern[i] && !HOL[iso(ds[i])]) n++;
   return n;
 }
-
-var weeks = [];        // ledger rows
-var anchorIdx = 0;     // index of the current week
+function holsIn(monday){
+  var ds = weekDates(monday), out = [], i, h;
+  for(i=0;i<5;i++){ h = HOL[iso(ds[i])]; if(h) out.push({ i:i, name:h, date:ds[i] }); }
+  return out;
+}
 function buildWeeks(){
   HOL = buildHolidayMap(state.region);
   var cur = mondayOf(todayUTC());
-  var hist = state.win;                       // enough history for one full window ending now
-  anchorIdx = hist - 1;
-  var start = addDays(cur, -(hist-1)*7);
-  var total = hist + state.ahead;
+  anchorIdx = state.win - 1;
+  var start = addDays(cur, -anchorIdx*7);
   weeks = [];
-  for(var i=0;i<total;i++){
+  for(var i=0;i<state.win + state.ahead;i++){
     var m = addDays(start, i*7);
-    var ds = weekDates(m);
-    var hols = [];
-    for(var j=0;j<5;j++){ var h = HOL[iso(ds[j])]; if(h) hols.push({i:j, name:h, date:ds[j]}); }
-    weeks.push({ idx:i, monday:m, key:iso(m), dates:ds, hols:hols, future:i>anchorIdx, now:i===anchorIdx });
+    weeks.push({ idx:i, monday:m, key:iso(m), hols:holsIn(m), future:i>anchorIdx, now:i===anchorIdx });
   }
 }
-/* Office-day counts for the ledger, plus win-1 assumed weeks after it so that
-   every window touching a planned absence can actually be evaluated. */
-function seriesDays(list){
-  var a = [], i;
-  for(i=0;i<weeks.length;i++) a.push(countO(cellsFor(weeks[i].monday, list)));
-  return a;
+function daysInFor(i){
+  var wk = weeks[i], base = usualIn(wk.monday);
+  if(i <= anchorIdx) return has(state.inDays, wk.key) ? clamp(state.inDays[wk.key], i) : base;
+  var out = has(state.outDays, wk.key) ? state.outDays[wk.key] : 5 - base;
+  return clamp(5 - out, i);
 }
-function padded(base, list){
-  var a = base.slice(), pad = state.win - 1, last = weeks[weeks.length-1].monday, i;
-  for(i=1;i<=pad;i++) a.push(countO(cellsFor(addDays(last, i*7), list)));
+function has(o,k){ return Object.prototype.hasOwnProperty.call(o,k); }
+function clamp(n,i){ return Math.max(0, Math.min(maxIn(i), n)); }
+function maxIn(i){ return 5 - weeks[i].hols.length; }   // never in on a bank holiday
+
+function seriesDays(){
+  var a=[],i; for(i=0;i<weeks.length;i++) a.push(daysInFor(i)); return a;
+}
+/* Windows near the end of the plan reach past it, so pad with your usual week. */
+function padded(base){
+  var a = base.slice(), last = weeks[weeks.length-1].monday, i;
+  for(i=1;i<=state.win-1;i++) a.push(usualIn(addDays(last, i*7)));
   return a;
 }
 function windowAt(days, i){
   if(i < state.win - 1) return null;
   var win = days.slice(i - state.win + 1, i + 1);
-  var order = win.map(function(v,k){ return {v:v,k:k}; })
-                 .sort(function(a,b){ return b.v - a.v || b.k - a.k; });
-  var keptIdx = {}, sum = 0, n = Math.min(state.keep, order.length);
-  for(var j=0;j<n;j++){ keptIdx[order[j].k + (i - state.win + 1)] = true; sum += order[j].v; }
-  var dropSum = 0;
-  for(var j2=n;j2<order.length;j2++) dropSum += order[j2].v;
-  return { sum:sum, avg:sum/state.keep, kept:keptIdx, dropSum:dropSum,
-           need:state.keep*state.target, ok:sum >= state.keep*state.target - 1e-9 };
-}
-function worstAhead(days, list){
-  var p = padded(days, list), best = null, at = -1;
-  for(var i=state.win-1;i<p.length;i++){
-    var w = windowAt(p,i);
-    if(!w) continue;
-    if(best === null || w.avg < best){ best = w.avg; at = i; }
-  }
-  return { avg:best, at:at };
+  var sorted = win.slice().sort(function(a,b){ return b-a; });
+  var n = Math.min(state.keep, sorted.length), sum = 0, dropSum = 0, j;
+  for(j=0;j<n;j++) sum += sorted[j];
+  for(j=n;j<sorted.length;j++) dropSum += sorted[j];
+  var need = state.keep * state.target;
+  return { sum:sum, avg:sum/state.keep, dropSum:dropSum, need:need, ok:sum >= need - 1e-9 };
 }
 function labelForIndex(i){
   if(i < weeks.length) return fmtShort(weeks[i].monday);
-  var last = weeks[weeks.length-1].monday;
-  return fmtShort(addDays(last,(i - weeks.length + 1)*7));
+  return fmtShort(addDays(weeks[weeks.length-1].monday, (i - weeks.length + 1)*7));
 }
-function fmtAvg(v){ return (Math.round(v*100)/100).toFixed(2); }
-function plural(n,s){ return n + " " + s + (Math.abs(n)===1 ? "" : "s"); }
-function verb(n,one,many){ return Math.abs(n)===1 ? one : many; }
 
-/* ============================================================
-   Render
-   ============================================================ */
+/* ---------- render ---------- */
 var $ = function(id){ return document.getElementById(id); };
-var cur = null;   // cached derived model for the current render
+var cur = null;
 
-function fitHorizon(){
-  if(!state.absences.length) return false;
-  var maxTo = state.absences[0].to, i;
-  for(i=1;i<state.absences.length;i++) if(state.absences[i].to > maxTo) maxTo = state.absences[i].to;
-  var before = state.ahead;
-  ensureHorizon(maxTo);
-  return state.ahead !== before;
-}
 function renderAll(){
   buildWeeks();
-  if(fitHorizon()) buildWeeks();
-  syncAheadSelect();
   var days = seriesDays();
   var w = windowAt(days, anchorIdx);
   cur = { days:days, win:w };
-  renderRuleLine();
+  renderRule();
   renderVerdict(days, w);
-  renderStatus(days);
-  renderPlanner(days);
-  renderLedger(days, w);
+  renderPast(days);
+  renderPlan(days);
   renderChart(days);
-  renderDayTable(days, w);
-  renderWeekTable(days);
-  renderHolidays();
   renderFoot();
   save();
 }
 
-function renderRuleLine(){
-  var el = $("ruleLine");
-  el.innerHTML =
+function renderRule(){
+  $("ruleLine").innerHTML =
     '<span class="rule-chip">Review <b>' + state.win + '</b> weeks</span>' +
     '<span class="rule-chip">Keep best <b>' + state.keep + '</b></span>' +
     '<span class="rule-chip">Average <b>' + state.target + '</b> days</span>' +
-    '<span class="rule-chip">Need <b>' + fmtAvg(state.keep*state.target).replace(/\.00$/,"") + '</b> days across them</span>';
+    '<span class="rule-chip">So <b>' + (state.keep*state.target) + '</b> days across those ' + state.keep + '</span>';
 }
 
 function renderVerdict(days, w){
   $("heroNum").textContent = fmtAvg(w.avg);
-  $("heroOf").textContent = "days a week, from the best " + state.keep + " of the last " + state.win +
-                            " — " + w.sum + " office days against " + w.need + " required";
+  $("heroOf").textContent = w.sum + " office days across your best " + state.keep + ", against " + w.need + " needed";
   var chip = $("heroChip");
   chip.className = "chip " + (w.ok ? "ok" : "bad");
   chip.innerHTML = '<span class="dot"></span>' + (w.ok ? "Meeting policy" : "Below policy");
 
-  // Days you can still miss, from today, without breaching: everything sitting in the
-  // dropped weeks is already free, plus whatever slack the counted weeks carry.
   var slack = w.sum - w.need;
   var headroom = w.dropSum + Math.max(0, slack);
   $("sHeadroom").textContent = w.ok ? headroom : "0";
-  $("sHeadroom").className = "stat-val " + (w.ok ? (headroom > 0 ? "ok" : "bad") : "bad");
+  $("sHeadroom").className = "stat-val " + (w.ok && headroom > 0 ? "ok" : "bad");
   $("sHeadroomNote").textContent = w.ok
-    ? plural(w.dropSum,"day") + " already sit in the " + (state.win - state.keep) +
-      " dropped weeks and cost nothing, plus " + plural(Math.max(0,slack),"day") + " of slack."
-    : "You are " + plural(Math.abs(Math.round(slack*100)/100),"day") + " short right now.";
+    ? plural(w.dropSum,"day") + " sit in the " + (state.win - state.keep) + " weeks the policy throws away, plus " +
+      plural(Math.max(0,slack),"day") + " of slack in the ones it keeps."
+    : "You are " + plural(Math.round(Math.abs(slack)*10)/10,"day") + " short right now.";
 
-  $("sSlack").textContent = (slack >= 0 ? "+" : "−") + Math.abs(Math.round(slack*100)/100);
-  $("sSlack").className = "stat-val " + (slack >= 0 ? "ok" : "bad");
-  $("sSlackNote").textContent = slack >= 0
-    ? "Office days you could lose from the counted " + state.keep + " before the average drops under " + state.target + "."
-    : "Office days you need to add back into the counted " + state.keep + ".";
-
-  // First window from here on that falls short.
-  var p = padded(days), firstBad = -1;
-  for(var i=state.win-1;i<p.length;i++){
-    var ww = windowAt(p,i);
-    if(ww && !ww.ok){ firstBad = i; break; }
-  }
+  var p = padded(days), firstBad = -1, i;
+  for(i=state.win-1;i<p.length;i++){ var ww = windowAt(p,i); if(ww && !ww.ok){ firstBad = i; break; } }
   if(firstBad < 0){
     $("sBreach").textContent = "None";
     $("sBreach").className = "stat-val ok";
-    $("sBreachNote").textContent = "Nothing in the plan below breaks the policy.";
+    $("sBreachNote").textContent = "Nothing you have planned drops below " + state.target + ".";
   }else{
-    var wksOut = firstBad - anchorIdx;
-    $("sBreach").textContent = wksOut <= 0 ? "Now" : ("+" + wksOut + "w");
+    var out = firstBad - anchorIdx;
+    $("sBreach").textContent = out <= 0 ? "Now" : ("+" + out + "w");
     $("sBreach").className = "stat-val bad";
-    $("sBreachNote").textContent = "Window ending " + labelForIndex(firstBad) +
-      " comes out at " + fmtAvg(windowAt(p,firstBad).avg) + ".";
+    $("sBreachNote").textContent = "The " + state.win + " weeks ending " + labelForIndex(firstBad) +
+      " come out at " + fmtAvg(windowAt(p,firstBad).avg) + ".";
   }
 }
 
-function renderLedger(days, w){
-  var body = $("ledgerBody"), html = "", i, j;
-  for(i=0;i<weeks.length;i++){
-    var wk = weeks[i], cells = cellsFor(wk.monday), o = days[i];
-    var workingDays = 5 - wk.hols.length;
-    var rel = i === anchorIdx ? "now" : (i < anchorIdx ? "−" + (anchorIdx - i) : "+" + (i - anchorIdx));
-    var cls = [];
-    if(wk.now) cls.push("now");
-    if(wk.future) cls.push("future");
-    if(i === anchorIdx) cls.push("sep-now");
-
-    var cellHtml = "";
-    for(j=0;j<5;j++){
-      var ch = cells.charAt(j), isHol = false, holName = "";
-      for(var h=0;h<wk.hols.length;h++) if(wk.hols[h].i === j){ isHol = true; holName = wk.hols[h].name; }
-      var lbl = ch === "B" ? "BH" : (isHol ? ch + "*" : ch);
-      var abs = absenceOn(iso(wk.dates[j]));
-      var title = DOW[j] + " " + fmtLong(wk.dates[j]) +
-                  (isHol ? " — " + holName : "") +
-                  (ch === "O" ? " — in the office" : ch === "H" ? " — working from home" :
-                   ch === "L" ? (abs ? " — " + (abs.label || "time off") : " — leave") : " — bank holiday");
-      cellHtml += '<button type="button" class="dc ' + ch.toLowerCase() + '" data-w="' + i + '" data-d="' + j +
-                  '" title="' + title + '" aria-label="' + title + '">' + lbl + '</button>';
-    }
-
-    var inWin = (i >= anchorIdx - state.win + 1 && i <= anchorIdx);
-    var keepCell = !inWin ? '<span class="drop">—</span>'
-                  : (w.kept[i] ? '<span class="kept">Kept</span>' : '<span class="drop">Dropped</span>');
-
-    var rw = windowAt(days, i);
-    var rollCell = rw
-      ? '<span class="num big ' + (rw.ok ? "" : "roll-bad") + '">' + fmtAvg(rw.avg) + '</span>'
-      : '<span class="drop">—</span>';
-
-    html += '<tr class="' + cls.join(" ") + '">' +
-      '<td><span class="wk">' + DOW[0] + " " + fmtShort(wk.monday) +
-        '<small>' + rel + (wk.hols.length ? " · bh" : "") + '</small></span></td>' +
-      '<td><div class="daycells">' + cellHtml + '</div></td>' +
-      '<td class="c"><span class="num big">' + o + '</span></td>' +
-      '<td class="c"><span class="num ' + (workingDays < 5 ? "" : "drop") + '">' + workingDays + '</span></td>' +
-      '<td class="c">' + keepCell + '</td>' +
-      '<td class="r">' + rollCell + '</td>' +
-      '<td></td>' +
-    '</tr>';
-  }
-  body.innerHTML = html;
+function stepper(i, kind, value, min, max, extra){
+  var wk = weeks[i];
+  var rel = i === anchorIdx ? "this week" : (i < anchorIdx ? (anchorIdx-i) + "w ago" : "+" + (i-anchorIdx) + "w");
+  var names = [];
+  for(var h=0;h<wk.hols.length;h++) names.push(wk.hols[h].name);
+  var tag = wk.hols.length ? ' <i class="bh" title="' + names.join(", ") + '">BH</i>' : "";
+  return '<div class="stp' + (extra.cls || "") + '">' +
+    '<div class="wkl"><span><b>' + fmtShort(wk.monday) + '</b>' + tag + '</span><span>' + rel + '</span></div>' +
+    '<div class="row">' +
+      '<button type="button" data-k="' + kind + '" data-i="' + i + '" data-v="' + (value-1) + '"' +
+        (value <= min ? " disabled" : "") + ' aria-label="One fewer for the week of ' + fmtLong(wk.monday) + '">&minus;</button>' +
+      '<span class="val">' + value + '</span>' +
+      '<button type="button" data-k="' + kind + '" data-i="' + i + '" data-v="' + (value+1) + '"' +
+        (value >= max ? " disabled" : "") + ' aria-label="One more for the week of ' + fmtLong(wk.monday) + '">+</button>' +
+    '</div>' +
+    (extra.foot || "") +
+  '</div>';
 }
 
-/* ---------------- current status ---------------- */
-function maxDaysIn(i){ return 5 - weeks[i].hols.length; }
-/* Spread a weekly total across the days you would normally be in first,
-   then the rest, never onto a bank holiday. */
-function setWeekCount(i, n){
-  var wk = weeks[i], order = [], j, k;
-  for(j=0;j<5;j++) if(state.pattern[j] && !HOL[iso(wk.dates[j])]) order.push(j);
-  for(j=0;j<5;j++) if(!state.pattern[j] && !HOL[iso(wk.dates[j])]) order.push(j);
-  var chosen = {};
-  for(j=0;j<Math.min(n, order.length);j++) chosen[order[j]] = true;
-  for(j=0;j<5;j++){
-    k = iso(wk.dates[j]);
-    if(HOL[k]){ delete state.overrides[k]; continue; }
-    state.overrides[k] = chosen[j] ? "O" : "H";
-  }
-}
-function renderStatus(days){
-  $("statusWin").textContent = state.win;
-  var g = $("statusGrid"), html = "", i;
+function renderPast(days){
+  $("pastWin").textContent = state.win;
+  var html = "", i;
   for(i=0;i<=anchorIdx;i++){
-    var o = days[i], mx = maxDaysIn(i);
-    var rel = i === anchorIdx ? "this week" : (anchorIdx - i) + "w ago";
-    html += '<div class="stp' + (i === anchorIdx ? " now" : "") + '">' +
-      '<div class="wkl"><b>' + fmtShort(weeks[i].monday) + '</b><span>' + rel + '</span></div>' +
-      '<div class="row">' +
-        '<button type="button" data-s="' + i + '" data-v="' + (o-1) + '" aria-label="One fewer day in the week of ' +
-          fmtLong(weeks[i].monday) + '"' + (o <= 0 ? " disabled" : "") + '>&minus;</button>' +
-        '<span class="val' + (o < state.target ? " low" : "") + '">' + o + '</span>' +
-        '<button type="button" data-s="' + i + '" data-v="' + (o+1) + '" aria-label="One more day in the week of ' +
-          fmtLong(weeks[i].monday) + '"' + (o >= mx ? " disabled" : "") + '>+</button>' +
-      '</div>' +
-      (mx < 5 ? '<div class="wkl" style="margin-top:5px"><span>' + mx + '-day week</span></div>' : '') +
-    '</div>';
+    html += stepper(i, "in", days[i], 0, maxIn(i), {
+      cls: i === anchorIdx ? " now" : "",
+      foot: maxIn(i) < 5 ? '<div class="out"><span>' + maxIn(i) + ' days available</span></div>' : ""
+    });
   }
-  g.innerHTML = html;
+  $("pastGrid").innerHTML = html;
 }
 
-/* ---------------- dated time off ---------------- */
-function eachWeekday(from, to, fn){
-  var d = new Date(from + "T00:00:00Z"), end = new Date(to + "T00:00:00Z");
-  if(isNaN(d.getTime()) || isNaN(end.getTime())) return;
-  var guard = 0;
-  while(d <= end && guard++ < 800){
-    var wd = d.getUTCDay();
-    if(wd >= 1 && wd <= 5) fn(d, wd - 1);
-    d = addDays(d, 1);
+function renderPlan(days){
+  var html = "", i;
+  for(i=anchorIdx+1;i<weeks.length;i++){
+    var out = 5 - days[i];
+    var ww = windowAt(days, i);
+    var bad = ww && !ww.ok;
+    html += stepper(i, "out", out, weeks[i].hols.length, 5, {
+      cls: bad ? " fail" : "",
+      foot: '<div class="out"><span>' + days[i] + ' in</span>' +
+            '<span class="roll ' + (bad ? "bad" : "") + '" title="Best ' + state.keep + ' of the ' + state.win +
+            ' weeks ending ' + fmtShort(weeks[i].monday) + '">' + (ww ? fmtAvg(ww.avg) : "—") + '</span></div>'
+    });
   }
-}
-function periodFacts(a){
-  var working = 0, hols = 0, holNames = [];
-  eachWeekday(a.from, a.to, function(d){
-    working++;
-    var name = HOL[iso(d)];
-    if(name){ hols++; holNames.push(name); }
-  });
-  var cal = Math.round((new Date(a.to + "T00:00:00Z") - new Date(a.from + "T00:00:00Z")) / DAY) + 1;
-  return { cal:cal, working:working, hols:hols, holNames:holNames, leave:working - hols };
-}
-function withoutAbsence(id){
-  return state.absences.filter(function(a){ return a.id !== id; });
-}
-/* Stretch the ledger so a booked trip is always inside it. */
-function ensureHorizon(toIso){
-  var end = new Date(toIso + "T00:00:00Z");
-  if(isNaN(end.getTime())) return;
-  var lastMon = weeks.length ? weeks[weeks.length-1].monday : mondayOf(todayUTC());
-  var target = mondayOf(end);
-  var diff = Math.round((target - lastMon) / (7*DAY));
-  if(diff > 0) state.ahead = Math.min(104, state.ahead + diff + 1);
-}
-function syncAheadSelect(){
-  var sel = $("aheadSel"), i, found = false;
-  for(i=0;i<sel.options.length;i++){
-    if(sel.options[i].value === "custom"){ sel.remove(i); i--; continue; }
-    if(+sel.options[i].value === state.ahead) found = true;
-  }
-  if(!found){
-    var opt = document.createElement("option");
-    opt.value = "custom"; opt.textContent = state.ahead + " weeks";
-    sel.appendChild(opt);
-    sel.value = "custom";
-  }else{
-    sel.value = String(state.ahead);
-  }
-}
-function shortRange(a){
-  var f = new Date(a.from + "T00:00:00Z"), t = new Date(a.to + "T00:00:00Z");
-  return fmtShort(f) + " – " + fmtShort(t) + " " + t.getUTCFullYear();
+  $("planGrid").innerHTML = html;
 }
 
-function renderPlanner(days){
-  var box = $("absVerdict"), body = $("absBody"), wrap = $("absTableWrap");
-
-  var clr = $("absClear");
-  if(clr) clr.style.display = state.absences.length ? "" : "none";
-  if(!state.absences.length){
-    wrap.style.display = "none";
-    box.innerHTML = '<div class="verdict-box none"><div class="vb-top">' +
-      '<span class="chip mute">Nothing booked yet</span></div>' +
-      '<div class="vb-body">Add the dates you are thinking about — a Christmas run, a fortnight in the summer — ' +
-      'and this will tell you the leave it costs, the office days it removes, and every window it puts at risk.</div></div>';
-    body.innerHTML = "";
-    return;
-  }
-  wrap.style.display = "";
-
-  var worst = worstAhead(days), ok = worst.avg >= state.target - 1e-9;
-  var baseline = seriesDays([]);                 // the same plan with no time off booked
-  var baseWorst = worstAhead(baseline, []);
-  var totLeave = 0, totLost = 0, i;
-  for(i=0;i<state.absences.length;i++) totLeave += periodFacts(state.absences[i]).leave;
-  for(i=0;i<days.length;i++) totLost += baseline[i] - days[i];
-
-  var shortfall = Math.max(0, Math.ceil(state.keep*state.target - worst.avg*state.keep - 1e-9));
-  var baseOk = baseWorst.avg >= state.target - 1e-9;
-  var costsNothing = worst.avg >= baseWorst.avg - 1e-9;
-  var tight = ok && (worst.avg - state.target) * state.keep < 1;
-
-  // Three different situations, and they need three different sentences: the plan is
-  // fine, the plan is what breaks it, or you were already under before booking anything.
-  var tone, chipCls, chipText;
-  if(ok){ tone = tight ? "warn" : "ok"; chipCls = "ok"; chipText = "The plan holds"; }
-  else if(baseOk){ tone = "bad"; chipCls = "bad"; chipText = "This time off breaks the policy"; }
-  else { tone = "bad"; chipCls = "bad"; chipText = "You are already under, before this time off"; }
-
-  var marginal = costsNothing
-    ? 'Booking it does not move your worst window at all — on the score, these dates are <b>free</b>.'
-    : 'Booking it takes your worst window from <b>' + fmtAvg(baseWorst.avg) + '</b> down to <b>' +
-      fmtAvg(worst.avg) + '</b>.';
-  var outcome;
-  if(ok){
-    outcome = 'Your worst window still comes out at ' + fmtAvg(worst.avg) + ' against the ' + state.target +
-      ' you need' + (tight
-        ? ', and that is the last of your room — one more day off anywhere near it puts you under.'
-        : ', leaving ' + plural(Math.round((worst.avg-state.target)*state.keep*10)/10,"day") + ' spare.');
-  }else{
-    var from = labelForIndex(Math.max(0, worst.at - state.win + 1)), to = labelForIndex(worst.at);
-    outcome = 'The window ending <b>' + to + '</b> falls to ' + fmtAvg(worst.avg) + '. To bring it back you need <b>' +
-      plural(shortfall,"more office day") + '</b> somewhere in the ' + state.win + ' weeks from ' + from + ' to ' + to +
-      (baseOk ? '.' : ' — and that is true whether or not you book this time off, so fix it first.');
-  }
-
-  box.innerHTML =
-    '<div class="verdict-box ' + tone + '">' +
-      '<div class="vb-top">' +
-        '<span class="vb-num ' + (ok ? "ok" : "bad") + '">' + fmtAvg(worst.avg) + '</span>' +
-        '<span class="chip ' + chipCls + '"><span class="dot"></span>' + chipText + '</span>' +
-        '<span class="tiny">worst window anywhere in the horizon, with ' +
-          (state.absences.length === 1 ? "this booked" : "all " + state.absences.length + " booked together") + '</span>' +
-      '</div>' +
-      '<div class="vb-body">' +
-        'It costs <b>' + plural(totLeave,"day") + ' of annual leave</b> and removes <b>' +
-        plural(totLost,"office day") + '</b>. ' + marginal + ' ' + outcome +
-      '</div>' +
-    '</div>';
-
-  var html = "";
-  for(i=0;i<state.absences.length;i++){
-    var a = state.absences[i], f = periodFacts(a);
-    var soloDays = seriesDays([a]);
-    var solo = worstAhead(soloDays, [a]);
-    var v = verdictFor(solo.avg);
-    var others = withoutAbsence(a.id);
-    var withoutDays = seriesDays(others);
-    var lost = 0;
-    for(var j=0;j<days.length;j++) lost += withoutDays[j] - days[j];
-    html += '<tr>' +
-      '<td><span class="wk">' + (a.label || "Time off") + '</span></td>' +
-      '<td><span class="wk">' + shortRange(a) + '<small>' + f.cal + ' days</small></span></td>' +
-      '<td class="c"><span class="num big">' + f.working + '</span></td>' +
-      '<td class="c">' + (f.hols
-          ? '<span class="num big" style="color:var(--amber-ink)" title="' + f.holNames.join(", ") + '">' + f.hols + '</span>'
-          : '<span class="drop">0</span>') + '</td>' +
-      '<td class="c"><span class="num big kept">' + f.leave + '</span></td>' +
-      '<td class="c"><span class="num big' + (lost ? " roll-bad" : "") + '">' + lost + '</span></td>' +
-      '<td class="c"><span class="chip ' + v.cls + '">' + fmtAvg(solo.avg) + '</span></td>' +
-      '<td><button class="rm" type="button" data-rm="' + a.id + '" aria-label="Remove ' +
-          (a.label || "this time off") + '">&times;</button></td>' +
-    '</tr>';
-  }
-  body.innerHTML = html;
-}
-
-/* ---------------- chart ---------------- */
-var chartPts = [];
+/* ---------- chart ---------- */
 function renderChart(days){
   var svg = $("chart"), wrap = $("chartWrap");
-  var W = Math.max(340, wrap.clientWidth || 900), H = 300;
-  var m = {t:18, r:18, b:46, l:32};
-  var n = weeks.length;
-  var band = (W - m.l - m.r) / n;
+  var W = Math.max(320, wrap.clientWidth || 900), H = 280;
+  var m = {t:18, r:18, b:44, l:32};
+  var n = weeks.length, band = (W - m.l - m.r)/n;
   var plotB = H - m.b, plotT = m.t;
-  var maxY = 5;
   function X(i){ return m.l + band*(i + 0.5); }
-  function Y(v){ return plotB - (plotB - plotT) * (v / maxY); }
+  function Y(v){ return plotB - (plotB - plotT) * (v/5); }
+  var s = [], g, i;
 
-  var s = [];
-  s.push('<rect x="0" y="0" width="'+W+'" height="'+H+'" fill="none"/>');
-
-  // gridlines + y labels
-  for(var g=0; g<=maxY; g++){
+  for(g=0; g<=5; g++){
     var gy = Y(g);
     s.push('<line x1="'+m.l+'" y1="'+gy+'" x2="'+(W-m.r)+'" y2="'+gy+'" stroke="'+(g===0?'var(--axis)':'var(--grid)')+'" stroke-width="1"/>');
     s.push('<text x="'+(m.l-8)+'" y="'+(gy+3.5)+'" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--ink-3)">'+g+'</text>');
   }
 
-  // bars: days in office that week
   var bw = Math.max(3, Math.min(band - 4, 12));
-  for(var i=0;i<n;i++){
+  for(i=0;i<n;i++){
     var v = days[i];
     if(v <= 0) continue;
     var x = X(i) - bw/2, yt = Y(v), h = plotB - yt, r = Math.min(4, bw/2, h);
@@ -1184,78 +620,60 @@ function renderChart(days){
            ' L'+(x+bw-r)+' '+yt+' Q'+(x+bw)+' '+yt+' '+(x+bw)+' '+(yt+r)+' L'+(x+bw)+' '+plotB+' Z" fill="var(--bar)"/>');
   }
 
-  // required-average reference
   s.push('<line x1="'+m.l+'" y1="'+Y(state.target)+'" x2="'+(W-m.r)+'" y2="'+Y(state.target)+
          '" stroke="var(--crit)" stroke-width="1.5" stroke-dasharray="5 4"/>');
   s.push('<text x="'+(m.l+5)+'" y="'+(Y(state.target)-6)+'" font-family="IBM Plex Mono, monospace" font-size="10" font-weight="500" fill="var(--crit-ink)">'+
          state.target+'.0 required</text>');
 
-  // boundary between what happened and what is planned
   var bx = m.l + band*(anchorIdx + 1);
   s.push('<line x1="'+bx+'" y1="'+plotT+'" x2="'+bx+'" y2="'+plotB+'" stroke="var(--axis)" stroke-width="1" stroke-dasharray="2 3"/>');
   s.push('<text x="'+(bx+5)+'" y="'+(plotT+9)+'" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--ink-3)">planned</text>');
 
-  // rolling best-8 average
-  chartPts = [];
-  var d = "", first = true;
-  for(var k=state.win-1;k<n;k++){
-    var ww = windowAt(days,k);
+  var d = "", pts = [], first = true;
+  for(i=state.win-1;i<n;i++){
+    var ww = windowAt(days,i);
     if(!ww) continue;
-    var px = X(k), py = Y(ww.avg);
-    chartPts.push({i:k, x:px, y:py, avg:ww.avg, ok:ww.ok});
+    var px = X(i), py = Y(ww.avg);
+    pts.push({x:px, y:py, ok:ww.ok});
     d += (first ? "M" : "L") + px + " " + py;
     first = false;
   }
   if(d) s.push('<path d="'+d+'" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>');
-  for(var q=0;q<chartPts.length;q++){
-    var p = chartPts[q], last = q === chartPts.length-1;
-    s.push('<circle cx="'+p.x+'" cy="'+p.y+'" r="'+(last?5.5:4.5)+'" fill="'+(p.ok?'var(--accent)':'var(--crit)')+
-           '" stroke="var(--card)" stroke-width="2"/>');
+  for(i=0;i<pts.length;i++){
+    s.push('<circle cx="'+pts[i].x+'" cy="'+pts[i].y+'" r="'+(i===pts.length-1?5.5:4.5)+'" fill="'+
+           (pts[i].ok?'var(--accent)':'var(--crit)')+'" stroke="var(--card)" stroke-width="2"/>');
   }
 
-  // bank-holiday weeks: a hollow diamond under the axis, no hue of its own
-  for(var b=0;b<n;b++){
-    if(!weeks[b].hols.length) continue;
-    var dx = X(b), dy = plotB + 9;
-    s.push('<path d="M'+dx+' '+(dy-3.5)+' L'+(dx+3.5)+' '+dy+' L'+dx+' '+(dy+3.5)+' L'+(dx-3.5)+' '+dy+
-           ' Z" fill="none" stroke="var(--ink-3)" stroke-width="1.2"/>');
-  }
-
-  // x labels
-  var step = Math.max(1, Math.ceil(n/9)), cand = [], t, minGap = 46;
-  for(t=0;t<n;t++){ if(t % step === 0 || t === anchorIdx || t === n-1) cand.push(t); }
-  var keepT = [];
+  var step = Math.max(1, Math.ceil(n/9)), cand = [], keep = [], t, minGap = 46;
+  for(t=0;t<n;t++) if(t % step === 0 || t === anchorIdx || t === n-1) cand.push(t);
   for(t=0;t<cand.length;t++){
-    var idx = cand[t];
-    if(keepT.length && X(idx) - X(keepT[keepT.length-1]) < minGap){
-      // the boundary week and the last week outrank a regular tick
-      if(idx === anchorIdx || idx === n-1) keepT.pop(); else continue;
+    if(keep.length && X(cand[t]) - X(keep[keep.length-1]) < minGap){
+      if(cand[t] === anchorIdx || cand[t] === n-1) keep.pop(); else continue;
     }
-    keepT.push(idx);
+    keep.push(cand[t]);
   }
-  for(t=0;t<keepT.length;t++){
-    s.push('<text x="'+X(keepT[t])+'" y="'+(plotB+27)+'" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--ink-3)">'+
-           fmtShort(weeks[keepT[t]].monday)+'</text>');
-  }
+  for(t=0;t<keep.length;t++)
+    s.push('<text x="'+X(keep[t])+'" y="'+(plotB+26)+'" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--ink-3)">'+
+           fmtShort(weeks[keep[t]].monday)+'</text>');
+
   s.push('<line class="cross" x1="0" y1="'+plotT+'" x2="0" y2="'+plotB+'" stroke="var(--accent)" stroke-width="1" opacity="0"/>');
   s.push('<rect id="hitzone" x="'+m.l+'" y="'+plotT+'" width="'+(W-m.l-m.r)+'" height="'+(plotB-plotT)+'" fill="transparent"/>');
 
   svg.setAttribute("viewBox","0 0 "+W+" "+H);
-  svg.setAttribute("width", W);
-  svg.setAttribute("height", H);
+  svg.setAttribute("width", W); svg.setAttribute("height", H);
   svg.innerHTML = s.join("");
 
   var hit = svg.querySelector("#hitzone"), cross = svg.querySelector(".cross"), tip = $("tip");
   function show(ev){
     var rect = svg.getBoundingClientRect();
     var cx = ((ev.touches ? ev.touches[0].clientX : ev.clientX) - rect.left) * (W / rect.width);
-    var i = Math.floor((cx - m.l) / band);
+    var i = Math.floor((cx - m.l)/band);
     if(i < 0) i = 0; if(i > n-1) i = n-1;
     var ww = windowAt(days, i);
     cross.setAttribute("x1", X(i)); cross.setAttribute("x2", X(i)); cross.setAttribute("opacity","0.35");
     tip.innerHTML =
-      '<div class="t-wk">Week of ' + fmtLong(weeks[i].monday) + (weeks[i].hols.length ? ' · bank holiday' : '') + '</div>' +
-      '<div class="t-row"><span>In office</span><b>' + days[i] + ' day' + (days[i]===1?'':'s') + '</b></div>' +
+      '<div class="t-wk">Week of ' + fmtLong(weeks[i].monday) + '</div>' +
+      '<div class="t-row"><span>In the office</span><b>' + days[i] + ' of 5</b></div>' +
       '<div class="t-row"><span>Best-' + state.keep + ' average</span><b style="color:' +
         (ww ? (ww.ok ? 'var(--accent-ink)' : 'var(--crit-ink)') : 'var(--ink-3)') + '">' +
         (ww ? fmtAvg(ww.avg) : '—') + '</b></div>';
@@ -1273,257 +691,58 @@ function renderChart(days){
   hit.addEventListener("touchend", hide);
 }
 
-/* ---------------- one day out ---------------- */
-function verdictFor(worstAvg){
-  var slackDays = (worstAvg - state.target) * state.keep;
-  if(worstAvg < state.target - 1e-9)
-    return {cls:"bad", text:"Breaks the policy", detail:"short by " + plural(Math.round(Math.abs(slackDays)*10)/10,"day")};
-  if(slackDays < 1)
-    return {cls:"warn", text:"Last of your slack", detail:"nothing spare after this"};
-  return {cls:"ok", text:"Safe", detail:plural(Math.round(slackDays*10)/10,"day") + " still spare"};
-}
-
-function renderDayTable(days, w){
-  var body = $("dayBody"), html = "", i;
-  var freeWeeks = 0, freeDays = 0;
-  for(i=anchorIdx-state.win+1;i<=anchorIdx;i++){ if(!w.kept[i]){ freeWeeks++; freeDays += days[i]; } }
-  $("dayNote").innerHTML =
-    'Only the best <b>' + state.keep + '</b> weeks count, so days missed in the other <b>' + (state.win-state.keep) +
-    '</b> are invisible to the policy — right now <b>' + plural(freeDays,"office day") + '</b> sit in ' +
-    plural(freeWeeks,"dropped week") + ' and cost you nothing. Each row below is worked out <b>on its own</b>: ' +
-    'it assumes every other week runs as planned. Absences in different weeks stack up, so once you take one, ' +
-    'put it in the ledger and read the table again.';
-
-  for(i=anchorIdx;i<weeks.length;i++){
-    var o = days[i], k = 0, worstAt = null, worstNext = null;
-    for(var t=1;t<=o;t++){
-      var alt = days.slice(); alt[i] = o - t;
-      var res = worstAhead(alt).avg;
-      if(res < state.target - 1e-9){ worstNext = res; break; }
-      k = t; worstAt = res;
-    }
-    if(k === 0){
-      var a0 = days.slice(); a0[i] = Math.max(0, o - 1);
-      worstNext = o > 0 ? worstAhead(a0).avg : null;
-      worstAt = worstAhead(days).avg;
-    }
-    var v, cls;
-    if(o === 0){ v = "Nothing to drop"; cls = "mute"; }
-    else if(k >= o){ v = "The whole week is free"; cls = "ok"; }
-    else if(k > 0){ v = plural(k,"day") + " spare here"; cls = "warn"; }
-    else { v = "Every day here counts"; cls = "bad"; }
-
-    var rel = i === anchorIdx ? "this week" : "in " + (i-anchorIdx) + "w";
-    var hol = weeks[i].hols.length;
-    html += '<tr class="' + (weeks[i].future ? "future" : "now") + '">' +
-      '<td><span class="wk">' + fmtShort(weeks[i].monday) + '<small>' + rel + (hol ? " · bh" : "") + '</small></span></td>' +
-      '<td class="c"><span class="num big">' + o + '</span></td>' +
-      '<td class="c"><span class="num big ' + (k > 0 ? "kept" : "roll-bad") + '">' + k + '</span></td>' +
-      '<td class="c">' + (worstAt === null ? '<span class="drop">—</span>'
-                          : '<span class="num">' + fmtAvg(worstAt) + '</span>') + '</td>' +
-      '<td class="c">' + (worstNext === null ? '<span class="drop">—</span>'
-                          : '<span class="num roll-bad">' + fmtAvg(worstNext) + '</span>') + '</td>' +
-      '<td><span class="chip ' + cls + '">' + v + '</span></td>' +
-    '</tr>';
-  }
-  body.innerHTML = html;
-}
-
-/* ---------------- whole weeks off ---------------- */
-function renderWeekTable(days){
-  var len = +$("offLen").value, body = $("wkBody"), html = "", s;
-  var okStarts = [];
-  for(s=anchorIdx; s + len - 1 < weeks.length; s++){
-    var alt = days.slice(), lost = 0, j;
-    for(j=s;j<s+len;j++){ lost += alt[j]; alt[j] = 0; }
-    var worst = worstAhead(alt).avg;
-    var v = verdictFor(worst);
-    if(v.cls !== "bad") okStarts.push(s);
-    var back = addDays(weeks[s].monday, len*7);
-    html += '<tr class="' + (weeks[s].future ? "future" : "now") + '">' +
-      '<td><span class="wk">' + fmtShort(weeks[s].monday) + '<small>' +
-        (s === anchorIdx ? "this week" : "in " + (s-anchorIdx) + "w") + '</small></span></td>' +
-      '<td><span class="wk">' + fmtShort(back) + '</span></td>' +
-      '<td class="c"><span class="num big">' + lost + '</span></td>' +
-      '<td class="c"><span class="num big ' + (worst < state.target-1e-9 ? "roll-bad" : "") + '">' + fmtAvg(worst) + '</span></td>' +
-      '<td><span class="chip ' + v.cls + '">' + v.text + '</span> <span class="tiny">' + v.detail + '</span></td>' +
-    '</tr>';
-  }
-  body.innerHTML = html;
-  var note = $("wkNote");
-  if(!okStarts.length){
-    note.innerHTML = 'There is no start week in this horizon where <b>' + plural(len,"week") +
-      '</b> away leaves you compliant. You would need to bank extra days in the surrounding weeks first — ' +
-      'add them to the ledger above and this table will re-run.';
-  }else{
-    note.innerHTML = plural(len,"week") + ' away works from <b>' + okStarts.length +
-      '</b> of the ' + (weeks.length - len - anchorIdx + 1) + ' possible start weeks. The earliest safe start is <b>' +
-      fmtShort(weeks[okStarts[0]].monday) + '</b>. Every window that touches the absence is checked, including the ' +
-      (state.win-1) + ' that run past the end of the ledger.';
-  }
-}
-
-/* ---------------- bank holidays ---------------- */
-function renderHolidays(){
-  var list = $("bhList"), html = "", i, h;
-  var hits = 0, total = 0, worst4 = 0, worst3 = 0;
-  for(i=0;i<weeks.length;i++){
-    var wk = weeks[i];
-    if(wk.hols.length >= 2) worst3++;
-    else if(wk.hols.length === 1) worst4++;
-    for(h=0;h<wk.hols.length;h++){
-      var hol = wk.hols[h], onPattern = state.pattern[hol.i];
-      total++;
-      if(onPattern && wk.future) hits++;
-      html += '<div class="bh-item' + (onPattern ? ' hits' : '') + '">' +
-        '<div class="d">' + DOW[hol.i] + ' ' + fmtLong(hol.date) + '</div>' +
-        '<div class="n">' + hol.name + '</div>' +
-        '<div class="x">' + (onPattern
-          ? 'Falls on one of your office days — that week drops to ' + (countO(cellsFor(wk.monday))) + '.'
-          : 'Falls on a day you would not be in anyway.') + '</div>' +
-      '</div>';
-    }
-  }
-  if(!total) html = '<p class="sub">No bank holidays fall inside this horizon.</p>';
-  list.innerHTML = html;
-
-  var need = state.target;
-  $("bhNote").innerHTML = state.region === "none"
-    ? 'Bank holidays are switched off, so every week here is treated as a full five-day week.'
-    : '<b>' + plural(total,"bank holiday") + '</b> ' + verb(total,"falls","fall") + ' in this horizon, across ' +
-      plural(worst4+worst3,"week") + '. <b>' + hits + '</b> of them ' + verb(hits,"is","are") +
-      ' still ahead of you and ' + verb(hits,"lands","land") + ' on a day you would normally be in the office. ' +
-      'Because they are not excluded, a week with one bank holiday still needs <b>' + need + ' of its 4</b> working days in' +
-      (worst3 ? ', and ' + plural(worst3,"week") + ' here carry two — ' + need + ' of 3, so all but full attendance' : '') +
-      '. Those are the weeks most likely to drop out of your best ' + state.keep + '.';
-}
-
 function renderFoot(){
   $("foot").innerHTML =
-    '<b>How the score is worked out.</b> For every week, the previous ' + state.win + ' weeks are ranked by office days, ' +
-    'the best ' + state.keep + ' are kept and averaged, and that average has to reach ' + state.target + '. ' +
-    'Equivalently you need <b>' + (state.keep*state.target) + ' office days across your best ' + state.keep + ' weeks</b>. ' +
-    'Weeks ranked outside the best ' + state.keep + ' are ignored entirely, which is where all of your room to manoeuvre comes from.<br><br>' +
-    '<b>Booking time off.</b> Leave to book counts the Monday&ndash;Friday days in the range and takes off any bank ' +
-    'holiday inside it, so a Christmas run costs you far fewer days than it spans. Office days lost counts only the days ' +
-    'you would otherwise have been in. Adding a period clears anything you had set by hand on those days, and stretches ' +
-    'the ledger if the dates run past the end of it.<br><br>' +
-    '<b>Assumptions.</b> The window includes the current week. Anything after it is your plan, not a record. ' +
-    'Windows extending past the ledger assume you return to your usual pattern. ' +
-    'Bank holiday dates cover England &amp; Wales, Scotland and Northern Ireland for 2025–2028 and only ' +
-    'Monday–Friday dates change anything; check them against gov.uk/bank-holidays before you rely on a close call. ' +
-    'This is a planning aid, not your employer&rsquo;s system of record.';
+    '<b>The sum.</b> Each week the last ' + state.win + ' are ranked by office days, the best ' + state.keep +
+    ' are kept and averaged, and that average has to reach ' + state.target + ' — so <b>' + (state.keep*state.target) +
+    ' office days across your best ' + state.keep + ' weeks</b>. The ' + (state.win - state.keep) +
+    ' worst weeks are thrown away, and that is where all your room comes from.<br><br>' +
+    '<b>Days out.</b> Everything that keeps you out counts the same — leave, sickness, a bank holiday, a day at home. ' +
+    'Nothing is deducted or excluded; the ' + state.keep + '-of-' + state.win + ' rule is what absorbs it. ' +
+    'Bank holidays just start the week off with one fewer day available, and are marked BH.<br><br>' +
+    '<b>Assumptions.</b> The window includes this week. Weeks past the end of the plan assume your usual pattern. ' +
+    'Bank holiday dates cover England &amp; Wales, Scotland and Northern Ireland for 2025&ndash;2028; check gov.uk/bank-holidays ' +
+    'before you rely on a close call. A planning aid, not your employer&rsquo;s system of record.';
 }
 
-/* ============================================================
-   Wiring
-   ============================================================ */
+/* ---------- wiring ---------- */
 function renderPattern(){
-  var box = $("patternBtns"), html = "", i;
-  for(i=0;i<5;i++){
+  var html = "", i;
+  for(i=0;i<5;i++)
     html += '<button type="button" class="pat-btn" data-p="' + i + '" aria-pressed="' +
             (state.pattern[i] ? "true" : "false") + '">' + DOW[i] + '</button>';
-  }
-  box.innerHTML = html;
+  $("patternBtns").innerHTML = html;
 }
 $("patternBtns").addEventListener("click", function(e){
   var b = e.target.closest("button[data-p]");
   if(!b) return;
-  var i = +b.getAttribute("data-p");
-  state.pattern[i] = !state.pattern[i];
+  state.pattern[+b.getAttribute("data-p")] = !state.pattern[+b.getAttribute("data-p")];
   renderPattern();
   renderAll();
 });
 
-$("ledgerBody").addEventListener("click", function(e){
-  var b = e.target.closest("button.dc");
-  if(!b) return;
-  var wi = +b.getAttribute("data-w"), di = +b.getAttribute("data-d");
-  var wk = weeks[wi], k = iso(wk.dates[di]), isHol = !!HOL[k];
-  var order = isHol ? ["B","O","H","L"] : ["O","H","L"];
-  var pos = order.indexOf(dayChar(k, di));
-  var next = order[(pos + 1) % order.length];
-  // stepping back onto what the page would show anyway means dropping the override
-  delete state.overrides[k];
-  if(dayChar(k, di) !== next) state.overrides[k] = next;
-  renderAll();
-});
-
-$("statusGrid").addEventListener("click", function(e){
-  var b = e.target.closest("button[data-s]");
+function onStep(e){
+  var b = e.target.closest("button[data-i]");
   if(!b || b.disabled) return;
-  var i = +b.getAttribute("data-s"), v = +b.getAttribute("data-v");
-  setWeekCount(i, Math.max(0, Math.min(maxDaysIn(i), v)));
+  var i = +b.getAttribute("data-i"), v = +b.getAttribute("data-v"), k = b.getAttribute("data-k");
+  if(k === "in") state.inDays[weeks[i].key] = Math.max(0, Math.min(maxIn(i), v));
+  else state.outDays[weeks[i].key] = Math.max(weeks[i].hols.length, Math.min(5, v));
   renderAll();
-});
-$("statusPattern").addEventListener("click", function(){
-  for(var i=0;i<=anchorIdx;i++)
-    for(var j=0;j<5;j++) delete state.overrides[iso(weeks[i].dates[j])];
-  renderAll();
-});
+}
+$("pastGrid").addEventListener("click", onStep);
+$("planGrid").addEventListener("click", onStep);
 
-function absMsg(t){ $("absMsg").textContent = t || ""; }
-function addAbsence(from, to, label){
-  if(!from || !to){ absMsg("Pick both a first and a last day."); return; }
-  if(to < from){ var t = from; from = to; to = t; }
-  var floor = iso(weeks[0].monday);
-  if(to < floor){ absMsg("That is before the " + state.win + " weeks under review, so it changes nothing."); return; }
-  if(from < floor) from = floor;
-  // let the booking show through anything set by hand on those days
-  eachWeekday(from, to, function(d){ delete state.overrides[iso(d)]; });
-  state.absences.push({ id:"a" + (state.seq++), label:(label||"").trim(), from:from, to:to });
-  state.absences.sort(function(a,b){ return a.from < b.from ? -1 : a.from > b.from ? 1 : 0; });
-  absMsg("");
-  renderAll();
-}
-$("absAdd").addEventListener("click", function(){
-  addAbsence($("absFrom").value, $("absTo").value, $("absLabel").value);
-  $("absLabel").value = "";
-});
-$("absBody").addEventListener("click", function(e){
-  var b = e.target.closest("button[data-rm]");
-  if(!b) return;
-  var id = b.getAttribute("data-rm");
-  state.absences = withoutAbsence(id);
+$("resetPast").addEventListener("click", function(){
+  for(var i=0;i<=anchorIdx;i++) delete state.inDays[weeks[i].key];
   renderAll();
 });
-$("absPresets").addEventListener("click", function(e){
-  var b = e.target.closest("button[data-pf]");
-  if(b){
-    $("absFrom").value = b.getAttribute("data-pf");
-    $("absTo").value = b.getAttribute("data-pt");
-    addAbsence(b.getAttribute("data-pf"), b.getAttribute("data-pt"), b.getAttribute("data-pl"));
-    return;
-  }
-  if(e.target.closest("#absClear")){ state.absences = []; renderAll(); }
+$("resetPlan").addEventListener("click", function(){
+  for(var i=anchorIdx+1;i<weeks.length;i++) delete state.outDays[weeks[i].key];
+  renderAll();
 });
-function renderPresets(){
-  var t = todayUTC(), y = t.getUTCFullYear();
-  var xmas = new Date(Date.UTC(y,11,25));
-  if(xmas < t){ y += 1; xmas = new Date(Date.UTC(y,11,25)); }
-  var xMon = mondayOf(xmas), nyMon = mondayOf(new Date(Date.UTC(y+1,0,1)));
-  var sets = [
-    { l:"Christmas week", f:iso(xMon), t:iso(addDays(xMon,4)) },
-    { l:"New Year week", f:iso(nyMon), t:iso(addDays(nyMon,4)) },
-    { l:"Christmas to New Year", f:iso(xMon), t:iso(addDays(nyMon,4)) }
-  ];
-  var html = "", i;
-  for(i=0;i<sets.length;i++){
-    html += '<button type="button" class="btn tiny-btn ghost" data-pf="' + sets[i].f + '" data-pt="' + sets[i].t +
-            '" data-pl="' + sets[i].l + '">' + sets[i].l + '</button>';
-  }
-  html += '<button type="button" class="btn tiny-btn" id="absClear">Clear the plan</button>';
-  html += '<span class="tiny" id="absMsg" role="status" aria-live="polite"></span>';
-  $("absPresets").innerHTML = html;
-}
 
 $("regionSel").addEventListener("change", function(){ state.region = this.value; renderAll(); });
-$("aheadSel").addEventListener("change", function(){
-  if(this.value === "custom") return;
-  state.ahead = +this.value;
-  renderAll();
-});
-$("offLen").addEventListener("change", function(){ renderWeekTable(cur.days); });
+$("aheadSel").addEventListener("change", function(){ state.ahead = +this.value; renderAll(); });
 
 function numHandler(id, key, min, max){
   $(id).addEventListener("change", function(){
@@ -1541,85 +760,49 @@ numHandler("winIn","win",2,26);
 numHandler("keepIn","keep",1,26);
 numHandler("tgtIn","target",0,5);
 
-function clearOverridesFrom(startIdx){
-  for(var i=startIdx;i<weeks.length;i++)
-    for(var j=0;j<5;j++) delete state.overrides[iso(weeks[i].dates[j])];
-}
-$("applyFuture").addEventListener("click", function(){
-  clearOverridesFrom(anchorIdx+1);
-  renderAll();
-});
-$("applyAll").addEventListener("click", function(){
-  state.overrides = {};
-  renderAll();
-});
-$("resetBtn").addEventListener("click", function(){
-  state.overrides = {};
-  renderAll();
-  flash("Ledger reset to your usual pattern and booked time off.");
-});
-
 function flash(msg){
-  var el = $("saveNote"), old = "Your entries are saved in this browser only.";
+  var el = $("saveNote");
   el.textContent = msg;
-  setTimeout(function(){ el.textContent = old; }, 2600);
+  setTimeout(function(){ el.textContent = "Saved in this browser only."; }, 2600);
 }
-
+$("resetBtn").addEventListener("click", function(){
+  state.inDays = {}; state.outDays = {};
+  renderAll();
+  flash("Everything back to your usual week.");
+});
 $("copyBtn").addEventListener("click", function(){
-  var days = cur.days, w = cur.win, lines = [], i;
-  lines.push("RTO attendance — best " + state.keep + " of the last " + state.win + ", average " + state.target + " days");
-  lines.push("Week of " + fmtLong(weeks[anchorIdx].monday));
-  lines.push("");
-  lines.push("Current score: " + fmtAvg(w.avg) + " days/week  (" + w.sum + " of " + w.need + " required) — " +
-             (w.ok ? "MEETING POLICY" : "BELOW POLICY"));
-  lines.push("Slack in the counted " + state.keep + ": " + (w.sum - w.need) + " days");
-  lines.push("Days that can still be missed: " + (w.ok ? (w.dropSum + Math.max(0, w.sum - w.need)) : 0));
-  lines.push("");
-  if(state.absences.length){
-    lines.push("Time off booked:");
-    for(i=0;i<state.absences.length;i++){
-      var a = state.absences[i], f = periodFacts(a);
-      lines.push("  " + shortRange(a) + "  " + (a.label || "time off") +
-                 " — " + f.leave + " days leave, " + f.hols + " bank holidays");
-    }
-    var wst = worstAhead(days);
-    lines.push("  Worst window with it all: " + fmtAvg(wst.avg) +
-               (wst.avg >= state.target - 1e-9 ? " — holds" : " — BREAKS the policy"));
-    lines.push("");
-  }
-  lines.push("Week          Office  Working  Status   Rolling");
+  var days = cur.days, w = cur.win, L = [], i;
+  function pad(s,n){ s = String(s); while(s.length < n) s += " "; return s; }
+  L.push("RTO — best " + state.keep + " of the last " + state.win + ", average " + state.target + " days");
+  L.push("Week of " + fmtLong(weeks[anchorIdx].monday));
+  L.push("");
+  L.push("Today: " + fmtAvg(w.avg) + " (" + w.sum + " of " + w.need + ") — " + (w.ok ? "MEETING POLICY" : "BELOW POLICY"));
+  L.push("Days you can still miss: " + (w.ok ? (w.dropSum + Math.max(0, w.sum - w.need)) : 0));
+  L.push("");
+  L.push("Week      In  Out  Rolling");
   for(i=0;i<weeks.length;i++){
-    var rw = windowAt(days, i);
-    var inWin = (i >= anchorIdx - state.win + 1 && i <= anchorIdx);
-    var pad = function(s,n){ s = String(s); while(s.length < n) s += " "; return s; };
-    lines.push(pad(fmtShort(weeks[i].monday) + (weeks[i].now ? " *" : ""), 14) +
-               pad(days[i], 8) + pad(5 - weeks[i].hols.length, 9) +
-               pad(inWin ? (w.kept[i] ? "kept" : "dropped") : "-", 9) +
-               (rw ? fmtAvg(rw.avg) : "-"));
+    var ww = windowAt(days, i);
+    L.push(pad(fmtShort(weeks[i].monday) + (weeks[i].now ? "*" : ""), 10) +
+           pad(days[i], 4) + pad(5 - days[i], 5) + (ww ? fmtAvg(ww.avg) : "-"));
   }
-  var text = lines.join("\n");
-  if(navigator.clipboard && navigator.clipboard.writeText){
+  var text = L.join("\n");
+  if(navigator.clipboard && navigator.clipboard.writeText)
     navigator.clipboard.writeText(text).then(function(){ flash("Summary copied."); },
-                                             function(){ flash("Could not copy — select the table instead."); });
-  }else{
-    flash("Clipboard unavailable in this browser.");
-  }
+                                             function(){ flash("Could not copy."); });
+  else flash("Clipboard unavailable here.");
 });
 
-var ro = null;
 if(window.ResizeObserver){
   var pending = false;
-  ro = new ResizeObserver(function(){
+  new ResizeObserver(function(){
     if(pending) return;
     pending = true;
     requestAnimationFrame(function(){ pending = false; if(cur) renderChart(cur.days); });
-  });
-  ro.observe($("chartWrap"));
+  }).observe($("chartWrap"));
 }else{
   window.addEventListener("resize", function(){ if(cur) renderChart(cur.days); });
 }
 
-/* boot */
 load();
 $("regionSel").value = state.region;
 $("aheadSel").value = String(state.ahead);
@@ -1627,7 +810,6 @@ $("winIn").value = state.win;
 $("keepIn").value = state.keep;
 $("tgtIn").value = state.target;
 renderPattern();
-renderPresets();
 renderAll();
 
 })();
