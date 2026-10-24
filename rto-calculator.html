@@ -5,17 +5,20 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
-/* One column, read top to bottom: where you stand, what fixes it, time away, then the weeks. */
+/* Read top to bottom on a phone: score and the 12 weeks behind it, the fix, time away,
+   then a compact Mon–Fri calendar of the weeks ahead. */
 :root{
   color-scheme: light;
   --plane:#f6f6f4; --card:#ffffff; --card-2:#fafaf8;
   --ink:#10141a; --ink-2:#4d545c; --ink-3:#868d93;
   --rule:#e4e4de; --cell:#dcdcd4;
   --accent:#2a78d6; --accent-ink:#1c5cab; --accent-wash:rgba(42,120,214,.10); --accent-wash-2:rgba(42,120,214,.22);
+  --on-accent:#ffffff;
   --good-ink:#006300; --good-wash:rgba(12,163,12,.10); --good:#0ca30c;
   --crit:#d03b3b; --crit-ink:#b02c2c; --crit-wash:rgba(208,59,59,.10);
-  --amber:#d99a12; --amber-ink:#7d5600; --amber-wash:rgba(250,178,25,.16);
-  --away:rgba(16,20,26,.045);
+  --amber:#d99a12; --amber-ink:#7d5600; --amber-wash:rgba(250,178,25,.18);
+  --hol:#7a5cc4; --hol-ink:#5b3fa6; --hol-wash:rgba(122,92,196,.14);
+  --out-wash:rgba(16,20,26,.07);
   --shadow:0 1px 2px rgba(16,20,26,.05), 0 8px 24px -16px rgba(16,20,26,.22);
 }
 @media (prefers-color-scheme: dark){
@@ -25,10 +28,12 @@
     --ink:#f4f5f5; --ink-2:#b7bcc1; --ink-3:#8b9096;
     --rule:#2c2d2e; --cell:#3e4042;
     --accent:#3987e5; --accent-ink:#79b1f0; --accent-wash:rgba(57,135,229,.16); --accent-wash-2:rgba(57,135,229,.30);
+    --on-accent:#ffffff;
     --good-ink:#3cc63c; --good-wash:rgba(12,163,12,.16); --good:#0ca30c;
     --crit:#d03b3b; --crit-ink:#ef8080; --crit-wash:rgba(208,59,59,.18);
-    --amber:#e2ad4a; --amber-ink:#e2ad4a; --amber-wash:rgba(250,178,25,.14);
-    --away:rgba(255,255,255,.035);
+    --amber:#e2ad4a; --amber-ink:#e2ad4a; --amber-wash:rgba(250,178,25,.16);
+    --hol:#a68ce8; --hol-ink:#bba6f0; --hol-wash:rgba(166,140,232,.18);
+    --out-wash:rgba(255,255,255,.07);
     --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
   }
 }
@@ -38,10 +43,12 @@
   --ink:#f4f5f5; --ink-2:#b7bcc1; --ink-3:#8b9096;
   --rule:#2c2d2e; --cell:#3e4042;
   --accent:#3987e5; --accent-ink:#79b1f0; --accent-wash:rgba(57,135,229,.16); --accent-wash-2:rgba(57,135,229,.30);
+  --on-accent:#ffffff;
   --good-ink:#3cc63c; --good-wash:rgba(12,163,12,.16); --good:#0ca30c;
   --crit:#d03b3b; --crit-ink:#ef8080; --crit-wash:rgba(208,59,59,.18);
-  --amber:#e2ad4a; --amber-ink:#e2ad4a; --amber-wash:rgba(250,178,25,.14);
-  --away:rgba(255,255,255,.035);
+  --amber:#e2ad4a; --amber-ink:#e2ad4a; --amber-wash:rgba(250,178,25,.16);
+  --hol:#a68ce8; --hol-ink:#bba6f0; --hol-wash:rgba(166,140,232,.18);
+  --out-wash:rgba(255,255,255,.07);
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
 }
 
@@ -49,337 +56,325 @@
 body{
   margin:0; background:var(--plane); color:var(--ink);
   font-family:"IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased;
+  font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased;
 }
-.wrap{max-width:820px; margin:0 auto; padding:0 20px 80px}
+.wrap{max-width:720px; margin:0 auto; padding:0 20px 64px}
 h1,h2{font-family:"IBM Plex Sans Condensed", ui-sans-serif, system-ui, sans-serif; margin:0; text-wrap:balance}
-h1{font-size:29px; font-weight:700; letter-spacing:-.015em}
-h2{font-size:18px; font-weight:600}
+h1{font-size:22px; font-weight:700; letter-spacing:-.01em}
+h2{font-size:17px; font-weight:600}
 p{margin:0}
-.sub{color:var(--ink-2); font-size:14px; max-width:70ch}
-.tiny{font-size:12.5px; color:var(--ink-3); line-height:1.55}
+.sub{color:var(--ink-2); font-size:13.5px}
+.tiny{font-size:12.5px; color:var(--ink-3); line-height:1.5}
 .eyebrow{
-  font-family:"IBM Plex Mono", monospace; font-size:11px; font-weight:500;
-  letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3);
+  font-family:"IBM Plex Mono", monospace; font-size:10.5px; font-weight:500;
+  letter-spacing:.13em; text-transform:uppercase; color:var(--ink-3);
 }
 .mono{font-family:"IBM Plex Mono", monospace; font-variant-numeric:tabular-nums}
 
 /* masthead */
 .masthead{background:var(--card); border-bottom:1px solid var(--rule)}
-.masthead .wrap{padding-top:22px; padding-bottom:20px}
-.rule-say{
-  margin-top:12px; font-family:"IBM Plex Mono", monospace; font-size:12.5px; color:var(--ink-2);
-  border:1px solid var(--rule); background:var(--card-2); border-radius:3px; padding:8px 12px; display:inline-block;
-}
-.rule-say b{color:var(--ink); font-weight:600}
+.masthead .wrap{padding-top:14px; padding-bottom:14px; display:flex; gap:6px 14px; align-items:baseline; flex-wrap:wrap}
+.rule-say{font-family:"IBM Plex Mono", monospace; font-size:12px; color:var(--ink-3)}
+.rule-say b{color:var(--ink-2); font-weight:600}
 
-/* headline */
-.headline{
-  border:1px solid var(--rule); border-left-width:3px; border-radius:0 4px 4px 0;
-  background:var(--card); box-shadow:var(--shadow); padding:20px 22px; margin-top:24px;
+/* cards */
+.card{border:1px solid var(--rule); border-radius:4px; background:var(--card); box-shadow:var(--shadow); margin-top:16px; overflow:hidden}
+.card-head{
+  padding:12px 16px; border-bottom:1px solid var(--rule); background:var(--card-2);
+  display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap;
 }
-.headline.ok{border-left-color:var(--good)}
-.headline.bad{border-left-color:var(--crit)}
-.headline.prov{border-left-color:var(--amber)}
-.head-top{display:flex; gap:22px; align-items:center; flex-wrap:wrap}
+.card-body{padding:14px 16px 16px}
+.btn{
+  font-family:"IBM Plex Sans", sans-serif; font-size:13px; font-weight:500; cursor:pointer;
+  border:1px solid var(--rule); background:var(--card); color:var(--ink);
+  border-radius:3px; padding:6px 11px;
+}
+.btn:hover{background:var(--card-2)}
+.btn.primary{background:var(--accent); border-color:var(--accent); color:var(--on-accent)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn-row{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+input[type="number"], input[type="date"], input[type="text"], select{
+  font-family:"IBM Plex Mono", monospace; font-size:13px; color:var(--ink);
+  background:var(--card); border:1px solid var(--cell); border-radius:3px; padding:6px 8px;
+}
+input:focus-visible, button:focus-visible, select:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+/* status */
+.status{border-left:3px solid var(--rule)}
+.status.ok{border-left-color:var(--good)} .status.bad{border-left-color:var(--crit)} .status.prov{border-left-color:var(--amber)}
+.status-top{display:flex; gap:16px; align-items:center}
 .big{
-  font-family:"IBM Plex Sans Condensed", sans-serif; font-weight:700; font-size:56px; line-height:.95;
+  font-family:"IBM Plex Sans Condensed", sans-serif; font-weight:700; font-size:48px; line-height:.95;
   letter-spacing:-.03em; font-variant-numeric:tabular-nums; white-space:nowrap;
 }
 .big.ok{color:var(--good-ink)} .big.bad{color:var(--crit-ink)} .big.prov{color:var(--amber-ink)}
-.big small{font-size:22px; font-weight:600; color:var(--ink-3); letter-spacing:0}
-.head-txt{flex:1 1 300px; min-width:0}
-.head-txt p{margin-top:8px; color:var(--ink-2); font-size:14px}
-.head-txt p b{color:var(--ink); font-weight:600}
+.big small{font-size:20px; font-weight:600; color:var(--ink-3); letter-spacing:0}
+.status-txt{flex:1 1 auto; min-width:0}
+.status-txt p{margin-top:6px; color:var(--ink-2); font-size:13.5px}
+.status-txt p b{color:var(--ink); font-weight:600}
 .chip{
-  display:inline-flex; align-items:center; gap:6px; border-radius:2px; padding:3px 9px;
-  font-family:"IBM Plex Mono", monospace; font-size:11px; font-weight:600;
+  display:inline-flex; align-items:center; gap:6px; border-radius:2px; padding:2px 8px;
+  font-family:"IBM Plex Mono", monospace; font-size:10.5px; font-weight:600;
   letter-spacing:.09em; text-transform:uppercase; border:1px solid currentColor;
 }
 .chip.ok{color:var(--good-ink); background:var(--good-wash)}
 .chip.bad{color:var(--crit-ink); background:var(--crit-wash)}
 .chip.prov{color:var(--amber-ink); background:var(--amber-wash)}
 .chip .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
-.stats{
-  display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:0;
-  margin-top:18px; border-top:1px solid var(--rule);
-}
-.stat{padding:12px 14px 2px 0; min-width:0}
-.stat + .stat{padding-left:14px; border-left:1px solid var(--rule)}
-.stat .eyebrow{font-size:10px; letter-spacing:.12em}
-.stat .sv{font-family:"IBM Plex Mono", monospace; font-size:17px; font-weight:600; margin-top:3px; font-variant-numeric:tabular-nums}
+.stats{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); margin-top:14px; border-top:1px solid var(--rule)}
+.stat{padding:10px 10px 0 0; min-width:0}
+.stat + .stat{padding-left:10px; border-left:1px solid var(--rule)}
+.stat .eyebrow{font-size:9.5px; letter-spacing:.11em}
+.stat .sv{font-family:"IBM Plex Mono", monospace; font-size:15px; font-weight:600; margin-top:2px; font-variant-numeric:tabular-nums}
 .stat .sv.ok{color:var(--good-ink)} .stat .sv.bad{color:var(--crit-ink)}
-.stat .sd{font-size:12px; color:var(--ink-3); line-height:1.4; margin-top:1px}
+.stat .sd{font-size:11.5px; color:var(--ink-3); line-height:1.35}
 
-/* cards */
-.card{border:1px solid var(--rule); border-radius:4px; background:var(--card); box-shadow:var(--shadow); margin-top:20px; overflow:hidden}
-.card-head{
-  padding:15px 20px; border-bottom:1px solid var(--rule); background:var(--card-2);
-  display:flex; gap:14px; align-items:center; justify-content:space-between; flex-wrap:wrap;
+/* the 12-week strip */
+.strip-head{display:flex; justify-content:space-between; gap:10px; margin-top:16px; padding-top:12px; border-top:1px solid var(--rule)}
+.strip{display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); gap:4px; margin-top:8px}
+.wk{
+  border:1px solid var(--rule); border-radius:3px; background:var(--card-2); padding:4px 0 5px; cursor:pointer;
+  display:flex; flex-direction:column; align-items:center; gap:1px; font:inherit; color:var(--ink); min-width:0;
 }
-.card-head > div:first-child{flex:1 1 280px; min-width:0}
-.card-body{padding:16px 20px 20px}
-.btn{
-  font-family:"IBM Plex Sans", sans-serif; font-size:13px; font-weight:500; cursor:pointer;
-  border:1px solid var(--rule); background:var(--card); color:var(--ink);
-  border-radius:3px; padding:7px 12px;
+.wk .d{font-family:"IBM Plex Mono", monospace; font-size:9.5px; color:var(--ink-3); white-space:nowrap}
+.wk .v{font-family:"IBM Plex Mono", monospace; font-size:16px; font-weight:600; line-height:1.2}
+.wk.keep{border-color:var(--good); background:var(--good-wash)}
+.wk.keep .v{color:var(--good-ink)}
+.wk.drop .v{color:var(--ink-3); font-weight:500}
+.wk.miss{border-style:dashed; border-color:var(--amber); background:var(--card)}
+.wk.miss .v{color:var(--amber-ink)}
+.wk.planned .v{font-style:italic}
+.wk.sel{outline:2px solid var(--accent); outline-offset:1px}
+.strip-legend{display:flex; gap:12px; flex-wrap:wrap; margin-top:6px; font-size:11.5px; color:var(--ink-3)}
+.strip-legend b{font-weight:600}
+.strip-legend .k{color:var(--good-ink)} .strip-legend .m{color:var(--amber-ink)}
+.editor{
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:10px; padding:9px 11px;
+  background:var(--accent-wash); border-radius:3px; font-size:13.5px;
 }
-.btn:hover{background:var(--card-2)}
-.btn.primary{background:var(--accent); border-color:var(--accent); color:#fff}
-.btn.primary:hover{filter:brightness(1.08)}
-.btn-row{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
-input[type="number"], input[type="date"], input[type="text"]{
-  font-family:"IBM Plex Mono", monospace; font-size:13px; color:var(--ink);
-  background:var(--card); border:1px solid var(--cell); border-radius:3px; padding:6px 8px;
-}
-input[type="number"]{width:60px}
-input:focus-visible, button:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
-.field{display:flex; align-items:center; gap:6px; font-size:12.5px; color:var(--ink-2)}
-
-/* fix card */
-.fix{border-left:3px solid var(--accent)}
-.fix-list{display:flex; flex-wrap:wrap; gap:6px; margin:12px 0 14px}
-.fix-list span{
-  font-family:"IBM Plex Mono", monospace; font-size:12.5px; border:1px solid var(--accent-wash-2);
-  background:var(--accent-wash); color:var(--accent-ink); border-radius:3px; padding:3px 8px; white-space:nowrap;
-}
-
-/* time away */
-.away-list{display:flex; flex-direction:column; gap:0}
-.away-item{
-  display:flex; gap:12px; align-items:center; justify-content:space-between;
-  padding:10px 0; border-bottom:1px solid var(--rule);
-}
-.away-item:first-child{padding-top:0}
-.away-item .what{min-width:0}
-.away-item .dates{font-family:"IBM Plex Mono", monospace; font-size:13.5px; font-weight:600}
-.away-item .lbl{font-size:13px; color:var(--ink-2)}
-.x{
-  width:30px; height:30px; flex:none; border:1px solid var(--rule); border-radius:3px; background:var(--card);
-  color:var(--ink-3); cursor:pointer; font-size:16px; line-height:1; padding:0;
-}
-.x:hover{color:var(--crit-ink); border-color:var(--crit)}
-.away-form{display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; margin-top:14px}
-.away-form label{display:flex; flex-direction:column; gap:4px; font-size:12px; color:var(--ink-3)}
-.away-form input[type="text"]{width:170px}
-.empty{font-size:13.5px; color:var(--ink-3)}
-
-/* week rows */
-.group{
-  font-family:"IBM Plex Mono", monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase;
-  color:var(--ink-3); padding:16px 0 8px; display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
-}
-.group:first-child{padding-top:0}
-.wrow{
-  display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1.15fr); gap:12px; align-items:center;
-  padding:8px 8px; border-top:1px solid var(--rule); margin:0 -8px;
-}
-.wrow.now{background:var(--accent-wash); border-top-color:var(--accent-wash-2)}
-.wrow.off{background:var(--away)}
-.wd{min-width:0}
-.wd b{font-family:"IBM Plex Mono", monospace; font-size:13px; font-weight:600}
-.wd .tags{display:flex; flex-wrap:wrap; gap:4px; margin-top:3px}
-.tag{
-  font-family:"IBM Plex Mono", monospace; font-size:9.5px; font-weight:600; letter-spacing:.05em;
-  border-radius:2px; padding:1px 4px; white-space:nowrap; max-width:100%; overflow:hidden; text-overflow:ellipsis;
-}
-.tag.bh{color:var(--amber-ink); background:var(--amber-wash)}
-.tag.ab{color:var(--ink-2); background:var(--card-2); border:1px solid var(--rule)}
-.tag.cap{color:var(--ink-3)}
-.tag.now{color:var(--accent-ink); background:var(--accent-wash-2)}
 .step{display:flex; align-items:center; gap:4px}
 .step button{
-  width:28px; height:28px; border:1px solid var(--cell); border-radius:3px; background:var(--card);
-  font-family:"IBM Plex Mono", monospace; font-size:15px; line-height:1; color:var(--ink-2); cursor:pointer; padding:0;
+  width:30px; height:30px; border:1px solid var(--cell); border-radius:3px; background:var(--card);
+  font-family:"IBM Plex Mono", monospace; font-size:16px; line-height:1; color:var(--ink-2); cursor:pointer; padding:0;
 }
-.step button:hover:not(:disabled){background:var(--accent-wash); border-color:var(--accent); color:var(--accent-ink)}
 .step button:disabled{opacity:.3; cursor:default}
-.step input{
-  width:40px; padding:4px 2px; text-align:center; font-size:16px; font-weight:600;
-  -moz-appearance:textfield; appearance:textfield;
-}
+.step input{width:44px; text-align:center; font-size:16px; font-weight:600; -moz-appearance:textfield; appearance:textfield}
 .step input::-webkit-inner-spin-button, .step input::-webkit-outer-spin-button{-webkit-appearance:none; margin:0}
-.step input::placeholder{color:var(--ink-3); font-weight:500; font-style:italic}
-.step input.planned{color:var(--ink-3); font-style:italic; font-weight:500}
-.step input.set{border-color:var(--accent); color:var(--accent-ink)}
-.wr{min-width:0; display:flex; align-items:center; gap:9px; justify-content:flex-end}
-.wr .st{font-family:"IBM Plex Mono", monospace; font-size:11.5px; color:var(--ink-3)}
-.wr .st.keep{color:var(--good-ink); font-weight:600}
-.wr .st.gap{color:var(--amber-ink); font-weight:600}
-.meter{position:relative; flex:1 1 auto; height:8px; background:var(--card-2); border:1px solid var(--rule); border-radius:2px; min-width:40px}
-.meter i{position:absolute; left:0; top:0; bottom:0; background:var(--good); opacity:.75; border-radius:1px}
-.meter.bad i{background:var(--crit)}
-.meter.prov i{background:var(--amber)}
-.meter b{position:absolute; top:-4px; bottom:-4px; width:2px; background:var(--ink-2); margin-left:-1px}
-.wr .n{font-family:"IBM Plex Mono", monospace; font-size:13px; font-weight:600; width:24px; text-align:right; font-variant-numeric:tabular-nums}
-.wr .n.bad{color:var(--crit-ink)} .wr .n.prov{color:var(--amber-ink)}
-.col-heads{
-  display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1.15fr); gap:12px;
-  font-family:"IBM Plex Mono", monospace; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3);
-  padding:0 0 6px;
-}
-.col-heads span:nth-child(2){width:108px; text-align:center}
-.col-heads span:last-child{text-align:right}
 
-.warn-note{
-  margin-top:12px; font-size:13px; color:var(--amber-ink); background:var(--amber-wash);
-  border-radius:3px; padding:8px 11px;
-}
-.databar .card-body{display:flex; gap:14px; align-items:center; justify-content:space-between; flex-wrap:wrap}
-.databar .card-body > div:first-child{flex:1 1 260px; min-width:0}
-.databar .warn-note{margin:0 20px 18px}
+/* fixes */
+.fix{border-left:3px solid var(--accent)}
+.opts{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:10px; margin-top:12px}
+.opt{border:1px solid var(--rule); border-radius:3px; padding:11px 12px; background:var(--card-2); display:flex; flex-direction:column; gap:6px; min-width:0}
+.opt.rec{border-color:var(--accent-wash-2); background:var(--accent-wash)}
+.opt h3{margin:0; font-size:14px; font-weight:600}
+.opt h3 small{font-family:"IBM Plex Mono", monospace; font-size:10px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--accent-ink); margin-left:6px}
+.opt p{font-size:13px; color:var(--ink-2)}
+.opt .wks{font-family:"IBM Plex Mono", monospace; font-size:12px; color:var(--ink)}
+.opt .btn{align-self:flex-start; margin-top:2px}
 
-details{border-top:1px solid var(--rule); margin-top:22px}
-details summary{
-  cursor:pointer; padding:12px 0; font-family:"IBM Plex Mono", monospace; font-size:11px;
-  letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); list-style:none;
+/* time away */
+.away-item{display:flex; gap:10px; align-items:center; padding:8px 0; border-bottom:1px solid var(--rule)}
+.away-item:first-child{padding-top:0}
+.away-item .what{flex:1; min-width:0}
+.away-item .dates{font-family:"IBM Plex Mono", monospace; font-size:13px; font-weight:600}
+.away-item .lbl{font-size:12.5px; color:var(--ink-2)}
+.kind{font-family:"IBM Plex Mono", monospace; font-size:9.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; border-radius:2px; padding:1px 5px; margin-right:6px}
+.kind.holiday{color:var(--hol-ink); background:var(--hol-wash)}
+.kind.out{color:var(--ink-2); background:var(--out-wash)}
+.x{width:30px; height:30px; flex:none; border:1px solid var(--rule); border-radius:3px; background:var(--card); color:var(--ink-3); cursor:pointer; font-size:16px; line-height:1; padding:0}
+.x:hover{color:var(--crit-ink); border-color:var(--crit)}
+.away-form{display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:8px; margin-top:12px; align-items:end}
+.away-form label{display:flex; flex-direction:column; gap:3px; font-size:11.5px; color:var(--ink-3); min-width:0}
+.away-form input, .away-form select{width:100%; min-width:0}
+.empty{font-size:13px; color:var(--ink-3)}
+.add-away{margin-top:12px}
+.add-away summary{list-style:none; display:inline-block}
+.add-away summary::-webkit-details-marker{display:none}
+.add-away[open] summary{display:none}
+
+/* calendar */
+.days-pick{display:flex; gap:3px; align-items:center}
+.days-pick span{font-size:12.5px; color:var(--ink-2); margin-right:4px}
+.days-pick button{
+  width:28px; height:28px; border:1px solid var(--cell); border-radius:3px; background:var(--card); color:var(--ink-3);
+  font-family:"IBM Plex Mono", monospace; font-size:12px; font-weight:600; cursor:pointer; padding:0;
 }
-details summary::-webkit-details-marker{display:none}
-details summary::before{content:"+  "; color:var(--accent)}
-details[open] summary::before{content:"\2212  "}
-.policy-quote{
-  margin:0 0 16px; padding:0 0 0 14px; border-left:2px solid var(--rule);
-  font-size:13.5px; color:var(--ink-2); line-height:1.6; max-width:78ch;
+.days-pick button[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:var(--on-accent)}
+.legend{display:flex; flex-wrap:wrap; gap:4px 12px; font-size:11.5px; color:var(--ink-3); margin-bottom:10px}
+.legend i{display:inline-block; width:12px; height:12px; border-radius:2px; vertical-align:-2px; margin-right:4px; border:1px solid var(--cell)}
+.cal-grid, .crow{display:grid; grid-template-columns:58px repeat(5, minmax(26px,34px)) 22px 1fr; gap:4px; align-items:center}
+.cal-grid{font-family:"IBM Plex Mono", monospace; font-size:10px; color:var(--ink-3); letter-spacing:.06em; padding-bottom:4px}
+.cal-grid span{text-align:center}
+.cal-grid span:first-child, .cal-grid span:last-child{text-align:left}
+.crow{padding:2px 0}
+.crow.now{background:var(--accent-wash); margin:0 -6px; padding:2px 6px; border-radius:3px}
+.mon-row{font-family:"IBM Plex Mono", monospace; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); padding:8px 0 3px; border-top:1px solid var(--rule); margin-top:4px}
+.cd{font-family:"IBM Plex Mono", monospace; font-size:12px; font-weight:500; white-space:nowrap}
+.c{
+  height:24px; border:1px solid var(--cell); border-radius:3px; background:var(--card); padding:0; cursor:pointer;
+  font-family:"IBM Plex Mono", monospace; font-size:9.5px; font-weight:600; color:var(--ink-3); min-width:0;
 }
-.policy-quote p{margin:0 0 9px}
+.c.office{background:var(--accent); border-color:var(--accent)}
+.c.office.extra{background:var(--accent-wash-2); border:2px solid var(--accent)}
+.c.office.changed{box-shadow:inset 0 0 0 2px var(--card)}
+.c.home.changed{border:2px dashed var(--accent)}
+.c.holiday{background:var(--hol-wash); border-color:transparent; color:var(--hol-ink); cursor:default}
+.c.out{background:var(--out-wash); border-color:transparent; cursor:default}
+.c.bh{background:var(--amber-wash); border-color:transparent; color:var(--amber-ink); cursor:default}
+.c:disabled{cursor:default}
+.c.logged{opacity:.5}
+.cn{font-family:"IBM Plex Mono", monospace; font-size:12px; color:var(--ink-2); text-align:center; font-variant-numeric:tabular-nums}
+.cs{display:flex; align-items:center; gap:6px; min-width:0}
+.cs .n{font-family:"IBM Plex Mono", monospace; font-size:12.5px; font-weight:600; width:20px; text-align:right; font-variant-numeric:tabular-nums}
+.cs .n.bad{color:var(--crit-ink)} .cs .n.prov{color:var(--amber-ink)} .cs .n.ok{color:var(--good-ink)}
+.meter{position:relative; flex:1 1 auto; height:6px; background:var(--card-2); border:1px solid var(--rule); border-radius:2px; min-width:16px}
+.meter i{position:absolute; left:0; top:0; bottom:0; background:var(--good); opacity:.7}
+.meter.bad i{background:var(--crit)} .meter.prov i{background:var(--amber)}
+.meter b{position:absolute; top:-3px; bottom:-3px; width:2px; background:var(--ink-2); margin-left:-1px}
+
+.warn-note{margin-top:12px; font-size:13px; color:var(--amber-ink); background:var(--amber-wash); border-radius:3px; padding:8px 11px}
+details.more{margin-top:16px; border-top:1px solid var(--rule)}
+details.more summary{cursor:pointer; padding:12px 0; font-family:"IBM Plex Mono", monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); list-style:none}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary::before{content:"+  "; color:var(--accent)}
+details.more[open] summary::before{content:"\2212  "}
+.more-body{display:flex; flex-direction:column; gap:14px; padding-bottom:12px}
+.policy-quote{margin:0; padding:0 0 0 14px; border-left:2px solid var(--rule); font-size:13px; color:var(--ink-2); line-height:1.6}
+.policy-quote p{margin:0 0 8px}
 .policy-quote ul{margin:0; padding-left:18px}
-.policy-quote li{margin-bottom:7px}
-.foot{margin-top:8px; font-size:12.5px; color:var(--ink-3); line-height:1.6}
+.foot{font-size:12.5px; color:var(--ink-3); line-height:1.6}
 .foot b{color:var(--ink-2); font-weight:600}
 [hidden]{display:none !important}
 
-@media (max-width:640px){
-  .wrap{padding:0 16px 64px}
-  h1{font-size:24px}
-  .big{font-size:46px}
+@media (max-width:560px){
+  .wrap{padding:0 12px 48px}
+  .card-head, .card-body{padding-left:12px; padding-right:12px}
+  .big{font-size:40px}
   .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
   .stat:nth-child(3){padding-left:0; border-left:0}
-  .stat:nth-child(n+3){border-top:1px solid var(--rule); margin-top:4px}
-  .card-head, .card-body{padding-left:14px; padding-right:14px}
-  .wrow, .col-heads{grid-template-columns:minmax(0,1fr) auto minmax(0,.9fr); gap:8px}
-  .col-heads span:nth-child(2){width:100px}
-  .step button{width:26px; height:28px}
-  .step input{width:36px}
-  .wr .st{font-size:10.5px}
+  .stat:nth-child(n+3){border-top:1px solid var(--rule); margin-top:8px}
+  .strip{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .cal-grid, .crow{grid-template-columns:50px repeat(5, minmax(0,1fr)) 18px 40px}
+  .meter{display:none}
+  .cs{justify-content:flex-end}
 }
 @media (prefers-reduced-motion: reduce){*{transition:none !important}}
 </style>
 
 <header class="masthead">
   <div class="wrap">
-    <div class="eyebrow">Return-to-office attendance</div>
-    <h1 style="margin-top:5px">24 of 24</h1>
-    <div class="rule-say">Best <b>8</b> of the last <b>12</b> weeks, max 5 a week &rarr; <b>24 badge-ins</b> or more.</div>
+    <h1>24 of 24</h1>
+    <span class="rule-say">best <b>8</b> of last <b>12</b> weeks &ge; <b>24</b> badge-ins</span>
   </div>
 </header>
 
 <div class="wrap">
+  <div class="warn-note" id="dataNote" hidden></div>
 
-  <!-- where you stand -->
-  <section class="headline" id="head">
-    <div class="head-top">
-      <div class="big" id="big">—</div>
-      <div class="head-txt">
-        <span class="chip" id="chip"><span class="dot"></span>—</span>
-        <p id="say"></p>
+  <!-- where you stand, and the 12 weeks it comes from -->
+  <section class="card status" id="status">
+    <div class="card-body">
+      <div class="status-top">
+        <div class="big" id="big">—</div>
+        <div class="status-txt">
+          <span class="chip" id="chip"><span class="dot"></span>—</span>
+          <p id="say"></p>
+        </div>
       </div>
+      <div class="stats" id="stats"></div>
+      <div class="strip-head">
+        <span class="eyebrow">Last 12 weeks · tap to log</span>
+        <span class="tiny" id="stripRange"></span>
+      </div>
+      <div class="strip" id="strip"></div>
+      <div class="strip-legend"><span><b class="k">green</b> counts</span><span>grey dropped</span><span><b class="m">dashed</b> not entered</span><span><i>italic</i> planned</span></div>
+      <div class="editor" id="editor" hidden></div>
     </div>
-    <div class="stats" id="stats"></div>
   </section>
 
-  <!-- what fixes the plan -->
+  <!-- ways to fix it -->
   <section class="card fix" id="fixCard" hidden>
     <div class="card-body">
-      <h2 id="fixTitle">Keep 24 all the way through</h2>
-      <p class="sub" id="fixSay" style="margin-top:6px"></p>
-      <div class="fix-list" id="fixList"></div>
-      <div class="btn-row" id="fixBtns">
-        <button class="btn primary" id="fixApply" type="button">Add these to my plan</button>
+      <h2 id="fixTitle">Ways to fix it</h2>
+      <p class="sub" id="fixSay" style="margin-top:4px"></p>
+      <div class="opts" id="opts"></div>
+    </div>
+  </section>
+
+  <!-- the weeks ahead -->
+  <section class="card">
+    <div class="card-head">
+      <h2>Plan</h2>
+      <div class="btn-row">
+        <div class="days-pick" id="daysPick" role="group" aria-label="Usual office days"><span>Usual</span></div>
+        <button class="btn" id="clearPlan" type="button">Reset days</button>
       </div>
+    </div>
+    <div class="card-body">
+      <div class="legend">
+        <span><i style="background:var(--accent); border-color:var(--accent)"></i>office</span>
+        <span><i style="background:var(--accent-wash-2); border:2px solid var(--accent)"></i>extra day</span>
+        <span><i></i>home</span>
+        <span><i style="background:var(--hol-wash); border-color:transparent"></i>holiday</span>
+        <span><i style="background:var(--out-wash); border-color:transparent"></i>not in office</span>
+        <span><i style="background:var(--amber-wash); border-color:transparent"></i>bank hol</span>
+        <span>· tap a day to switch</span>
+      </div>
+      <div class="cal-grid"><span>Week</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>#</span><span>Best 8 of 12</span></div>
+      <div id="cal"></div>
     </div>
   </section>
 
   <!-- time away -->
   <section class="card">
-    <div class="card-head">
-      <div>
-        <h2>Time away</h2>
-        <p class="sub">Holidays, travel, offsites — any days you won't be in. They cut the days you can go in that week, and the plan below follows.</p>
-      </div>
-    </div>
+    <div class="card-head"><h2>Time away</h2><span class="tiny">blocks those days in the plan</span></div>
     <div class="card-body">
-      <div class="away-list" id="awayList"></div>
+      <div id="awayList"></div>
+      <details class="add-away" id="addAway"><summary class="btn">+ Add time away</summary>
       <form class="away-form" id="awayForm">
         <label>From <input type="date" id="awFrom" required></label>
         <label>To <input type="date" id="awTo" required></label>
-        <label>What <input type="text" id="awLabel" placeholder="Holiday" maxlength="40"></label>
-        <button class="btn" type="submit">Add</button>
+        <label>Kind
+          <select id="awKind"><option value="holiday">Holiday</option><option value="out">Not in office</option></select>
+        </label>
+        <label>Note <input type="text" id="awLabel" placeholder="optional" maxlength="40"></label>
+        <button class="btn primary" type="submit">Add</button>
       </form>
+      </details>
       <p class="tiny" id="awayErr" style="margin-top:8px; color:var(--crit-ink)" hidden></p>
     </div>
   </section>
 
-  <!-- the weeks -->
-  <section class="card">
-    <div class="card-head">
-      <div>
-        <h2>Week by week</h2>
-        <p class="sub">Log what you did. Future weeks follow your usual days, capped by time away and bank holidays — type over any of them. The gauge is the best-8 total for the 12 weeks ending that week; the line is 24.</p>
-      </div>
-      <div class="btn-row">
-        <span class="field">Usual <input type="number" id="usual" min="0" max="5" step="1"> days a week</span>
-        <button class="btn" id="clearPlan" type="button">Clear plan changes</button>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="col-heads"><span>Week of</span><span>Badge-ins</span><span>Best 8 of 12</span></div>
-      <div id="rows"></div>
-    </div>
-  </section>
-
-  <section class="card databar">
-    <div class="card-body">
-      <div>
-        <div class="eyebrow">Your data</div>
-        <p class="tiny" id="saveNote" style="margin-top:4px"></p>
-      </div>
+  <details class="more">
+    <summary>Data, policy and how it works</summary>
+    <div class="more-body">
       <div class="btn-row">
         <button class="btn" id="exportBtn" type="button">Export</button>
         <button class="btn" id="importBtn" type="button">Import</button>
         <input type="file" id="importFile" accept="application/json,.json" hidden>
       </div>
+      <p class="tiny" id="saveNote"></p>
+      <blockquote class="policy-quote">
+        <p>Your office presence is calculated using badge-in data and a methodology called &ldquo;Best Eight, Last Twelve&rdquo;:</p>
+        <ul>
+          <li>Your badge-in data is collected over a rolling 12-week period and we eliminate the 4 weeks with your
+          lowest attendance. This accounts for paid time off, holidays, sick time, travel to EG offices and offsite
+          business events where badge data isn&rsquo;t available.</li>
+          <li>We count the number of days you badged into the office over the remaining 8 weeks (with a maximum
+          5 badge-ins counted per week).</li>
+          <li>If you work a 5-day work week and you badged into an EG office 24 days or more over those &ldquo;best&rdquo;
+          8 weeks (3+ days on average per week), you are in compliance with the policy.</li>
+        </ul>
+      </blockquote>
+      <p class="foot">
+        <b>The sum.</b> Rank the last 12 weeks by badge-ins, drop the 4 lowest, add up the rest; it has to reach 24.
+        <b>Time away</b> is not deducted anywhere. A week away is just a low week, and the 4 dropped weeks absorb it.
+        Five weeks away in one window means one of them counts as a zero. Time away and bank holidays here only block
+        days in the plan. Each Monday the window moves on a week.<br>
+        <span style="opacity:.8">A planning aid, not the system of record.</span>
+      </p>
     </div>
-    <div class="warn-note" id="dataNote" hidden></div>
-  </section>
-
-  <details>
-    <summary>The policy, as written</summary>
-    <blockquote class="policy-quote">
-      <p>For employees subject to this policy, individual badge-in data (including use of a loaner badge) will be used
-      to measure attendance in offices where employees are able to swipe their EG issued badge for entry.</p>
-      <p>Your office presence is calculated using badge-in data and a methodology called
-      &ldquo;Best Eight, Last Twelve&rdquo;:</p>
-      <ul>
-        <li>Your badge-in data is collected over a rolling 12-week period and we eliminate the 4 weeks with your
-        lowest attendance. This accounts for paid time off, holidays, sick time, travel to EG offices and offsite
-        business events where badge data isn&rsquo;t available.</li>
-        <li>We count the number of days you badged into the office over the remaining 8 weeks (with a maximum
-        5 badge-ins counted per week).</li>
-        <li>If you work a 5-day work week and you badged into an EG office 24 days or more over those &ldquo;best&rdquo;
-        8 weeks (3+ days on average per week), you are in compliance with the policy.</li>
-      </ul>
-    </blockquote>
   </details>
-
-  <p class="foot">
-    <b>The sum.</b> Rank the last 12 weeks by badge-ins, drop the 4 lowest, add up the rest. That total has to reach
-    <b>24</b>. No week counts for more than 5.<br><br>
-    <b>Time away is not a separate category.</b> The 4 dropped weeks are how the policy absorbs leave, sickness, travel and
-    offsites. A week away is simply a low week. Five weeks away in one window means one of them is counted, and the
-    other weeks have to make up for it. Time away and bank holidays here only limit the days you <i>can</i> go in when planning;
-    they never change the target.<br><br>
-    <span style="opacity:.8">A planning aid, not the system of record. Check anything close against your own badge data.</span>
-  </p>
 </div>
 
 <script>
@@ -387,7 +382,7 @@ details[open] summary::before{content:"\2212  "}
 "use strict";
 
 /* Bank holidays, England & Wales. Checked against the statutory rules (Easter, first/last
-   Mondays, substitute days). They only mark a week and remove a day you could go in. */
+   Mondays, substitute days). They only block a day in the plan. */
 var HOLS = {
   "2025-01-01":"New Year's Day","2025-04-18":"Good Friday","2025-04-21":"Easter Monday",
   "2025-05-05":"Early May","2025-05-26":"Spring","2025-08-25":"Summer",
@@ -403,9 +398,11 @@ var HOLS = {
   "2028-12-25":"Christmas Day","2028-12-26":"Boxing Day"
 };
 var WIN = 12, KEEP = 8, NEED = 24, MAXW = 5;
+var DAYN = ["Mon","Tue","Wed","Thu","Fri"];
 
 var DAY = 86400000;
 var MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+var MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 function iso(d){ return d.toISOString().slice(0,10); }
 function addDays(d,n){ return new Date(d.getTime() + n*DAY); }
 function mondayOf(d){ var wd = d.getUTCDay(); return addDays(d, wd === 0 ? -6 : 1 - wd); }
@@ -414,37 +411,46 @@ function parseISO(s){
   if(typeof s !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(s)) return null;
   var d = new Date(s + "T00:00:00Z"); return isNaN(d.getTime()) ? null : d;
 }
-function wk(k, n){ return iso(addDays(parseISO(k), 7*n)); }      // the Monday n weeks from Monday k
+function wk(k, n){ return iso(addDays(parseISO(k), 7*n)); }              // the Monday n weeks on from Monday k
+function dayOf(k, i){ return iso(addDays(parseISO(k), i)); }             // weekday i (0 = Mon) of week k
 function fmtShort(d){ return d.getUTCDate() + " " + MON[d.getUTCMonth()]; }
 function fmtLong(d){ return d.getUTCDate() + " " + MON[d.getUTCMonth()] + " " + d.getUTCFullYear(); }
-function fmtK(k){ var d = parseISO(k), y = d.getUTCFullYear(); return fmtShort(d) + (y !== todayUTC().getUTCFullYear() ? " " + y : ""); }
-function plural(n,s){ return n + " " + s + (Math.abs(n) === 1 ? "" : "s"); }
+function fmtK(k){ var d = parseISO(k); return fmtShort(d) + (d.getUTCFullYear() !== todayUTC().getUTCFullYear() ? " " + d.getUTCFullYear() : ""); }
+function plural(n,s,pl){ return n + " " + (Math.abs(n) === 1 ? s : (pl || s + "s")); }
 function has(o,k){ return Object.prototype.hasOwnProperty.call(o, k); }
 function clampDay(v){ return Math.max(0, Math.min(MAXW, v)); }
 function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+function listK(ks){ return ks.map(fmtK).join(", "); }
 
 /* ---------- state ---------- */
-/* Everything is keyed by the ISO date of a week's Monday (or, for time away, real dates),
-   never by position, so nothing shifts when the window rolls on. */
-var KEY = "rto-24of24-v3", V2_KEY = "rto-24of24-v2", V1_KEY = "rto-24of24-v1", SCHEMA = 3;
+/* Weeks are keyed by their Monday, days and time away by real dates — never by position. */
+var KEY = "rto-24of24-v4", OLD = ["rto-24of24-v3","rto-24of24-v2","rto-24of24-v1"], SCHEMA = 4;
 function fresh(){
   return {
     schema:SCHEMA,
-    log:{},        // Monday ISO -> badge-ins you actually did (0-5); absent = not entered
-    plan:{},       // Monday ISO -> planned badge-ins you typed for a future week
-    usual:3,       // what a future week defaults to, capped by the days you can go in
-    away:[]        // { from, to, label } — inclusive ISO dates
+    log:{},          // Monday ISO -> badge-ins you actually did (0-5); absent = not entered
+    usual:[0,1,2],   // usual office weekdays, 0 = Mon … 4 = Fri
+    days:{},         // date ISO -> 1 office / 0 home, where you changed a planned day
+    away:[]          // { from, to, kind:"holiday"|"out", label }
   };
 }
 var state = fresh();
-var storageOK = true, lastSaved = null, notice = "";
+var storageOK = true, lastSaved = null, notice = "", selWeek = null;
 
 function isMonday(k){ var d = parseISO(k); return !!d && iso(d) === k && d.getUTCDay() === 1; }
-function cleanMap(m){
+function cleanLog(m){
   var out = {};
   if(m && typeof m === "object") Object.keys(m).forEach(function(k){
     var v = m[k];
     if(isMonday(k) && v != null && v !== "" && isFinite(+v)) out[k] = clampDay(Math.round(+v));
+  });
+  return out;
+}
+function cleanDays(m){
+  var out = {};
+  if(m && typeof m === "object") Object.keys(m).forEach(function(k){
+    var d = parseISO(k);
+    if(d && iso(d) === k && d.getUTCDay() >= 1 && d.getUTCDay() <= 5 && (m[k] === 0 || m[k] === 1)) out[k] = m[k];
   });
   return out;
 }
@@ -454,102 +460,122 @@ function cleanAway(a){
     if(!x || typeof x !== "object") return;
     var f = parseISO(x.from), t = parseISO(x.to);
     if(!f || !t || t < f) return;
-    out.push({ from:iso(f), to:iso(t), label:typeof x.label === "string" ? x.label.slice(0,40) : "" });
+    out.push({ from:iso(f), to:iso(t), kind:x.kind === "out" ? "out" : "holiday", label:typeof x.label === "string" ? x.label.slice(0,40) : "" });
   });
   return sortAway(out);
 }
-function sortAway(a){ return a.sort(function(x,y){ return x.from < y.from ? -1 : x.from > y.from ? 1 : 0; }); }
+function sortAway(a){ return a.sort(function(x,y){ return x.from < y.from ? -1 : x.from > y.from ? 1 : x.to < y.to ? -1 : 1; }); }
+function cleanUsual(u){
+  if(!Array.isArray(u)) return [0,1,2];
+  var out = [];
+  u.forEach(function(i){ i = +i; if(i >= 0 && i <= 4 && out.indexOf(i) < 0) out.push(i); });
+  return out.sort();
+}
 function normalise(s){
   var out = fresh();
-  if(!s || typeof s !== "object") return out;
-  out.log = cleanMap(s.log);
-  out.plan = cleanMap(s.plan);
-  if(s.usual != null && isFinite(+s.usual)) out.usual = clampDay(Math.round(+s.usual));
+  out.log = cleanLog(s.log); out.usual = cleanUsual(s.usual); out.days = cleanDays(s.days); out.away = cleanAway(s.away);
+  return out;
+}
+/* Older versions. v3 had weekly plan numbers and untyped time away; v2 a date-keyed log;
+   v1 a bare array ending "this week". The log always carries over. */
+function fromV3(s){
+  var out = fresh();
+  out.log = cleanLog(s.log);
+  if(isFinite(+s.usual)) out.usual = [0,1,2,3,4].slice(0, clampDay(Math.round(+s.usual)));
   out.away = cleanAway(s.away);
   return out;
 }
-/* Earlier versions: v2 kept a date-keyed log (its what-if stretches do not map onto time
-   away, so they are left behind); v1 kept a bare array ending "this week". */
-function fromV2(s){ var out = fresh(); if(s && typeof s === "object") out.log = cleanMap(s.log); return out; }
 function fromV1(s){
-  var out = fresh(), thisMon = mondayOf(todayUTC()), i, n, v;
-  if(s && Array.isArray(s.now)){
-    n = s.now.length;
-    for(i=0;i<n;i++){
-      v = s.now[n - 1 - i];
-      if(v != null && v !== "" && isFinite(+v)) out.log[iso(addDays(thisMon, -7*i))] = clampDay(Math.round(+v));
-    }
+  var out = fresh(), thisMon = mondayOf(todayUTC()), i, n = s.now.length, v;
+  for(i=0;i<n;i++){
+    v = s.now[n - 1 - i];
+    if(v != null && v !== "" && isFinite(+v)) out.log[iso(addDays(thisMon, -7*i))] = clampDay(Math.round(+v));
   }
   return out;
 }
 function fromAny(s){
   if(!s || typeof s !== "object") return null;
-  if(s.schema === 3) return normalise(s);
-  if(s.schema === 2) return fromV2(s);
+  if(s.schema === 4) return normalise(s);
+  if(s.schema === 3) return fromV3(s);
+  if(s.schema === 2){ var o = fresh(); o.log = cleanLog(s.log); return o; }
   if(Array.isArray(s.now)) return fromV1(s);
   return null;
 }
-
 function load(){
-  var raw, old;
+  var raw, i, old;
   try{ raw = localStorage.getItem(KEY); }catch(e){ storageOK = false; return; }
   if(raw){
     try{ state = normalise(JSON.parse(raw)); }
     catch(e){ notice = "The saved data in this browser could not be read, so the page started empty. Import an exported file to restore it."; }
     return;
   }
-  try{
-    old = localStorage.getItem(V2_KEY);
-    if(old){ state = fromV2(JSON.parse(old)); notice = "Brought over " + plural(Object.keys(state.log).length, "logged week") + " from the previous version."; save(); return; }
-    old = localStorage.getItem(V1_KEY);
-    if(old){ state = fromV1(JSON.parse(old)); notice = "Brought over " + plural(Object.keys(state.log).length, "week") + " from the first version, placed on the Mondays ending this week. Check them against your badge data."; save(); }
-  }catch(e){}
+  for(i=0;i<OLD.length;i++){
+    try{ old = localStorage.getItem(OLD[i]); }catch(e){ old = null; }
+    if(!old) continue;
+    try{
+      var next = fromAny(JSON.parse(old));
+      if(next){
+        state = next;
+        notice = "Brought over " + plural(Object.keys(state.log).length, "logged week") +
+          (state.away.length ? " and your time away (marked as holiday — change any that were not)" : "") + " from the previous version.";
+        save();
+      }
+    }catch(e){}
+    return;
+  }
 }
 function save(){
   try{ localStorage.setItem(KEY, JSON.stringify(state)); storageOK = true; lastSaved = new Date(); }
   catch(e){ storageOK = false; }
 }
 
-/* ---------- the arithmetic ---------- */
-var thisK;                                         // Monday of the current week, ISO
-function holsOf(k){
-  var out = [], i, d;
-  for(i=0;i<5;i++){ d = iso(addDays(parseISO(k), i)); if(HOLS[d]) out.push(HOLS[d]); }
-  return out;
-}
-/* Time away touching the working days of week k, and how many weekdays it takes. */
-function awayOf(k){
-  var out = [], i, d, j, a, n;
+/* ---------- days ---------- */
+var thisK;
+/* What day d is: a bank holiday, time away (holiday wins over not-in-office), or free. */
+function dayKind(d){
+  if(HOLS[d]) return { kind:"bh", title:HOLS[d] };
+  var j, a, hit = null;
   for(j=0;j<state.away.length;j++){
-    a = state.away[j]; n = 0;
-    for(i=0;i<5;i++){ d = iso(addDays(parseISO(k), i)); if(d >= a.from && d <= a.to) n++; }
-    if(n) out.push({ a:a, days:n });
+    a = state.away[j];
+    if(d >= a.from && d <= a.to){ if(a.kind === "holiday") return { kind:"holiday", title:a.label || "Holiday" }; hit = hit || a; }
   }
+  return hit ? { kind:"out", title:hit.label || "Not in office" } : { kind:"free" };
+}
+/* Weekdays in the order to fill them: your usual days first, then the rest, Friday last. */
+function prefOrder(){
+  var out = state.usual.slice(), i;
+  for(i=0;i<5;i++) if(out.indexOf(i) < 0) out.push(i);
   return out;
 }
-/* Days you could physically go in: weekdays, less bank holidays and time away. */
-function capacity(k){
-  var n = 0, i, d, j, off;
-  for(i=0;i<5;i++){
-    d = iso(addDays(parseISO(k), i));
-    if(HOLS[d]) continue;
-    off = false;
-    for(j=0;j<state.away.length;j++) if(d >= state.away[j].from && d <= state.away[j].to){ off = true; break; }
-    if(!off) n++;
+/* The office days for week k: your usual number of days, on your usual days where they are
+   free and the next preferred free day where not; then any days you switched by hand,
+   then any extra days being tried (`extra`: date -> 1). */
+function officeDays(k, extra){
+  var order = prefOrder(), set = {}, n = 0, i, d;
+  for(i=0;i<order.length && n < state.usual.length;i++){
+    d = dayOf(k, order[i]);
+    if(dayKind(d).kind === "free"){ set[d] = true; n++; }
   }
-  return n;
+  for(i=0;i<5;i++){
+    d = dayOf(k, i);
+    if(dayKind(d).kind !== "free") continue;
+    if(has(state.days, d)){ if(state.days[d]) set[d] = true; else delete set[d]; }
+    if(extra && extra[d]) set[d] = true;
+  }
+  return set;
 }
-/* What week k is worth. Logged beats everything; a past week never logged is unknown;
+function freeDays(k){ var n = 0, i; for(i=0;i<5;i++) if(dayKind(dayOf(k,i)).kind === "free") n++; return n; }
+function count(set){ return Object.keys(set).length; }
+
+/* What week k is worth: logged beats everything; a past week never logged is unknown;
    this week and later follow the plan until you log them. */
-function weekVal(k){
+function weekVal(k, extra){
   if(has(state.log, k)) return { v:state.log[k], src:"log" };
   if(k < thisK) return { v:null, src:"missing" };
-  var cap = capacity(k);
-  if(has(state.plan, k)) return { v:Math.min(state.plan[k], cap), src:"set", cap:cap };
-  return { v:Math.min(state.usual, cap), src:"plan", cap:cap };
+  return { v:count(officeDays(k, extra)), src:"plan" };
 }
-/* Best 8 of the 12 weeks ending week `end`. get(k) gives a value or null (unknown, counted
-   as 0 so a blank can only make things look worse). Ties go to the more recent week. */
+/* Best 8 of the 12 weeks ending week `end`. Unknown weeks count as 0, so a blank can only
+   make things look worse. Ties go to the more recent week. */
 function windowAt(end, get){
   var list = [], i, k, v, missing = 0;
   for(i=WIN-1;i>=0;i--){ k = wk(end, -i); v = get(k); if(v == null){ missing++; v = 0; } list.push({ k:k, v:v, j:WIN-1-i }); }
@@ -560,9 +586,9 @@ function windowAt(end, get){
 }
 function planGet(k){ return weekVal(k).v; }
 
-/* Look far enough ahead to see the last stretch away roll out of the window. */
+/* Far enough ahead to see the last time away roll out of the window. */
 function horizon(){
-  var end = wk(thisK, 16), j, m;
+  var end = wk(thisK, 12), j, m;
   for(j=0;j<state.away.length;j++){
     m = iso(mondayOf(parseISO(state.away[j].to)));
     if(m >= thisK && wk(m, WIN) > end) end = wk(m, WIN);
@@ -570,28 +596,21 @@ function horizon(){
   var cap = wk(thisK, 60);
   return end > cap ? cap : end;
 }
-
-/* How many of the coming weeks you could miss outright and still hold 24 at every step. */
+/* How many coming weeks you could miss outright and still hold 24 at every step. */
 function spareWeeks(){
-  var n, j, ok;
+  var n, j, ok, lim;
   if(!windowAt(thisK, planGet).ok) return 0;
   for(n=1;n<=WIN;n++){
-    var lim = wk(thisK, n);
-    ok = true;
-    for(j=1;j<=n && ok;j++){
-      ok = windowAt(wk(thisK, j), function(k){ return k > thisK && k <= lim ? 0 : planGet(k); }).ok;
-    }
+    lim = wk(thisK, n); ok = true;
+    for(j=1;j<=n && ok;j++) ok = windowAt(wk(thisK, j), function(k){ return k > thisK && k <= lim ? 0 : planGet(k); }).ok;
     if(!ok) return n - 1;
   }
   return WIN;
 }
-
-/* Walk the plan window by window. */
 function analyse(get){
-  var end = horizon(), k, w, r = { low:null, lowAt:null, firstBad:null, lastBad:null, dips:0, badWeeks:0, prov:false }, prevBad = false;
+  var end = horizon(), k, w, r = { low:null, lowAt:null, firstBad:null, lastBad:null, dips:0, badWeeks:0 }, prevBad = false;
   for(k=thisK; k<=end; k=wk(k,1)){
     w = windowAt(k, get);
-    if(w.missing) r.prov = true;
     if(r.low === null || w.sum < r.low){ r.low = w.sum; r.lowAt = k; }
     if(!w.ok){ r.badWeeks++; if(!r.firstBad) r.firstBad = k; if(!prevBad) r.dips++; r.lastBad = k; }
     prevBad = !w.ok;
@@ -600,14 +619,22 @@ function analyse(get){
   return r;
 }
 
-/* The fewest extra days that keep every window ahead at 24. For each short window, add a
-   day where it lifts the total, preferring the lightest week and then the latest one —
-   the latest stays in the window longest, so it helps the most windows after it. */
-function suggest(){
-  var end = horizon(), adj = {}, k, w, guard, best, i, c, cand, gain;
-  for(k=wk(thisK,1); k<=end; k=wk(k,1)) if(!has(state.log,k)) adj[k] = planGet(k);
-  function get(k){ return has(adj,k) ? adj[k] : planGet(k); }
-  var stuck = null;
+/* Fewest extra office days that hold 24 in every window ahead. For each short window, add
+   one day where it lifts the total, on the next free day in your preferred order.
+   "spread": lightest week first, then the latest (it stays in the window longest).
+   "few":    fullest week first, so fewer weeks change. noFri keeps Fridays at home. */
+function suggest(mode, noFri){
+  var end = horizon(), extra = {}, k, w, guard, best, i, c, d, gain, n, stuck = null, order = prefOrder();
+  function get(k){ return weekVal(k, extra).v; }
+  function nextDay(k){
+    var set = officeDays(k, extra), j, d;
+    for(j=0;j<order.length;j++){
+      if(noFri && order[j] === 4) continue;
+      d = dayOf(k, order[j]);
+      if(!set[d] && dayKind(d).kind === "free") return d;
+    }
+    return null;
+  }
   for(k=wk(thisK,1); k<=end; k=wk(k,1)){
     for(guard=0; guard<60; guard++){
       w = windowAt(k, get);
@@ -615,231 +642,263 @@ function suggest(){
       best = null;
       for(i=0;i<WIN;i++){
         c = wk(k, -i);
-        if(!has(adj,c) || adj[c] >= capacity(c)) continue;
-        adj[c]++; gain = windowAt(k, get).sum - w.sum; adj[c]--;
+        if(c <= thisK || has(state.log, c)) continue;
+        d = nextDay(c); if(!d) continue;
+        extra[d] = 1; gain = windowAt(k, get).sum - w.sum; delete extra[d];
         if(gain <= 0) continue;
-        cand = { k:c, v:adj[c] };
-        if(!best || cand.v < best.v || (cand.v === best.v && cand.k > best.k)) best = cand;
+        n = get(c);
+        if(!best || (mode === "few" ? n > best.n : n < best.n) || (n === best.n && c > best.k)) best = { k:c, d:d, n:n };
       }
       if(!best){ stuck = stuck || { at:k, sum:w.sum }; break; }
-      adj[best.k]++;
+      extra[best.d] = 1;
     }
   }
-  var adds = [];
-  Object.keys(adj).sort().forEach(function(k){ var was = planGet(k); if(adj[k] !== was) adds.push({ k:k, from:was, to:adj[k] }); });
-  return { adds:adds, stuck:stuck };
+  var days = Object.keys(extra).sort(), weeks = {}, fridays = 0;
+  days.forEach(function(d){ var m = iso(mondayOf(parseISO(d))); weeks[m] = (weeks[m] || 0) + 1; if(parseISO(d).getUTCDay() === 5) fridays++; });
+  return { days:days, weeks:weeks, fridays:fridays, stuck:stuck };
 }
 
 /* ---------- rendering ---------- */
 var $ = function(id){ return document.getElementById(id); };
-
-function setHead(cls, big, chip){
-  $("big").innerHTML = big; $("big").className = "big " + cls;
-  $("head").className = "headline " + cls;
-  $("chip").className = "chip " + cls;
-  $("chip").innerHTML = '<span class="dot"></span>' + chip;
-}
 function stat(label, value, sub, cls){
   return '<div class="stat"><div class="eyebrow">' + label + '</div><div class="sv' + (cls ? " " + cls : "") + '">' + value +
     '</div>' + (sub ? '<div class="sd">' + sub + '</div>' : '') + '</div>';
 }
 
-function renderHead(){
-  var cur = windowAt(thisK, planGet), tv = weekVal(thisK), margin = cur.sum - NEED, say = "";
-  var allBlank = cur.missing >= WIN - 1 && tv.src !== "log";
-  if(allBlank){
-    setHead("prov", '&mdash;<small> / ' + NEED + '</small>', "Not entered");
-    say = 'Nothing is logged for the last 12 weeks yet. Log each week below — a week left blank stays <b>not entered</b>, never assumed.';
+function renderStatus(r){
+  var cur = windowAt(thisK, planGet), tv = weekVal(thisK), margin = cur.sum - NEED, say, cls, chip, big;
+  var blank = cur.missing >= WIN - 1 && tv.src !== "log";
+  if(blank){
+    cls = "prov"; big = '&mdash;<small>/' + NEED + '</small>'; chip = "Not entered";
+    say = 'Nothing logged yet. Tap a week below to enter its badge-ins — a blank week is never assumed.';
   }else if(cur.missing){
-    setHead("prov", cur.sum + '<small> / ' + NEED + '</small>', "Provisional · " + cur.missing + " not entered");
-    say = '<b>' + plural(cur.missing, "past week") + '</b> in the window ' + (cur.missing === 1 ? "is" : "are") + ' not entered, so this counts ' +
-      (cur.missing === 1 ? "it" : "them") + ' as 0. ' + (margin >= 0 ? 'You already reach ' + NEED + ' without ' + (cur.missing === 1 ? "it" : "them") + '.'
-      : 'Fill ' + (cur.missing === 1 ? "it" : "them") + ' in to see where you really stand.');
+    cls = "prov"; big = cur.sum + '<small>/' + NEED + '</small>'; chip = "Provisional · " + cur.missing + " not entered";
+    say = (margin >= 0 ? 'Already at ' + NEED + ' even with ' : 'Counting ') + plural(cur.missing, "blank week") + ' as 0.';
   }else{
-    setHead(margin >= 0 ? "ok" : "bad", cur.sum + '<small> / ' + NEED + '</small>', margin >= 0 ? "Compliant" : "Not compliant");
-    say = margin > 0 ? 'Your best 8 weeks come to <b>' + cur.sum + '</b>, <b>' + plural(margin, "badge-in") + ' clear</b> of ' + NEED + '.'
-        : margin === 0 ? 'Your best 8 weeks come to <b>exactly ' + NEED + '</b>. No margin.'
-        : 'Your best 8 weeks come to <b>' + cur.sum + '</b>, <b>' + plural(-margin, "badge-in") + ' short</b>.';
+    cls = margin >= 0 ? "ok" : "bad"; big = cur.sum + '<small>/' + NEED + '</small>'; chip = margin >= 0 ? "Compliant" : "Not compliant";
+    say = margin > 0 ? '<b>' + plural(margin, "badge-in") + ' clear.</b>' : margin === 0 ? '<b>Exactly 24</b>, no margin.' : '<b>' + plural(-margin, "badge-in") + ' short.</b>';
+    var spare = spareWeeks();
+    if(cur.ok) say += spare ? ' You could miss the next <b>' + plural(spare, "week") + '</b> and still hold 24.' : ' Next week needs to be a normal week.';
   }
-  if(!allBlank && tv.src !== "log") say += ' This week counts as the ' + plural(tv.v, "day") + ' you have planned until you log it.';
-
-  var spare = spareWeeks(), r = analyse(planGet), stats = "";
-  if(!allBlank){
-    if(cur.ok) say += spare > 0
-      ? ' You could miss the next <b>' + plural(spare, "week") + '</b> entirely and stay at ' + NEED + '.'
-      : ' Next week needs to be a normal week to hold ' + NEED + '.';
-  }
+  if(!blank && tv.src !== "log") say += ' This week counts as planned (' + tv.v + ') until you log it.';
+  $("status").className = "card status " + cls;
+  $("big").innerHTML = big; $("big").className = "big " + cls;
+  $("chip").className = "chip " + cls; $("chip").innerHTML = '<span class="dot"></span>' + chip;
   $("say").innerHTML = say;
 
-  stats += stat("Weeks you could skip", allBlank ? "—" : spare, "from next week, at 0 days");
-  stats += stat("Lowest ahead", r.low + '<span style="font-size:12px; color:var(--ink-3)"> / ' + NEED + '</span>',
-    "week of " + fmtK(r.lowAt), r.low >= NEED ? "ok" : "bad");
+  var s = "";
+  s += stat("Lowest ahead", r.low, "w/c " + fmtK(r.lowAt), r.low >= NEED ? "ok" : "bad");
   if(r.firstBad){
-    stats += stat("Below " + NEED + " from", fmtK(r.firstBad), plural(r.badWeeks, "week") + " short" + (r.dips > 1 ? ", in " + r.dips + " dips" : ""), "bad");
-    stats += stat("Back to " + NEED, r.backAt ? fmtK(r.backAt) : "not yet", r.backAt ? "and stays there" : "within " + fmtK(horizon()), r.backAt ? "" : "bad");
+    s += stat("Below 24 from", fmtK(r.firstBad), plural(r.badWeeks, "week") + " short", "bad");
+    s += stat("Back to 24", r.backAt ? fmtK(r.backAt) : "not yet", r.backAt ? "and stays" : "by " + fmtK(horizon()), r.backAt ? "" : "bad");
   }else{
-    stats += stat("Below " + NEED, "never", "through " + fmtK(horizon()), "ok");
-    stats += stat("Margin", (cur.sum - NEED >= 0 ? "+" : "") + (cur.sum - NEED), "this week");
+    s += stat("Below 24", "never", "through " + fmtK(horizon()), "ok");
+    s += stat("Margin now", (margin >= 0 ? "+" : "") + margin, "");
   }
-  $("stats").innerHTML = stats;
-  return r;
+  var spareN = blank ? "—" : spareWeeks();
+  s += stat("Can skip", spareN, "weeks from next");
+  $("stats").innerHTML = s;
+
+  /* the strip */
+  var h = "", i, k, v, c;
+  for(i=WIN-1;i>=0;i--){
+    k = wk(thisK, -i); v = weekVal(k);
+    c = v.v == null ? "miss" : cur.kept[k] ? "keep" : "drop";
+    if(v.src === "plan") c += " planned";
+    if(selWeek === k) c += " sel";
+    h += '<button type="button" class="wk ' + c + '" data-wk="' + k + '" aria-label="Week of ' + fmtK(k) + ', ' +
+      (v.v == null ? "not entered" : v.v + (v.src === "plan" ? " planned" : " badge-ins")) + '">' +
+      '<span class="d">' + fmtShort(parseISO(k)) + '</span><span class="v">' + (v.v == null ? "?" : v.v) + '</span></button>';
+  }
+  $("strip").innerHTML = h;
+  $("stripRange").textContent = fmtK(wk(thisK,-11)) + " – " + fmtK(thisK);
+
+  var ed = $("editor");
+  if(selWeek){
+    var lv = has(state.log, selWeek) ? state.log[selWeek] : null;
+    ed.hidden = false;
+    ed.innerHTML = '<span>Week of <b>' + fmtK(selWeek) + '</b></span>' +
+      '<div class="step"><button type="button" data-step="-1"' + (lv === null || lv <= 0 ? (lv === null ? "" : " disabled") : "") + ' aria-label="One fewer">&minus;</button>' +
+      '<input type="number" id="logIn" inputmode="numeric" min="0" max="5" value="' + (lv === null ? "" : lv) + '" placeholder="–" aria-label="Badge-ins">' +
+      '<button type="button" data-step="1"' + (lv !== null && lv >= 5 ? " disabled" : "") + ' aria-label="One more">+</button></div>' +
+      '<span class="tiny">badge-ins</span>' +
+      '<button type="button" class="btn" data-clear style="margin-left:auto">' + (lv === null ? "Done" : "Clear") + '</button>';
+  }else ed.hidden = true;
 }
 
-var lastFix = null;
+var fixes = [];
 function renderFix(r){
   var card = $("fixCard");
-  if(!r.firstBad){ card.hidden = true; lastFix = null; return; }
-  var s = suggest(); lastFix = s;
+  if(!r.firstBad){ card.hidden = true; fixes = []; return; }
   card.hidden = false;
-  var extra = s.adds.reduce(function(t,a){ return t + a.to - a.from; }, 0);
-  if(s.adds.length && !s.stuck){
-    $("fixTitle").textContent = "Keep " + NEED + " all the way through";
-    $("fixSay").innerHTML = 'Your plan drops to <b>' + r.low + '</b> in the week of ' + fmtK(r.lowAt) + '. Going in <b>' +
-      plural(extra, "extra day") + '</b> in these weeks holds ' + NEED + ' in every window:';
-  }else if(s.stuck){
-    $("fixTitle").textContent = "This plan cannot hold " + NEED;
-    $("fixSay").innerHTML = 'The window ending the week of <b>' + fmtK(s.stuck.at) + '</b> cannot reach ' + NEED +
-      ', even at every day you could go in. Too many of its 12 weeks are away or already logged short. ' +
-      (s.adds.length ? 'These extra days get as close as possible:' : '');
-  }else{
-    $("fixTitle").textContent = "Short in the past";
-    $("fixSay").innerHTML = 'The shortfall comes from weeks already logged, so no plan change fixes it. It clears as those weeks roll out.';
+  var a = suggest("spread", true), b = suggest("few", false), c = suggest("spread", false);
+  fixes = [];
+  function total(s){ return s.days.length; }
+  function wkList(s){ return Object.keys(s.weeks).sort().map(function(k){ return fmtK(k) + (s.weeks[k] > 1 ? " (+" + s.weeks[k] + ")" : ""); }).join(", "); }
+  function describe(s){
+    var dayNames = {};
+    s.days.forEach(function(d){ dayNames[DAYN[parseISO(d).getUTCDay() - 1]] = true; });
+    return plural(total(s), "extra day") + ' in ' + plural(Object.keys(s.weeks).length, "week") +
+      ' · ' + Object.keys(dayNames).join(" & ") + (s.fridays ? '' : ' · no Fridays');
   }
-  $("fixList").innerHTML = s.adds.map(function(a){ return '<span>' + fmtK(a.k) + ' &rarr; ' + a.to + '</span>'; }).join("");
-  $("fixBtns").hidden = !s.adds.length;
+  if(!a.stuck && a.days.length){
+    fixes.push({ s:a, title:"Add a " + ["Monday","Tuesday","Wednesday","Thursday","Friday"][prefOrder()[state.usual.length] == null ? 3 : prefOrder()[state.usual.length]], tag:"recommended",
+      text:"Spread out, one extra day a week where it's needed, Fridays stay at home." });
+    if(!b.stuck && b.days.length && (Object.keys(b.weeks).length < Object.keys(a.weeks).length))
+      fixes.push({ s:b, title:"Fewer, fuller weeks", text:"Touch fewer weeks by going in more days in each — this needs some Fridays." });
+  }else if(!c.stuck && c.days.length){
+    fixes.push({ s:c, title:"Including Fridays", tag:"only way",
+      text:"There aren't enough Mondays to Thursdays free to hold 24 — this needs some Fridays." });
+  }
+  var lead = 'Your plan drops to <b>' + r.low + '</b> in w/c ' + fmtK(r.lowAt) + ' and is short for ' + plural(r.badWeeks, "week") + '.';
+  if(fixes.length){
+    $("fixTitle").textContent = "Ways to fix it";
+    $("fixSay").innerHTML = lead + ' Either of these keeps every window at 24 or above. Or leave it and accept the short spell.';
+  }else{
+    var st = a.stuck || b.stuck || c.stuck;
+    $("fixTitle").textContent = "This plan can't hold 24";
+    $("fixSay").innerHTML = lead + (st ? ' The window ending w/c <b>' + fmtK(st.at) + '</b> cannot reach 24 even going in every free day — too much of it is away or already logged.'
+      : ' The shortfall is in weeks already logged; it clears as they roll out.');
+  }
+  $("opts").innerHTML = fixes.map(function(f, i){
+    return '<div class="opt' + (i === 0 ? " rec" : "") + '"><h3>' + f.title + (f.tag ? '<small>' + f.tag + '</small>' : '') + '</h3>' +
+      '<p>' + f.text + '</p><p class="mono" style="font-size:12px">' + describe(f.s) + '</p>' +
+      '<div class="wks">' + wkList(f.s) + '</div>' +
+      '<button class="btn' + (i === 0 ? " primary" : "") + '" type="button" data-fix="' + i + '">Use this</button></div>';
+  }).join("");
 }
 
 function renderAway(){
   if(!state.away.length){
-    $("awayList").innerHTML = '<p class="empty">No time away planned. Add a holiday to see what it does to your score.</p>';
+    $("awayList").innerHTML = '<p class="empty">Nothing yet. Add holidays and days you won\'t be in to see what they do.</p>';
     return;
   }
   $("awayList").innerHTML = state.away.map(function(a, i){
-    var f = parseISO(a.from), t = parseISO(a.to), days = 0, d;
-    for(d=f; d<=t; d=addDays(d,1)){ var wd = d.getUTCDay(); if(wd > 0 && wd < 6 && !HOLS[iso(d)]) days++; }
+    var f = parseISO(a.from), t = parseISO(a.to), days = 0, d, wd;
+    for(d=f; d<=t; d=addDays(d,1)){ wd = d.getUTCDay(); if(wd > 0 && wd < 6 && !HOLS[iso(d)]) days++; }
     var span = a.from === a.to ? fmtLong(f) : (f.getUTCFullYear() === t.getUTCFullYear() ? fmtShort(f) : fmtLong(f)) + ' – ' + fmtLong(t);
     return '<div class="away-item"><div class="what"><div class="dates">' + span + '</div>' +
-      '<div class="lbl">' + (a.label ? esc(a.label) + ' · ' : '') + plural(days, "working day") + '</div></div>' +
+      '<div class="lbl"><span class="kind ' + a.kind + '">' + (a.kind === "holiday" ? "Holiday" : "Not in office") + '</span>' +
+      (a.label ? esc(a.label) + ' · ' : '') + plural(days, "working day") + '</div></div>' +
       '<button class="x" type="button" data-rm="' + i + '" aria-label="Remove ' + esc(span) + '">&times;</button></div>';
   }).join("");
 }
 
-function stepper(g, k, v, o){
-  var set = v != null, max = o.max == null ? MAXW : o.max;
-  return '<div class="step">' +
-    '<button type="button" data-g="' + g + '" data-k="' + k + '" data-v="' + (set ? v-1 : 0) + '"' + (set && v <= 0 ? " disabled" : "") +
-      ' aria-label="One fewer, week of ' + fmtK(k) + '">&minus;</button>' +
-    '<input type="number" inputmode="numeric" min="0" max="' + max + '" step="1" data-g="' + g + '" data-k="' + k + '"' +
-      ' class="' + (o.cls || "") + '" value="' + (o.showVal && set ? v : "") + '" placeholder="' + (o.ph == null ? "–" : o.ph) + '"' +
-      ' aria-label="Badge-ins, week of ' + fmtK(k) + '">' +
-    '<button type="button" data-g="' + g + '" data-k="' + k + '" data-v="' + (set ? v+1 : 1) + '"' + (set && v >= max ? " disabled" : "") +
-      ' aria-label="One more, week of ' + fmtK(k) + '">+</button>' +
-  '</div>';
-}
-function tagsFor(k, cap){
-  var t = "", hols = holsOf(k), aw = awayOf(k);
-  if(k === thisK) t += '<span class="tag now">this week</span>';
-  hols.forEach(function(h){ t += '<span class="tag bh" title="' + esc(h) + '">BH</span>'; });
-  aw.forEach(function(x){ t += '<span class="tag ab" title="' + esc(x.a.label || "Away") + '">' + esc(x.a.label || "Away") + (x.days < 5 ? " ×" + x.days : "") + '</span>'; });
-  if(cap != null && cap > 0 && cap < 5 && k >= thisK) t += '<span class="tag cap">max ' + cap + '</span>';
-  return t ? '<div class="tags">' + t + '</div>' : "";
-}
-function meter(w){
-  var cls = w.missing ? "prov" : w.ok ? "" : "bad";
-  return '<div class="meter ' + cls + '"><i style="width:' + (w.sum / 40 * 100) + '%"></i><b style="left:' + (NEED / 40 * 100) + '%"></b></div>' +
-    '<span class="n ' + cls + '">' + w.sum + '</span>';
+function renderPick(){
+  var h = '<span>Usual</span>', i;
+  for(i=0;i<5;i++) h += '<button type="button" data-day="' + i + '" aria-pressed="' + (state.usual.indexOf(i) >= 0) + '" aria-label="' + DAYN[i] + '">' + "MTWTF"[i] + '</button>';
+  $("daysPick").innerHTML = h;
 }
 
-function renderRows(){
-  var cur = windowAt(thisK, planGet), html = "", i, k, wv, end = horizon(), cls, ctrl;
-  html += '<div class="group"><span>The window you are judged on now</span><span>' + fmtK(wk(thisK,-11)) + ' – ' + fmtK(thisK) + '</span></div>';
-  for(i=WIN-1;i>=0;i--){
-    k = wk(thisK, -i); wv = weekVal(k);
-    var st;
-    if(wv.v == null) st = '<span class="st gap">not entered</span>';
-    else if(cur.kept[k]) st = '<span class="st keep">counts</span>';
-    else st = '<span class="st">dropped</span>';
-    if(k === thisK) ctrl = stepper("log", k, wv.v, { showVal:wv.src === "log", ph:wv.src === "log" ? "–" : wv.v, cls:wv.src === "log" ? "" : "planned" });
-    else ctrl = stepper("log", k, wv.v, { showVal:true });
-    cls = "wrow" + (k === thisK ? " now" : "");
-    html += '<div class="' + cls + '"><div class="wd"><b>' + fmtK(k) + '</b>' + tagsFor(k, k === thisK ? capacity(k) : null) + '</div>' + ctrl +
-      '<div class="wr">' + st + '</div></div>';
+function renderCal(){
+  var end = horizon(), h = "", k, i, d, dk, set, base, cls, w, v, lastM = -1, logged, n;
+  /* the plan's "default" days, without your hand changes, to mark what you switched */
+  var saved = state.days; state.days = {};
+  var defaults = {};
+  for(k=thisK; k<=end; k=wk(k,1)) defaults[k] = officeDays(k);
+  state.days = saved;
+  for(k=thisK; k<=end; k=wk(k,1)){
+    var m = parseISO(k).getUTCMonth();
+    if(m !== lastM && k !== thisK) h += '<div class="mon-row">' + MONTHS[m] + ' ' + parseISO(k).getUTCFullYear() + '</div>';
+    lastM = m;
+    logged = has(state.log, k);
+    set = officeDays(k); base = defaults[k];
+    v = weekVal(k); w = windowAt(k, planGet);
+    h += '<div class="crow' + (k === thisK ? " now" : "") + '"><span class="cd">' + (k === thisK ? "now" : fmtShort(parseISO(k))) + '</span>';
+    for(i=0;i<5;i++){
+      d = dayOf(k, i); dk = dayKind(d);
+      if(dk.kind !== "free"){
+        h += '<button type="button" class="c ' + dk.kind + '" disabled title="' + esc(dk.title) + '">' + (dk.kind === "bh" ? "BH" : dk.kind === "holiday" ? "H" : "") + '</button>';
+        continue;
+      }
+      cls = set[d] ? "office" : "home";
+      if(set[d] && !base[d]) cls += " extra";
+      else if(!set[d] && base[d]) cls += " changed";
+      if(logged) cls += " logged";
+      h += '<button type="button" class="c ' + cls + '" data-d="' + d + '"' + (logged ? " disabled" : "") +
+        ' aria-label="' + DAYN[i] + ' ' + fmtShort(parseISO(d)) + ', ' + (set[d] ? "office" : "home") + '"></button>';
+    }
+    n = w.missing ? "prov" : w.ok ? "ok" : "bad";
+    h += '<span class="cn">' + v.v + '</span><span class="cs"><span class="meter ' + (n === "ok" ? "" : n) + '"><i style="width:' + (w.sum / 40 * 100) +
+      '%"></i><b style="left:60%"></b></span><span class="n ' + n + '">' + w.sum + '</span></span></div>';
   }
-  html += '<div class="group"><span>Ahead — planned</span><span>through ' + fmtK(end) + '</span></div>';
-  for(k=wk(thisK,1); k<=end; k=wk(k,1)){
-    wv = weekVal(k);
-    var w = windowAt(k, planGet);
-    if(wv.src === "log") ctrl = stepper("log", k, wv.v, { showVal:true });
-    else ctrl = stepper("plan", k, wv.v, { showVal:wv.src === "set", ph:wv.v, cls:wv.src === "set" ? "set" : "planned", max:wv.cap });
-    cls = "wrow" + (wv.cap === 0 ? " off" : "");
-    html += '<div class="' + cls + '"><div class="wd"><b>' + fmtK(k) + '</b>' + tagsFor(k, wv.cap) + '</div>' + ctrl +
-      '<div class="wr">' + meter(w) + '</div></div>';
-  }
-  $("rows").innerHTML = html;
+  $("cal").innerHTML = h;
 }
 
 function renderData(){
   var weeks = Object.keys(state.log).sort();
   var held = weeks.length ? 'Your log holds ' + plural(weeks.length, "week") + ', from ' + fmtLong(parseISO(weeks[0])) + '. ' : 'Your log is empty. ';
   $("saveNote").innerHTML = storageOK
-    ? held + 'Every change is saved in this browser' +
+    ? held + 'Changes save in this browser automatically' +
       (lastSaved ? ' (last at ' + ("0" + lastSaved.getHours()).slice(-2) + ':' + ("0" + lastSaved.getMinutes()).slice(-2) + ')' : '') +
-      '. Browsers can clear that, and each device keeps its own copy, so <b>Export</b> now and then — the file is the copy that lasts.'
+      '. Each device keeps its own copy and browsers can clear it, so Export now and then — the file is the copy that lasts.'
     : held + '<b>This browser is not letting the page save</b>, so nothing is kept between visits. Export before you leave and Import next time.';
-  $("dataNote").hidden = !notice;
-  $("dataNote").textContent = notice;
+  $("dataNote").hidden = !notice && storageOK;
+  $("dataNote").textContent = notice || (storageOK ? "" : "This browser is blocking storage, so nothing you enter is kept. Use Export (under Data) before you leave.");
 }
 
 function render(){
   thisK = iso(mondayOf(todayUTC()));
-  $("usual").value = state.usual;
-  var r = renderHead();
+  var r = analyse(planGet);
+  renderStatus(r);
   renderFix(r);
   renderAway();
-  renderRows();
+  renderPick();
+  renderCal();
   renderData();
 }
 function change(){ save(); render(); }
 
 /* ---------- wiring ---------- */
-/* g: "log" = what you did, "plan" = what you mean to do. Blank clears either. */
-function setWeek(g, k, v){
-  var m = g === "log" ? state.log : state.plan;
-  if(v == null) delete m[k]; else m[k] = v;
+$("strip").addEventListener("click", function(e){
+  var b = e.target.closest("[data-wk]"); if(!b) return;
+  selWeek = selWeek === b.getAttribute("data-wk") ? null : b.getAttribute("data-wk");
+  render();
+  var inp = $("logIn"); if(inp && !("ontouchstart" in window)) inp.focus();
+});
+$("editor").addEventListener("click", function(e){
+  var b = e.target.closest("button"); if(!b || !selWeek) return;
+  if(b.hasAttribute("data-clear")){ if(has(state.log, selWeek)) delete state.log[selWeek]; selWeek = null; change(); return; }
+  var cur = has(state.log, selWeek) ? state.log[selWeek] : null, step = +b.getAttribute("data-step");
+  state.log[selWeek] = cur === null ? (step > 0 ? 1 : 0) : clampDay(cur + step);
   change();
-}
-$("rows").addEventListener("click", function(e){
-  var b = e.target.closest("button[data-k]");
-  if(!b || b.disabled) return;
-  var g = b.getAttribute("data-g"), k = b.getAttribute("data-k"), v = clampDay(+b.getAttribute("data-v"));
-  if(g === "plan") v = Math.min(v, capacity(k));
-  setWeek(g, k, v);
 });
-$("rows").addEventListener("input", function(e){
-  var el = e.target;
-  if(!el.matches("input[data-k]")) return;
-  var g = el.getAttribute("data-g"), k = el.getAttribute("data-k"), raw = el.value.trim(), v = parseInt(raw, 10);
-  if(raw === "") setWeek(g, k, null);
-  else if(isFinite(v)) setWeek(g, k, g === "plan" ? Math.min(clampDay(v), capacity(k)) : clampDay(v));
+$("editor").addEventListener("input", function(e){
+  if(e.target.id !== "logIn" || !selWeek) return;
+  var raw = e.target.value.trim(), v = parseInt(raw, 10);
+  if(raw === "") delete state.log[selWeek];
+  else if(isFinite(v)) state.log[selWeek] = clampDay(v);
   else return;
-  var again = $("rows").querySelector('input[data-g="' + g + '"][data-k="' + k + '"]');
-  if(again) again.focus();
+  change();
+  var inp = $("logIn"); if(inp) inp.focus();
 });
-$("usual").addEventListener("input", function(){
-  var v = parseInt(this.value, 10);
-  if(!isFinite(v)) return;
-  state.usual = clampDay(v);
+
+$("cal").addEventListener("click", function(e){
+  var b = e.target.closest("button[data-d]"); if(!b || b.disabled) return;
+  var d = b.getAttribute("data-d"), k = iso(mondayOf(parseISO(d)));
+  var now = !!officeDays(k)[d];
+  var saved = state.days; state.days = {}; var def = !!officeDays(k)[d]; state.days = saved;
+  if(!now === def) delete state.days[d]; else state.days[d] = now ? 0 : 1;
+  change();
+});
+$("daysPick").addEventListener("click", function(e){
+  var b = e.target.closest("button[data-day]"); if(!b) return;
+  var i = +b.getAttribute("data-day"), at = state.usual.indexOf(i);
+  if(at >= 0) state.usual.splice(at, 1); else state.usual.push(i);
+  state.usual.sort();
   change();
 });
 $("clearPlan").addEventListener("click", function(){
-  if(!Object.keys(state.plan).length) return;
-  if(!window.confirm("Clear the " + plural(Object.keys(state.plan).length, "planned week") + " you set by hand? Future weeks go back to your usual days. Your log and time away are kept.")) return;
-  state.plan = {};
+  var n = Object.keys(state.days).length;
+  if(!n) return;
+  if(!window.confirm("Undo the " + plural(n, "day") + " you switched by hand? Days go back to your usual pattern. Your log and time away are kept.")) return;
+  state.days = {};
   change();
 });
-$("fixApply").addEventListener("click", function(){
-  if(!lastFix) return;
-  lastFix.adds.forEach(function(a){ state.plan[a.k] = a.to; });
+$("opts").addEventListener("click", function(e){
+  var b = e.target.closest("button[data-fix]"); if(!b) return;
+  var f = fixes[+b.getAttribute("data-fix")]; if(!f) return;
+  f.s.days.forEach(function(d){ state.days[d] = 1; });
   change();
 });
 
@@ -849,15 +908,15 @@ $("awayForm").addEventListener("submit", function(e){
   if(!f || !t){ err.hidden = false; err.textContent = "Pick both dates."; return; }
   if(t < f){ err.hidden = false; err.textContent = "The end date is before the start date."; return; }
   err.hidden = true;
-  state.away.push({ from:iso(f), to:iso(t), label:$("awLabel").value.trim().slice(0,40) });
+  state.away.push({ from:iso(f), to:iso(t), kind:$("awKind").value === "out" ? "out" : "holiday", label:$("awLabel").value.trim().slice(0,40) });
   sortAway(state.away);
   $("awFrom").value = ""; $("awTo").value = ""; $("awLabel").value = "";
+  $("addAway").open = false;
   change();
 });
 $("awFrom").addEventListener("change", function(){ if(!$("awTo").value || $("awTo").value < this.value) $("awTo").value = this.value; });
 $("awayList").addEventListener("click", function(e){
-  var b = e.target.closest("button[data-rm]");
-  if(!b) return;
+  var b = e.target.closest("button[data-rm]"); if(!b) return;
   state.away.splice(+b.getAttribute("data-rm"), 1);
   change();
 });
@@ -886,15 +945,13 @@ $("importFile").addEventListener("change", function(){
     if(!next){
       notice = (s && s.schema > SCHEMA) ? "That file comes from a newer version of this page and was not loaded."
                                         : "That file is not a 24 of 24 export, so nothing was changed.";
-      renderData();
-      return;
+      renderData(); return;
     }
     if((Object.keys(state.log).length || state.away.length) &&
        !window.confirm("Replace what is in this browser with " + file.name + "? Export first if you want to keep the current data.")) return;
-    state = next;
+    state = next; selWeek = null;
     notice = "Loaded " + plural(Object.keys(state.log).length, "logged week") +
-      (state.away.length ? " and " + state.away.length + (state.away.length === 1 ? " stretch" : " stretches") + " of time away" : "") +
-      " from " + file.name + ".";
+      (state.away.length ? " and " + plural(state.away.length, "stretch", "stretches") + " of time away" : "") + " from " + file.name + ".";
     change();
   };
   reader.readAsText(file);
