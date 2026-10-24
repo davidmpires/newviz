@@ -1,3 +1,5 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>24 of 24</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -190,6 +192,27 @@ details[open] summary::before{content:"\2212  "}
 }
 .foot{margin-top:8px; font-size:12.5px; color:var(--ink-3); line-height:1.6}
 .foot b{color:var(--ink-2); font-weight:600}
+.chip.prov{color:var(--amber-ink); background:var(--amber-wash)}
+.big.prov{color:var(--amber-ink)}
+.headline.prov{border-left-color:var(--amber-ink)}
+.stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(128px,1fr)); gap:10px 16px; margin-top:14px}
+.stats div{min-width:0}
+.stats .eyebrow{font-size:10px}
+.stats .sv{font-family:"IBM Plex Mono", monospace; font-size:15px; font-weight:600; color:var(--ink); font-variant-numeric:tabular-nums}
+.stats .sv small{font-size:11.5px; font-weight:400; color:var(--ink-3)}
+.wk.blank{border-style:dashed; background:var(--card)}
+.wk input.val{
+  width:44px; padding:3px 2px; text-align:center; font-size:18px; font-weight:600; line-height:1.1;
+  -moz-appearance:textfield; appearance:textfield;
+}
+.wk input.val::-webkit-inner-spin-button, .wk input.val::-webkit-outer-spin-button{-webkit-appearance:none; margin:0}
+.wk input.val::placeholder{color:var(--ink-3); font-weight:400}
+.wk .val.fixed{flex:1; text-align:center; color:var(--ink-2)}
+.wk .bot .gap{color:var(--amber-ink); font-weight:600}
+.wk .bot .tag{color:var(--accent-ink)}
+.databar .card-body{display:flex; gap:14px; align-items:center; justify-content:space-between; flex-wrap:wrap}
+.databar .card-body > div:first-child{flex:1 1 260px; min-width:0}
+.databar .warn-note{margin:0 20px 18px}
 [hidden]{display:none !important}
 
 @media (max-width:640px){
@@ -230,14 +253,14 @@ details[open] summary::before{content:"\2212  "}
       <div class="card-head">
         <div>
           <h2>The last 12 weeks</h2>
-          <p class="sub">Days you badged in each week, up to and including this one. Five is the most that counts in any week.</p>
+          <p class="sub">Days you badged in each week, up to and including this one. Five is the most that counts in any week. A week you leave blank is not entered, not assumed.</p>
         </div>
         <div class="btn-row">
-          <button class="btn" id="nowFill3" type="button">Set all to 3</button>
-          <button class="btn" id="nowClear" type="button">Clear</button>
+          <button class="btn" id="nowFill3" type="button">Fill blanks with 3</button>
+          <button class="btn" id="nowClear" type="button">Clear these weeks</button>
         </div>
       </div>
-      <div class="card-body"><div class="weeks" id="nowGrid"></div></div>
+      <div class="card-body"><div class="weeks" id="nowGrid"></div><p class="tiny" id="nowOlder" style="margin-top:12px"></p></div>
     </div>
   </section>
 
@@ -247,20 +270,17 @@ details[open] summary::before{content:"\2212  "}
       <div class="card-head">
         <div>
           <h2>Build the run</h2>
-          <p class="sub">Stretches, back to back. The lead-in is what you have already done — without it the first weeks of the run have no window to be judged against.</p>
+          <p class="sub">Stretches, back to back. The lead-in is the 11 weeks before week 1, read from your log — without it the first weeks of the run have no window to be judged against.</p>
         </div>
       </div>
       <div class="card-body">
         <div class="blocks">
           <div class="block">
             <div class="lbl">Lead-in</div>
-            <div class="hint">The weeks already behind you when the run starts.</div>
-            <div class="fields">
-              <span class="field"><input type="number" id="ldW" min="0" max="12" step="1"> weeks</span>
-              <span class="field">at <input type="number" id="ldD" min="0" max="5" step="1"> days</span>
-            </div>
-            <div class="btn-row" style="margin-top:9px">
-              <button class="btn" id="useReal" type="button" style="font-size:12px; padding:5px 10px">Use my real weeks</button>
+            <div class="hint" id="leadHint">The weeks already behind you, taken from your log.</div>
+            <div class="fields" id="leadFill">
+              <span class="field">Fill the <span id="leadMissN">0</span> missing with <input type="number" id="ldD" min="0" max="5" step="1"></span>
+              <button class="btn" id="leadFillBtn" type="button" style="font-size:12px; padding:5px 10px">Fill</button>
             </div>
           </div>
           <div class="block">
@@ -302,6 +322,7 @@ details[open] summary::before{content:"\2212  "}
       <div class="headline-txt">
         <span class="chip" id="whatChip"><span class="dot"></span>—</span>
         <p id="whatSay"></p>
+        <div class="stats" id="whatStats"></div>
       </div>
     </div>
 
@@ -316,6 +337,21 @@ details[open] summary::before{content:"\2212  "}
       <div class="card-body"><div class="weeks" id="whatGrid"></div></div>
     </div>
   </section>
+
+  <div class="card databar">
+    <div class="card-body">
+      <div>
+        <div class="eyebrow">Your data</div>
+        <p class="tiny" id="saveNote" style="margin-top:4px"></p>
+      </div>
+      <div class="btn-row">
+        <button class="btn" id="exportBtn" type="button">Export</button>
+        <button class="btn" id="importBtn" type="button">Import</button>
+        <input type="file" id="importFile" accept="application/json,.json" hidden>
+      </div>
+    </div>
+    <div class="warn-note" id="dataNote" hidden></div>
+  </div>
 
   <details>
     <summary>The policy, as written</summary>
@@ -356,7 +392,9 @@ details[open] summary::before{content:"\2212  "}
 "use strict";
 
 /* Bank holidays are only ever a label here — a reminder of why a week was short.
-   They change no arithmetic: a day not in the office is a day not in the office. */
+   They change no arithmetic: a day not in the office is a day not in the office.
+   England & Wales. Checked against the statutory rules (Easter, first/last Mondays,
+   substitute days); gov.uk/bank-holidays.json could not be reached to confirm. */
 var HOLS = {
   "2025-01-01":"New Year's Day","2025-04-18":"Good Friday","2025-04-21":"Easter Monday",
   "2025-05-05":"Early May","2025-05-26":"Spring","2025-08-25":"Summer",
@@ -378,10 +416,16 @@ function iso(d){ return d.toISOString().slice(0,10); }
 function addDays(d,n){ return new Date(d.getTime() + n*DAY); }
 function mondayOf(d){ var wd = d.getUTCDay(); return addDays(d, wd === 0 ? -6 : 1 - wd); }
 function todayUTC(){ var n = new Date(); return new Date(Date.UTC(n.getFullYear(), n.getMonth(), n.getDate())); }
-function parseISO(s){ var d = new Date(s + "T00:00:00Z"); return isNaN(d.getTime()) ? null : d; }
+function parseISO(s){
+  if(typeof s !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(s)) return null;
+  var d = new Date(s + "T00:00:00Z"); return isNaN(d.getTime()) ? null : d;
+}
 function fmtShort(d){ return d.getUTCDate() + " " + MON[d.getUTCMonth()]; }
 function fmtLong(d){ return d.getUTCDate() + " " + MON[d.getUTCMonth()] + " " + d.getUTCFullYear(); }
 function plural(n,s){ return n + " " + s + (Math.abs(n) === 1 ? "" : "s"); }
+function ordinal(n){ var t = n % 100, u = n % 10; return n + (t > 10 && t < 14 ? "th" : u === 1 ? "st" : u === 2 ? "nd" : u === 3 ? "rd" : "th"); }
+function has(o,k){ return Object.prototype.hasOwnProperty.call(o, k); }
+function clampDay(v){ return Math.max(0, Math.min(5, v)); }
 /* Any bank holiday falling Mon-Fri in the week beginning `monday`. */
 function holsOf(monday){
   var out = [], i, k;
@@ -390,262 +434,407 @@ function holsOf(monday){
 }
 
 /* ---------- state ---------- */
-var STORE = "rto-24of24-v1";
-var state = {
-  tab:"now",
-  win:12, keep:8, target:3,
-  now:[3,3,3,3,3,3,3,3,3,3,3,3],   // days in office, oldest first, last entry = this week
-  leadW:11, leadD:3,                // the weeks already behind you when the run starts
-  runW:4, runD:5, awayW:3, awayD:0, backW:20, backD:3,
-  start:null,                       // Monday of run-up week 1, ISO
-  edits:{}                          // week index -> days, kept across changes to the stretches
-};
+/* Everything is keyed by the ISO date of a week's Monday, never by position, so the
+   numbers stay on their week when the window rolls on. */
+var KEY = "rto-24of24-v2", OLD_KEY = "rto-24of24-v1", SCHEMA = 2;
+function fresh(){
+  return {
+    schema:SCHEMA, tab:"now",
+    policy:{ win:12, keep:8, target:3 },
+    log:{},                           // Monday ISO -> badge-ins that week (0-5); absent = not entered
+    scenario:{
+      start:null,                     // Monday of week 1, ISO
+      runW:4, runD:5, awayW:3, awayD:0, backW:20, backD:3,
+      leadFillD:3,                    // value offered for lead-in weeks you never logged
+      lead:{},                        // Monday ISO -> typed value for a lead-in week missing from the log
+      edits:{}                        // Monday ISO -> per-week override, kept across changes to the stretches
+    }
+  };
+}
+var state = fresh();
+var storageOK = true, lastSaved = null, notice = "";
+
+function P(){ return state.policy; }
+function S(){ return state.scenario; }
+function need(){ return P().keep * P().target; }
+
+function intIn(v, d, lo, hi){
+  if(v == null || v === "" || !isFinite(+v)) return d;
+  return Math.max(lo, Math.min(hi, Math.round(+v)));
+}
+function isMonday(k){ var d = parseISO(k); return !!d && iso(d) === k && d.getUTCDay() === 1; }
+function cleanMap(m){
+  var out = {};
+  if(m && typeof m === "object") Object.keys(m).forEach(function(k){
+    var v = m[k];
+    if(isMonday(k) && v != null && v !== "" && isFinite(+v)) out[k] = clampDay(Math.round(+v));
+  });
+  return out;
+}
+function cleanStart(v){ var d = parseISO(v); return d ? iso(mondayOf(d)) : null; }
+function readScenario(src, out){
+  out.runW  = intIn(src.runW,  out.runW,  0, 26); out.runD  = intIn(src.runD,  out.runD,  0, 5);
+  out.awayW = intIn(src.awayW, out.awayW, 0, 26); out.awayD = intIn(src.awayD, out.awayD, 0, 5);
+  out.backW = intIn(src.backW, out.backW, 1, 40); out.backD = intIn(src.backD, out.backD, 0, 5);
+  out.start = cleanStart(src.start);
+}
+function readPolicy(src, out){
+  out.win = intIn(src.win, out.win, 2, 26);
+  out.keep = Math.min(intIn(src.keep, out.keep, 1, 26), out.win);
+  if(src.target != null && isFinite(+src.target)) out.target = Math.max(0, Math.min(5, +src.target));
+}
+
+/* A schema-2 object, from storage or an exported file. */
+function normalise(s){
+  var out = fresh();
+  if(!s || typeof s !== "object") return out;
+  if(s.tab === "now" || s.tab === "what") out.tab = s.tab;
+  readPolicy(s.policy || {}, out.policy);
+  out.log = cleanMap(s.log);
+  var c = s.scenario || {};
+  readScenario(c, out.scenario);
+  out.scenario.leadFillD = intIn(c.leadFillD, 3, 0, 5);
+  out.scenario.lead = cleanMap(c.lead);
+  out.scenario.edits = cleanMap(c.edits);
+  return out;
+}
+
+/* The first version stored the last 12 weeks as a bare array, oldest first, with the
+   last entry meaning "this week" — whenever that was. Pin it to the Mondays ending in
+   the current week, and turn its index-keyed week edits into dated ones. */
+function fromV1(s){
+  var out = fresh(), thisMon = mondayOf(todayUTC()), i, n;
+  if(!s || typeof s !== "object") return out;
+  if(s.tab === "now" || s.tab === "what") out.tab = s.tab;
+  readPolicy(s, out.policy);
+  if(Array.isArray(s.now)){
+    n = s.now.length;
+    for(i=0;i<n;i++){
+      var v = s.now[n - 1 - i];
+      if(v != null && v !== "" && isFinite(+v)) out.log[iso(addDays(thisMon, -7*i))] = clampDay(Math.round(+v));
+    }
+  }
+  readScenario(s, out.scenario);
+  if(s.leadD != null) out.scenario.leadFillD = intIn(s.leadD, 3, 0, 5);
+  var start = out.scenario.start ? parseISO(out.scenario.start) : addDays(thisMon, 7);
+  out.scenario.start = iso(start);
+  var leadW = intIn(s.leadW, 11, 0, 26);
+  if(s.edits && typeof s.edits === "object") Object.keys(s.edits).forEach(function(k){
+    var idx = parseInt(k, 10), v = s.edits[k];
+    if(!isFinite(idx) || v == null || !isFinite(+v)) return;
+    var mk = iso(addDays(start, (idx - leadW)*7));
+    if(idx < leadW) out.scenario.lead[mk] = clampDay(Math.round(+v));
+    else out.scenario.edits[mk] = clampDay(Math.round(+v));
+  });
+  return out;
+}
+
 function load(){
-  try{
-    var raw = localStorage.getItem(STORE);
-    if(!raw) return;
-    var s = JSON.parse(raw);
-    if(!s || typeof s !== "object") return;
-    ["win","keep","leadW","leadD","runW","runD","awayW","awayD","backW","backD"].forEach(function(k){
-      if(s[k] != null && isFinite(+s[k])) state[k] = +s[k];
-    });
-    if(s.target != null && isFinite(+s.target)) state.target = +s.target;
-    if(s.tab === "now" || s.tab === "what") state.tab = s.tab;
-    if(Array.isArray(s.now)) state.now = s.now.map(Number);
-    if(s.edits && typeof s.edits === "object") state.edits = s.edits;
-    if(typeof s.start === "string") state.start = s.start;
-  }catch(e){ /* blocked storage — run with defaults */ }
+  var raw, old = null;
+  try{ raw = localStorage.getItem(KEY); }catch(e){ storageOK = false; return; }
+  if(raw){
+    try{ state = normalise(JSON.parse(raw)); }
+    catch(e){ notice = "The saved data in this browser could not be read, so the page started empty. Import an exported file to restore it."; }
+    return;
+  }
+  try{ old = localStorage.getItem(OLD_KEY); }catch(e){}
+  if(old){
+    try{
+      state = fromV1(JSON.parse(old));
+      notice = "Brought over " + plural(Object.keys(state.log).length, "week") + " from the earlier version of this page, " +
+        "placed on the Mondays ending this week. The old version filled untouched weeks with 3, so check them against your badge data.";
+      save();
+    }catch(e){}
+  }
 }
-function save(){ try{ localStorage.setItem(STORE, JSON.stringify(state)); }catch(e){} }
-
-function need(){ return state.keep * state.target; }
-
-/* Best `keep` of the 12 weeks ending at index i. Returns null before there are enough. */
-function windowAt(days, i){
-  if(i < state.win - 1) return null;
-  var slice = days.slice(i - state.win + 1, i + 1).sort(function(a,b){ return b-a; });
-  var n = Math.min(state.keep, slice.length), sum = 0, j;
-  for(j=0;j<n;j++) sum += slice[j];
-  return { sum:sum, ok:sum >= need() };
-}
-/* Which weeks in the window survive the cut — ties go to the more recent week. */
-function keptSet(days, i){
-  var from = i - state.win + 1, list = [], j, set = {};
-  for(j=from;j<=i;j++) list.push({ v:days[j], j:j });
-  list.sort(function(a,b){ return b.v - a.v || b.j - a.j; });
-  for(j=0;j<Math.min(state.keep, list.length);j++) set[list[j].j] = true;
-  return set;
-}
-function clampDay(v){ return Math.max(0, Math.min(5, v)); }
-function sizeNow(){
-  while(state.now.length < state.win) state.now.unshift(state.target);
-  if(state.now.length > state.win) state.now = state.now.slice(state.now.length - state.win);
+function save(){
+  try{ localStorage.setItem(KEY, JSON.stringify(state)); storageOK = true; lastSaved = new Date(); }
+  catch(e){ storageOK = false; }
+  renderData();
 }
 
-/* ---------- the scenario timeline ---------- */
+/* Best `keep` of a run of weeks (oldest first; null = not entered, counted as 0 so a
+   blank can only ever make the total look worse than it is). Ties go to the more
+   recent week. */
+function bestOf(vals){
+  var list = vals.map(function(v,j){ return { v:v == null ? 0 : v, blank:v == null, j:j }; });
+  list.sort(function(a,b){ return b.v - a.v || (a.blank - b.blank) || b.j - a.j; });
+  var keep = Math.min(P().keep, list.length), sum = 0, set = {}, j;
+  for(j=0;j<keep;j++){ sum += list[j].v; set[list[j].j] = true; }
+  return { sum:sum, kept:set };
+}
+
+/* ---------- tab 1: the log ---------- */
+function nowWeeks(){
+  var thisMon = mondayOf(todayUTC()), out = [], i, m, k;
+  for(i=P().win-1;i>=0;i--){
+    m = addDays(thisMon, -7*i); k = iso(m);
+    out.push({ mon:m, k:k, v:has(state.log, k) ? state.log[k] : null });
+  }
+  return out;
+}
+
+/* ---------- tab 2: the scenario timeline ---------- */
 /* The policy never stops running, so the weeks before the plan starts are already
-   inside the window being judged. Without a lead-in, the first eleven weeks of any
-   run would show no score at all — and the damage from a spell away lands earlier
-   than that. */
-function stretches(){
-  return [
-    { name:"Lead-in", weeks:Math.max(0, state.leadW|0), days:clampDay(state.leadD|0) },
-    { name:"Run-up",  weeks:Math.max(0, state.runW|0),  days:clampDay(state.runD|0) },
-    { name:"Away",    weeks:Math.max(0, state.awayW|0), days:clampDay(state.awayD|0) },
-    { name:"Back",    weeks:Math.max(1, state.backW|0), days:clampDay(state.backD|0) }
-  ];
-}
-function baseTimeline(){
-  var st = stretches(), out = [], i, k;
-  for(i=0;i<st.length;i++) for(k=0;k<st[i].weeks;k++) out.push(st[i].days);
-  while(out.length < state.win) out.push(st[3].days);
-  return out.slice(0, 70);
-}
-/* Edits are held per week index and survive changes to the stretches. */
-function whatDays(){
-  var base = baseTimeline(), i;
-  for(i=0;i<base.length;i++)
-    if(Object.prototype.hasOwnProperty.call(state.edits, i)) base[i] = clampDay(state.edits[i]);
-  return base;
-}
-function leadCount(){ return Math.max(0, state.leadW|0); }
-function phaseAt(i){
-  var st = stretches(), n = 0, s;
-  for(s=0;s<st.length;s++){ n += st[s].weeks; if(i < n) return st[s].name; }
-  return "Back";
-}
-/* 0-based index of the first week back in the office. */
-function returnIdx(){ return leadCount() + Math.max(0, state.runW|0) + Math.max(0, state.awayW|0); }
-/* Week 1 is the first run-up week; the lead-in runs backwards from it. */
+   inside the window being judged. Those come from the log; only weeks never logged
+   need a typed value. */
+function leadCount(){ return P().win - 1; }
 function runStartMonday(){
-  var d = state.start ? parseISO(state.start) : null;
+  var d = S().start ? parseISO(S().start) : null;
   return mondayOf(d || addDays(mondayOf(todayUTC()), 7));
 }
-function mondayAt(i){ return addDays(runStartMonday(), (i - leadCount())*7); }
-function weekLabel(i){
-  var n = i - leadCount() + 1;
-  return n <= 0 ? "before" : "wk " + n;
+function stretches(){
+  var c = S();
+  return [
+    { name:"Run-up", weeks:c.runW,               days:c.runD },
+    { name:"Away",   weeks:c.awayW,              days:c.awayD },
+    { name:"Back",   weeks:Math.max(1, c.backW), days:c.backD }
+  ];
 }
+function timeline(){
+  var c = S(), lead = leadCount(), start = runStartMonday(), out = [], st = stretches(), i, s, k, m, n = 0;
+  for(i=lead;i>0;i--){
+    m = addDays(start, -7*i); k = iso(m);
+    if(has(state.log, k))  out.push({ mon:m, k:k, v:state.log[k], src:"log",   phase:"Lead-in" });
+    else if(has(c.lead,k)) out.push({ mon:m, k:k, v:c.lead[k],    src:"typed", phase:"Lead-in" });
+    else                   out.push({ mon:m, k:k, v:null,         src:"missing", phase:"Lead-in" });
+  }
+  for(s=0;s<st.length;s++) for(i=0;i<st[s].weeks;i++, n++){
+    m = addDays(start, 7*n); k = iso(m);
+    if(has(c.edits, k)) out.push({ mon:m, k:k, v:c.edits[k], src:"edit", phase:st[s].name });
+    else                out.push({ mon:m, k:k, v:st[s].days, src:"plan", phase:st[s].name });
+  }
+  return out;
+}
+/* Best-8 total for the window ending at index i, or null if any week in it has no value. */
+function windowAt(tl, i){
+  if(i < P().win - 1) return null;
+  var vals = [], j;
+  for(j=i-P().win+1;j<=i;j++){ if(tl[j].v == null) return null; vals.push(tl[j].v); }
+  var sum = bestOf(vals).sum;
+  return { sum:sum, ok:sum >= need() };
+}
+function returnIdx(){ return leadCount() + S().runW + S().awayW; }
+function weekNo(i){ return i - leadCount() + 1; }
+function weekLabel(i){ var n = weekNo(i); return n <= 0 ? "before" : "wk " + n; }
 
 /* ---------- rendering ---------- */
 var $ = function(id){ return document.getElementById(id); };
 
 function weekCard(o){
+  var v = o.value, set = v != null, ctrl;
+  if(o.fixed){
+    ctrl = '<span class="val fixed" title="From your log — change it on Where I am">' + v + '</span>';
+  }else{
+    ctrl =
+      '<button type="button" data-g="' + o.grid + '" data-k="' + o.k + '" data-v="' + (set ? v-1 : 0) + '"' +
+        (set && v <= 0 ? " disabled" : "") + ' aria-label="One fewer badge-in, ' + o.aria + '">&minus;</button>' +
+      '<input type="number" class="val" inputmode="numeric" min="0" max="5" step="1" placeholder="&ndash;"' +
+        ' data-g="' + o.grid + '" data-k="' + o.k + '" value="' + (set ? v : "") + '" aria-label="Badge-ins, ' + o.aria + '">' +
+      '<button type="button" data-g="' + o.grid + '" data-k="' + o.k + '" data-v="' + (set ? v+1 : 1) + '"' +
+        (set && v >= 5 ? " disabled" : "") + ' aria-label="One more badge-in, ' + o.aria + '">+</button>';
+  }
   return '<div class="wk' + (o.cls ? " " + o.cls : "") + '">' +
     '<div class="top"><span><b>' + o.title + '</b>' + (o.bh ? ' <i class="bh" title="' + o.bh + '">BH</i>' : "") +
       '</span><span>' + o.side + '</span></div>' +
-    '<div class="row">' +
-      '<button type="button" data-g="' + o.grid + '" data-i="' + o.i + '" data-v="' + (o.value-1) + '"' +
-        (o.value <= 0 ? " disabled" : "") + ' aria-label="One fewer day, ' + o.aria + '">&minus;</button>' +
-      '<span class="val">' + o.value + '</span>' +
-      '<button type="button" data-g="' + o.grid + '" data-i="' + o.i + '" data-v="' + (o.value+1) + '"' +
-        (o.value >= 5 ? " disabled" : "") + ' aria-label="One more day, ' + o.aria + '">+</button>' +
-    '</div>' +
+    '<div class="row">' + ctrl + '</div>' +
     (o.bot || "") +
   '</div>';
 }
+function setHead(prefix, cls, big, chip){
+  $(prefix + "Big").innerHTML = big;
+  $(prefix + "Big").className = "big " + cls;
+  $(prefix + "Head").className = "headline " + cls;
+  $(prefix + "Chip").className = "chip " + cls;
+  $(prefix + "Chip").innerHTML = '<span class="dot"></span>' + chip;
+}
 
-/* ---------- tab 1 ---------- */
 function renderNow(){
-  sizeNow();
-  var days = state.now, last = state.win - 1;
-  var w = windowAt(days, last), kept = keptSet(days, last);
-  var thisMon = mondayOf(todayUTC());
-  var total = 0, i;
-  for(i=0;i<days.length;i++) total += days[i];
+  var weeks = nowWeeks(), vals = weeks.map(function(w){ return w.v; });
+  var b = bestOf(vals), last = weeks.length - 1, missing = 0, total = 0, i;
+  for(i=0;i<vals.length;i++){ if(vals[i] == null) missing++; else total += vals[i]; }
+  var drop = P().win - P().keep, margin = b.sum - need();
 
-  $("nowBig").innerHTML = w.sum + '<small> / ' + need() + '</small>';
-  $("nowBig").className = "big " + (w.ok ? "ok" : "bad");
-  $("nowHead").className = "headline " + (w.ok ? "ok" : "bad");
-  $("nowChip").className = "chip " + (w.ok ? "ok" : "bad");
-  $("nowChip").innerHTML = '<span class="dot"></span>' + (w.ok ? "Compliant" : "Not compliant");
-  var margin = w.sum - need();
-  $("nowSay").innerHTML = w.ok
-    ? 'Your best ' + state.keep + ' weeks add up to <b>' + plural(w.sum,"badge-in") + '</b>, which is <b>' +
-      (margin === 0 ? 'exactly the ' + need() + ' you need' : plural(margin,"day") + ' clear') + '</b>. ' +
-      'The other ' + (state.win - state.keep) + ' weeks (' + plural(total - w.sum,"day") + ') are thrown away and cost you nothing.'
-    : 'Your best ' + state.keep + ' weeks add up to <b>' + plural(w.sum,"badge-in") + '</b>, <b>' +
-      plural(Math.abs(margin),"day") + ' short</b> of ' + need() + '. You need those back before the window rolls on.';
+  if(missing === weeks.length){
+    setHead("now", "prov", '&mdash;<small> / ' + need() + '</small>', "Not entered");
+    $("nowSay").innerHTML = 'Nothing is logged for these ' + P().win + ' weeks yet. Enter the badge-ins for each week. ' +
+      'A week you leave blank stays <b>not entered</b> — nothing is assumed for it.';
+  }else if(missing){
+    setHead("now", "prov", b.sum + '<small> / ' + need() + '</small>', "Provisional · " + missing + " not entered");
+    $("nowSay").innerHTML = 'Counting only the weeks you have entered, your best ' + P().keep + ' add up to <b>' +
+      plural(b.sum, "badge-in") + '</b>. <b>' + plural(missing, "week") + '</b> ' + (missing === 1 ? "is" : "are") +
+      ' not entered, so this is provisional. ' +
+      (margin >= 0 ? 'It already reaches ' + need() + ', and filling the gaps cannot take it lower.'
+                   : 'That is ' + plural(-margin, "badge-in") + ' short of ' + need() + ' so far — fill in the missing weeks to see where you really stand.');
+  }else{
+    setHead("now", margin >= 0 ? "ok" : "bad", b.sum + '<small> / ' + need() + '</small>', margin >= 0 ? "Compliant" : "Not compliant");
+    $("nowSay").innerHTML = margin >= 0
+      ? 'Your best ' + P().keep + ' weeks add up to <b>' + plural(b.sum,"badge-in") + '</b>, which is <b>' +
+        (margin === 0 ? 'exactly the ' + need() + ' you need' : plural(margin,"badge-in") + ' clear') + '</b>. ' +
+        'The other ' + drop + ' weeks (' + plural(total - b.sum,"badge-in") + ') are dropped and cost you nothing.'
+      : 'Your best ' + P().keep + ' weeks add up to <b>' + plural(b.sum,"badge-in") + '</b>, <b>' +
+        plural(-margin,"badge-in") + ' short</b> of ' + need() + '. You need those back before the window rolls on.';
+  }
 
   var html = "";
-  for(i=0;i<state.win;i++){
-    var mon = addDays(thisMon, -(state.win - 1 - i)*7);
-    var hols = holsOf(mon);
+  for(i=0;i<weeks.length;i++){
+    var w = weeks[i], hols = holsOf(w.mon), status;
+    if(w.v == null) status = '<span class="gap">not entered</span>';
+    else if(b.kept[i]) status = '<span class="keep">counts</span>';
+    else status = 'dropped';
     html += weekCard({
-      grid:"now", i:i, value:days[i], title:fmtShort(mon),
+      grid:"now", k:w.k, value:w.v, title:fmtShort(w.mon),
       bh: hols.length ? hols.join(", ") : "",
       side: i === last ? "now" : (last - i) + "w ago",
-      aria: "week of " + fmtLong(mon),
-      cls: i === last ? "now" : "",
-      bot: '<div class="bot"><span>' + (kept[i] ? '<span class="keep">counts</span>' : "thrown away") + '</span></div>'
+      aria: "week of " + fmtLong(w.mon),
+      cls: (i === last ? "now" : "") + (w.v == null ? " blank" : ""),
+      bot: '<div class="bot"><span>' + status + '</span></div>'
     });
   }
   $("nowGrid").innerHTML = html;
+
+  var first = weeks[0].k, older = Object.keys(state.log).filter(function(k){ return k < first; }).sort();
+  $("nowOlder").textContent = older.length
+    ? "Your log also holds " + plural(older.length, "older week") + ", back to " + fmtLong(parseISO(older[0])) +
+      ". They have rolled out of the window but are kept, and the What if lead-in uses them."
+    : "";
 }
 
-/* ---------- tab 2 ---------- */
 function renderWhat(){
-  var days = whatDays(), n = days.length, lead = leadCount(), back = returnIdx();
-  $("startDate").value = iso(runStartMonday());
-  $("startNote").textContent = "week commencing " + fmtLong(runStartMonday());
+  var tl = timeline(), n = tl.length, lead = leadCount(), back = returnIdx(), c = S(), i, w;
+  var start = runStartMonday();
+  $("startDate").value = iso(start);
+  $("startNote").textContent = "week commencing " + fmtLong(start);
 
-  var firstBad = -1, recovered = -1, worst = null, worstAt = -1, i, w;
-  for(i=state.win-1;i<n;i++){
-    w = windowAt(days, i);
+  var fromLog = 0, typed = 0, missing = 0;
+  for(i=0;i<lead;i++){ if(tl[i].src === "log") fromLog++; else if(tl[i].src === "typed") typed++; else missing++; }
+  $("leadHint").innerHTML = 'The ' + lead + ' weeks before week 1 (' + fmtShort(tl[0].mon) + ' – ' + fmtShort(tl[lead-1].mon) + '). ' +
+    '<b>' + fromLog + '</b> from your log' + (typed ? ', <b>' + typed + '</b> typed here' : '') +
+    (missing ? ', <b>' + missing + '</b> never logged.' : '.');
+  $("leadFill").hidden = missing === 0;
+  $("leadMissN").textContent = missing;
+  $("leadWarn").hidden = missing === 0;
+  $("leadWarn").innerHTML = missing
+    ? plural(missing, "lead-in week") + ' ' + (missing === 1 ? "has" : "have") + ' no value. Type ' + (missing === 1 ? "it" : "them") +
+      ' into the dashed cards below, or fill them in one go. Until then the weeks that depend on ' + (missing === 1 ? "it" : "them") + ' show no score.'
+    : "";
+
+  /* "Back to 24" means back for good: the week after the last short one, not the end of
+     the first dip, which can come before the worst of it. */
+  var firstBad = -1, lastBad = -1, dips = 0, worst = null, worstAt = -1, blocked = false;
+  for(i=lead;i<n;i++){
+    w = windowAt(tl, i);
+    if(!w){ blocked = true; continue; }
     if(worst === null || w.sum < worst){ worst = w.sum; worstAt = i; }
-    if(!w.ok && firstBad < 0) firstBad = i;
-    if(firstBad >= 0 && recovered < 0 && w.ok && i > firstBad) recovered = i;
+    if(!w.ok){ if(firstBad < 0) firstBad = i; if(lastBad !== i - 1) dips++; lastBad = i; }
   }
-  var ok = firstBad < 0;
+  var recovered = lastBad >= 0 && lastBad < n - 1 ? lastBad + 1 : -1;
+  function at(i){ return weekLabel(i) + ' (' + fmtShort(tl[i].mon) + ')'; }
+  var say, stats = [];
 
-  $("whatBig").innerHTML = worst + '<small> / ' + need() + '</small>';
-  $("whatBig").className = "big " + (ok ? "ok" : "bad");
-  $("whatHead").className = "headline " + (ok ? "ok" : "bad");
-  $("whatChip").className = "chip " + (ok ? "ok" : "bad");
-  $("whatChip").innerHTML = '<span class="dot"></span>' + (ok ? "Never drops below " + need() : "Falls below " + need());
-
-  var say;
-  if(ok){
-    say = 'The lowest you ever get is <b>' + worst + ' of ' + need() + '</b>, at ' +
-          weekLabel(worstAt) + ' (' + fmtShort(mondayAt(worstAt)) + '). Nothing in this run breaks the policy.';
+  if(blocked){
+    setHead("what", "prov", '&mdash;<small> / ' + need() + '</small>', "Needs " + plural(missing, "lead-in week"));
+    say = 'Your log has no entry for ' + plural(missing, "week") + ' of the lead-in. Fill ' + (missing === 1 ? "it" : "them") +
+      ' in and the run will be scored — nothing is assumed for a week you never logged.';
   }else{
-    say = 'You first fall short at <b>' + weekLabel(firstBad) + '</b> (' + fmtShort(mondayAt(firstBad)) +
-          '), bottoming out at <b>' + worst + ' of ' + need() + '</b> at ' + weekLabel(worstAt) + '. ';
-    if(recovered >= 0){
-      say += 'You are back to ' + need() + ' at <b>' + weekLabel(recovered) + '</b> — <b>' +
-             plural(recovered - back + 1, "week") + ' after you return</b>, at ' +
-             plural(clampDay(state.backD|0),"badge-in") + ' a week.';
+    var ok = firstBad < 0;
+    setHead("what", ok ? "ok" : "bad", worst + '<small> / ' + need() + '</small>', ok ? "Never drops below " + need() : "Falls below " + need());
+    stats.push(['Lowest', worst + ' <small>at ' + at(worstAt) + '</small>']);
+    if(ok){
+      say = 'The lowest you ever get is <b>' + worst + ' of ' + need() + '</b>, at ' + at(worstAt) + '. Nothing in this run breaks the policy.';
     }else{
-      say += 'You are <b>still short</b> at the end of the run. Give the Back stretch more weeks, or more days.';
+      stats.push(['First below ' + need(), at(firstBad)]);
+      say = 'You first fall short at <b>' + at(firstBad) + '</b>, bottoming out at <b>' + worst + ' of ' + need() + '</b> at <b>' + at(worstAt) + '</b>. ';
+      if(recovered >= 0){
+        var into = recovered - back + 1;
+        stats.push(['Back to ' + need(), at(recovered)]);
+        stats.push(['After return', into > 0 ? ordinal(into) + ' week back' : 'before you return']);
+        say += 'You are back to ' + need() + (dips > 1 ? ' for good' : '') + ' at <b>' + at(recovered) + '</b> — ' +
+          (into > 0 ? '<b>your ' + ordinal(into) + ' week back</b>, at ' + plural(c.backD, "badge-in") + ' a week.'
+                    : 'before you are back in the office.') +
+          (dips > 1 ? ' It dips below ' + need() + ' ' + (dips === 2 ? 'twice' : dips + ' times') + ' on the way.' : '');
+      }else{
+        stats.push(['Back to ' + need(), 'not in this run']);
+        say += 'You are <b>still short</b> at the end of the run. Give the Back stretch more weeks, or more days.';
+      }
     }
   }
-  /* Once more than (win - keep) weeks in a window are empty, the empties stop being
-     free and the surviving weeks have to carry the whole 24. */
-  var awayLen = Math.max(0, state.awayW|0), spare = state.win - state.keep;
-  if(awayLen > spare && clampDay(state.awayD|0) === 0){
-    var counted = state.keep - (awayLen - spare);
-    say += counted > 0
-      ? ' <br><br>' + awayLen + ' empty weeks is ' + (awayLen - spare) + ' more than the ' + spare +
-        ' the policy throws away, so ' + (awayLen - spare) + ' of them get counted as zeros. That leaves only <b>' +
-        counted + ' real weeks</b> to carry all ' + need() + ' — <b>' +
-        (Math.round(need()/counted*10)/10) + ' badge-ins a week</b>' +
-        (need()/counted > 5 ? ', which is more than a week holds. No run-up can save it.' : ' every one of them.')
-      : ' <br><br>' + awayLen + ' empty weeks fills the whole window. Nothing can reach ' + need() + '.';
+  /* Once more than (win - keep) weeks in a window are away weeks, the extras stop being
+     free and the surviving weeks have to carry the rest of the 24. */
+  var spare = P().win - P().keep;
+  if(c.awayW > spare && c.awayD < P().target){
+    var extra = c.awayW - spare, counted = P().keep - extra;
+    if(counted <= 0){
+      say += '<br><br>' + plural(c.awayW, "away week") + ' fill a whole ' + P().win + '-week window, so the best ' + P().keep +
+        ' can only reach ' + (P().keep * c.awayD) + '. <b>' + need() + ' cannot be reached</b> while you are away.';
+    }else{
+      var per = (need() - extra * c.awayD) / counted;
+      say += '<br><br>' + plural(c.awayW, "away week") + ' is ' + extra + ' more than the ' + spare +
+        ' the policy drops, so ' + extra + ' of them count inside your best ' + P().keep + '. That leaves only <b>' +
+        plural(counted, "other week") + '</b> to carry the rest — <b>' + (Math.round(per*10)/10) + ' badge-ins a week</b>' +
+        (per > 5 ? ', more than a week holds. <b>It cannot be reached</b>, whatever you do in the run-up.' : ' in every one of them.');
+    }
   }
   $("whatSay").innerHTML = say;
-
-  var note = $("leadWarn");
-  if(lead < state.win - 1){
-    note.hidden = false;
-    note.innerHTML = 'With only ' + plural(lead,"lead-in week") + ', the first ' + (state.win - 1 - lead) +
-      ' weeks of the run have no full ' + state.win + '-week window behind them, so they show no score. ' +
-      'The policy is still measuring them. Set the lead-in to ' + (state.win - 1) + ' to see every week.';
-  }else{ note.hidden = true; }
+  $("whatStats").innerHTML = stats.map(function(s){
+    return '<div><div class="eyebrow">' + s[0] + '</div><div class="sv">' + s[1] + '</div></div>';
+  }).join("");
 
   var html = "", lastPhase = null;
   for(i=0;i<n;i++){
-    var ph = phaseAt(i), mon = mondayAt(i), hols = holsOf(mon), w2 = windowAt(days, i);
-    if(ph !== lastPhase){
-      html += '<div class="phase-mark">' + ph + (i === back && back > lead ? " — back in the office" : "") + '</div>';
-      lastPhase = ph;
+    var t = tl[i], hols = holsOf(t.mon), w2 = windowAt(tl, i), label;
+    if(t.phase !== lastPhase){
+      html += '<div class="phase-mark">' + t.phase + (i === back && t.phase === "Back" ? " — back in the office" : "") + '</div>';
+      lastPhase = t.phase;
     }
+    label = t.src === "log" ? "logged" : t.src === "typed" ? "typed" : t.src === "missing" ? '<span class="gap">needs a value</span>'
+          : t.src === "edit" ? '<span class="tag">edited</span>' : "best " + P().keep;
     html += weekCard({
-      grid:"what", i:i, value:days[i], title:fmtShort(mon),
-      bh: hols.length ? hols.join(", ") : "",
-      side: weekLabel(i),
-      aria: "week of " + fmtLong(mon),
-      cls: (w2 && !w2.ok ? "bad" : "") + (i < lead ? " lead" : ""),
-      bot: '<div class="bot"><span>best ' + state.keep + '</span>' +
+      grid: i < lead ? "lead" : "what", k:t.k, value:t.v, fixed:t.src === "log",
+      title:fmtShort(t.mon), bh: hols.length ? hols.join(", ") : "",
+      side: weekLabel(i), aria: "week of " + fmtLong(t.mon),
+      cls: (w2 && !w2.ok ? "bad" : "") + (i < lead ? " lead" : "") + (t.v == null ? " blank" : ""),
+      bot: '<div class="bot"><span>' + label + '</span>' +
            (w2 ? '<span class="n' + (w2.ok ? "" : " bad") + '">' + w2.sum + '/' + need() + '</span>'
-               : '<span class="n" title="No full window behind it yet">&mdash;</span>') + '</div>'
+               : '<span class="n" title="No complete window behind it">&mdash;</span>') + '</div>'
     });
   }
   $("whatGrid").innerHTML = html;
 }
 
+function renderData(){
+  var weeks = Object.keys(state.log).sort();
+  var held = weeks.length ? 'Your log holds ' + plural(weeks.length, "week") + ', from ' + fmtLong(parseISO(weeks[0])) + '. ' : 'Your log is empty. ';
+  $("saveNote").innerHTML = storageOK
+    ? held + 'Every change is saved in this browser' +
+      (lastSaved ? ' (last at ' + ("0" + lastSaved.getHours()).slice(-2) + ':' + ("0" + lastSaved.getMinutes()).slice(-2) + ')' : '') +
+      '. Browsers can clear that, so <b>Export</b> now and then — the file is the copy that lasts.'
+    : held + '<b>This browser is not letting the page save</b>, so nothing is kept between visits. Export before you leave and Import next time.';
+  $("dataNote").hidden = !notice;
+  $("dataNote").textContent = notice;
+}
+
 function renderChrome(){
-  $("polNote").textContent = "so " + need() + " badge-ins across your best " + state.keep + ".";
+  $("polNote").textContent = "so " + need() + " badge-ins across your best " + P().keep + ".";
   document.querySelector(".rule-say").innerHTML =
-    "Best <b>" + state.keep + "</b> of the last <b>" + state.win + "</b> weeks, averaging <b>" + state.target +
-    "</b> days &rarr; <b>" + need() + " badge-ins</b> across those " + state.keep + ".";
+    "Best <b>" + P().keep + "</b> of the last <b>" + P().win + "</b> weeks, averaging <b>" + P().target +
+    "</b> days &rarr; <b>" + need() + " badge-ins</b> across those " + P().keep + ".";
+  var drop = P().win - P().keep;
   $("foot").innerHTML =
-    '<b>The sum.</b> Rank the last ' + state.win + ' weeks by badge-ins, drop the ' + (state.win - state.keep) +
+    '<b>The sum.</b> Rank the last ' + P().win + ' weeks by badge-ins, drop the ' + drop +
     ' lowest, add up the rest. That total has to reach <b>' + need() + '</b>. No week can contribute more than 5.<br><br>' +
-    '<b>Why the ' + (state.win - state.keep) + ' dropped weeks exist.</b> The policy drops them precisely to cover paid time off, ' +
+    '<b>Why the ' + drop + ' dropped weeks exist.</b> The policy drops them precisely to cover paid time off, ' +
     'holidays, sick time, travel to other offices and offsite events where there is no badge data. So none of that is ' +
     'deducted or excluded anywhere — a week you were not badging in is simply a low week, and the drop is what absorbs it. ' +
     'BH marks a week containing an England &amp; Wales bank holiday, as a reminder only; it changes no arithmetic.<br><br>' +
-    '<b>It never stops rolling.</b> Every week is judged against the ' + state.win + ' behind it, which is why the What if tab ' +
-    'starts with a lead-in: without those weeks in place the start of a run looks unjudged when it is not. It also means a ' +
-    'good run-up only helps while it stays inside the window — a 5-badge week ' + state.win + ' weeks ago counts for nothing today.<br><br>' +
+    '<b>It never stops rolling.</b> Every week is judged against the ' + P().win + ' behind it, which is why the What if tab ' +
+    'starts with a lead-in taken from your log: without those weeks in place the start of a run looks unjudged when it is not. It also means a ' +
+    'good run-up only helps while it stays inside the window — a 5-badge week ' + P().win + ' weeks ago counts for nothing today.<br><br>' +
     '<span style="opacity:.8">A planning aid, not the system of record. Check anything close against your own badge data.</span>';
 }
 
-function renderAll(){
-  renderChrome();
-  if(state.tab === "now") renderNow(); else renderWhat();
-  save();
-}
+function renderTab(){ if(state.tab === "now") renderNow(); else renderWhat(); }
+function renderAll(){ renderChrome(); renderTab(); save(); }
 
 /* ---------- wiring ---------- */
 function showTab(which){
@@ -659,23 +848,45 @@ function showTab(which){
 $("tabNow").addEventListener("click", function(){ showTab("now"); });
 $("tabWhat").addEventListener("click", function(){ showTab("what"); });
 
-function onStep(e){
-  var b = e.target.closest("button[data-i]");
-  if(!b || b.disabled) return;
-  var i = +b.getAttribute("data-i"), v = clampDay(+b.getAttribute("data-v"));
-  if(b.getAttribute("data-g") === "now"){ state.now[i] = v; renderNow(); }
-  else { state.edits[i] = v; renderWhat(); }
+/* g: "now" = the log, "lead" = a lead-in week never logged, "what" = a scenario override.
+   v = null clears a log or lead-in entry; a scenario override is only cleared by Undo. */
+function setWeek(g, k, v){
+  if(g === "now"){ if(v == null) delete state.log[k]; else state.log[k] = v; }
+  else if(g === "lead"){ if(v == null) delete S().lead[k]; else S().lead[k] = v; }
+  else { if(v == null) return; S().edits[k] = v; }
+  renderTab();
   save();
 }
-$("nowGrid").addEventListener("click", onStep);
-$("whatGrid").addEventListener("click", onStep);
+function onStep(e){
+  var b = e.target.closest("button[data-k]");
+  if(!b || b.disabled) return;
+  setWeek(b.getAttribute("data-g"), b.getAttribute("data-k"), clampDay(+b.getAttribute("data-v")));
+}
+function onType(e){
+  var el = e.target;
+  if(!el.matches || !el.matches("input.val")) return;
+  var g = el.getAttribute("data-g"), k = el.getAttribute("data-k"), raw = el.value.trim(), v = parseInt(raw, 10);
+  if(raw === "") setWeek(g, k, null);
+  else if(isFinite(v)) setWeek(g, k, clampDay(v));
+  else return;
+  /* The grid was redrawn; put the cursor back where it was. */
+  var again = this.querySelector('input.val[data-g="' + g + '"][data-k="' + k + '"]');
+  if(again) again.focus();
+}
+["nowGrid","whatGrid"].forEach(function(id){
+  $(id).addEventListener("click", onStep);
+  $(id).addEventListener("input", onType);
+});
 
 $("nowFill3").addEventListener("click", function(){
-  var i; for(i=0;i<state.now.length;i++) state.now[i] = clampDay(state.target);
+  nowWeeks().forEach(function(w){ if(w.v == null) state.log[w.k] = clampDay(Math.round(P().target)); });
   renderAll();
 });
 $("nowClear").addEventListener("click", function(){
-  var i; for(i=0;i<state.now.length;i++) state.now[i] = 0;
+  var weeks = nowWeeks().filter(function(w){ return w.v != null; });
+  if(!weeks.length) return;
+  if(!window.confirm("Clear the " + plural(weeks.length, "entered week") + " shown here? Older weeks in your log are kept.")) return;
+  weeks.forEach(function(w){ delete state.log[w.k]; });
   renderAll();
 });
 
@@ -683,35 +894,30 @@ function blockInput(id, key, min, max){
   $(id).addEventListener("input", function(){
     var v = parseInt(this.value, 10);
     if(!isFinite(v)) return;
-    state[key] = Math.max(min, Math.min(max, v));
+    S()[key] = Math.max(min, Math.min(max, v));
     renderWhat();                   // week edits stay put; only the untouched weeks move
     save();
   });
 }
-blockInput("ldW","leadW",0,12);  blockInput("ldD","leadD",0,5);
 blockInput("rwW","runW",0,26);   blockInput("rwD","runD",0,5);
 blockInput("awW","awayW",0,26);  blockInput("awD","awayD",0,5);
 blockInput("bwW","backW",1,40);  blockInput("bwD","backD",0,5);
+blockInput("ldD","leadFillD",0,5);
 
+$("leadFillBtn").addEventListener("click", function(){
+  var v = S().leadFillD;
+  timeline().forEach(function(t){ if(t.src === "missing") S().lead[t.k] = v; });
+  renderWhat();
+  save();
+});
 $("startDate").addEventListener("change", function(){
   var d = parseISO(this.value);
-  state.start = d ? iso(mondayOf(d)) : null;
+  S().start = d ? iso(mondayOf(d)) : null;
   renderWhat();
   save();
 });
 $("whatRebuild").addEventListener("click", function(){
-  state.edits = {};
-  renderWhat();
-  save();
-});
-/* Drop the real last weeks straight into the lead-in, so the run starts from
-   where you actually are rather than from an assumption. */
-$("useReal").addEventListener("click", function(){
-  sizeNow();
-  var lead = state.win - 1, i;
-  state.leadW = lead;
-  $("ldW").value = lead;
-  for(i=0;i<lead;i++) state.edits[i] = clampDay(state.now[state.now.length - lead + i]);
+  S().edits = {};
   renderWhat();
   save();
 });
@@ -719,10 +925,10 @@ $("useReal").addEventListener("click", function(){
 function policyInput(id, key, min, max, whole){
   $(id).addEventListener("change", function(){
     var v = parseFloat(this.value);
-    if(!isFinite(v)) v = state[key];
+    if(!isFinite(v)) v = P()[key];
     v = Math.max(min, Math.min(max, whole ? Math.round(v) : v));
-    state[key] = v;
-    if(state.keep > state.win){ state.keep = state.win; $("keepIn").value = state.keep; }
+    P()[key] = v;
+    if(P().keep > P().win){ P().keep = P().win; $("keepIn").value = P().keep; }
     this.value = v;
     renderAll();
   });
@@ -731,16 +937,59 @@ policyInput("winIn","win",2,26,true);
 policyInput("keepIn","keep",1,26,true);
 policyInput("tgtIn","target",0,5,false);
 
-/* boot */
+/* ---------- export / import ---------- */
+$("exportBtn").addEventListener("click", function(){
+  var data = JSON.parse(JSON.stringify(state));
+  data.exportedAt = new Date().toISOString();
+  var blob = new Blob([JSON.stringify(data, null, 2)], { type:"application/json" });
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "rto-24of24-" + iso(todayUTC()) + ".json";
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 0);
+});
+$("importBtn").addEventListener("click", function(){ $("importFile").click(); });
+$("importFile").addEventListener("change", function(){
+  var file = this.files && this.files[0], input = this;
+  if(!file) return;
+  var reader = new FileReader();
+  reader.onload = function(){
+    var next = null, s;
+    try{ s = JSON.parse(reader.result); }catch(e){ s = null; }
+    if(s && s.schema === SCHEMA) next = normalise(s);
+    else if(s && Array.isArray(s.now)) next = fromV1(s);
+    input.value = "";
+    if(!next){
+      notice = (s && s.schema > SCHEMA) ? "That file comes from a newer version of this page and was not loaded."
+                                        : "That file is not a 24 of 24 export, so nothing was changed.";
+      renderData();
+      return;
+    }
+    if(Object.keys(state.log).length &&
+       !window.confirm("Replace what is in this browser with " + file.name + "? Export first if you want to keep the current data.")) return;
+    state = next;
+    notice = "Loaded " + plural(Object.keys(state.log).length, "logged week") + " from " + file.name + ".";
+    boot();
+  };
+  reader.readAsText(file);
+});
+
+function syncInputs(){
+  var c = S();
+  $("ldD").value = c.leadFillD;
+  $("rwW").value = c.runW;  $("rwD").value = c.runD;
+  $("awW").value = c.awayW; $("awD").value = c.awayD;
+  $("bwW").value = c.backW; $("bwD").value = c.backD;
+  $("winIn").value = P().win; $("keepIn").value = P().keep; $("tgtIn").value = P().target;
+}
+function boot(){
+  if(!S().start) S().start = iso(runStartMonday());
+  syncInputs();
+  showTab(state.tab);
+}
+
 load();
-sizeNow();
-$("ldW").value = state.leadW; $("ldD").value = state.leadD;
-$("rwW").value = state.runW;  $("rwD").value = state.runD;
-$("awW").value = state.awayW; $("awD").value = state.awayD;
-$("bwW").value = state.backW; $("bwD").value = state.backD;
-$("winIn").value = state.win; $("keepIn").value = state.keep; $("tgtIn").value = state.target;
-if(!state.start) state.start = iso(runStartMonday());
-showTab(state.tab);
+boot();
 
 })();
 </script>
