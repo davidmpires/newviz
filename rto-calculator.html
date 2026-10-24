@@ -220,6 +220,17 @@ details.add[open] summary{display:none}
 .away-form input, .away-form select{width:100%; min-width:0}
 .empty{font-size:14px; color:var(--ink-3)}
 
+/* sync */
+.sync-pill{display:inline-flex; align-items:center; gap:7px; border:1.5px solid var(--rule); background:var(--card); color:var(--ink-2); border-radius:999px; padding:5px 12px 5px 10px; font-size:12.5px; font-weight:600; cursor:pointer}
+.sync-pill i{width:8px; height:8px; border-radius:50%; background:var(--ink-3)}
+.sync-pill.ok i{background:var(--good)}
+.sync-pill.busy i{background:var(--bh); animation:blink 1s infinite}
+.sync-pill.err i{background:var(--bad)}
+@keyframes blink{50%{opacity:.3}}
+.sync-card{border:2px solid var(--hl)}
+.sync-form{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px}
+.sync-form input{flex:1 1 200px; min-width:0; font-family:var(--body); font-size:15px; color:var(--ink); background:var(--card); border:1.5px solid var(--rule); border-radius:999px; padding:8px 14px}
+
 /* offer from a link */
 .offer{border:2px solid var(--hl)}
 
@@ -263,11 +274,38 @@ details.more[open] summary::before{content:"\2212 "}
 
 <div class="wrap">
   <div class="top">
-    <div class="brand">24 <span>of</span> 24 <small class="vtag" id="vtag">v9</small></div>
-    <div class="rule">best 8 of the last 12 weeks &ge; 24 days in</div>
+    <div class="brand">24 <span>of</span> 24 <small class="vtag" id="vtag">v10</small></div>
+    <button type="button" class="sync-pill" id="syncPill" aria-controls="syncCard"><i></i><span>Sign in to sync</span></button>
   </div>
 
   <div class="note" id="dataNote" hidden></div>
+
+  <section class="card sync-card" id="syncCard" hidden>
+    <div id="syncOut">
+      <h2>Sync across your devices</h2>
+      <p class="sub" style="margin-top:4px">Sign in with your email and the plan is the same on your phone and laptop. No password: you get a link by email.</p>
+      <form class="sync-form" id="sendForm">
+        <input type="email" id="sbEmail" placeholder="you@example.com" autocomplete="email" required>
+        <button class="btn go" type="submit" id="sendBtn">Email me a link</button>
+      </form>
+      <div id="sentBox" hidden>
+        <p class="sub" style="margin-top:12px"><b>Check your email.</b> Open the link on this device, or type the code from the email here:</p>
+        <form class="sync-form" id="codeForm">
+          <input type="text" id="sbCode" inputmode="numeric" autocomplete="one-time-code" placeholder="123456" maxlength="10">
+          <button class="btn" type="submit">Sign in</button>
+        </form>
+      </div>
+    </div>
+    <div id="syncIn" hidden>
+      <h2>Syncing</h2>
+      <p class="sub" style="margin-top:4px" id="syncWho"></p>
+      <div class="btn-row" style="margin-top:12px">
+        <button class="btn" id="syncNow" type="button">Sync now</button>
+        <button class="btn" id="signOut" type="button">Sign out on this device</button>
+      </div>
+    </div>
+    <p class="tiny" id="syncErr" style="margin-top:10px; color:var(--bad-ink)" hidden></p>
+  </section>
 
   <section class="card offer" id="offer" hidden>
     <h2>Add this to your plan?</h2>
@@ -360,7 +398,7 @@ details.more[open] summary::before{content:"\2212 "}
       <p class="tiny">Time away is never deducted. A week away is just a low week, and the 4 dropped weeks absorb it, so a
         fifth week away in the same window counts as a zero. Time away and bank holidays only block days in the plan.
         A planning aid, not the system of record.</p>
-      <p class="ver" id="ver">Version 9 · 24 Oct 2026</p>
+      <p class="ver" id="ver">Version 10 · 24 Oct 2026</p>
     </div>
   </details>
 </div>
@@ -836,10 +874,10 @@ function renderAway(){
 function renderData(){
   var weeks = Object.keys(state.log).sort();
   $("saveNote").innerHTML = (weeks.length ? 'Your log holds ' + plural(weeks.length, "week") + ' from ' + fmtLong(parseISO(weeks[0])) + '. ' : 'Your log is empty. ') +
-    (storageOK ? 'Everything saves in this browser as you go. Each device keeps its own copy and browsers can clear it, so Export now and then.'
+    (storageOK ? (sync.session ? 'Everything saves in this browser and syncs to your account as you go.' : 'Everything saves in this browser as you go. Sign in (top right) to keep your devices in step.')
                : '<b>This browser is blocking storage</b>, so nothing is kept between visits. Export before you leave.');
-  $("ver").textContent = "Version 9 · 24 Oct 2026" + (state.rev ? " · shared data " + state.rev : "");
-  $("vtag").textContent = "v9" + (state.rev ? " · data " + state.rev : " · no shared data yet");
+  $("ver").textContent = "Version 10 · 24 Oct 2026";
+  renderSync();
   $("dataNote").hidden = !notice && storageOK;
   $("dataNote").textContent = notice || (storageOK ? "" : "This browser is blocking storage, so nothing you enter is kept. Export (at the bottom) before you leave.");
 }
@@ -855,7 +893,7 @@ function render(){
   renderAway();
   renderData();
 }
-function change(){ save(); render(); }
+function change(){ save(); markDirty(); render(); }
 
 /* ---------- painting ---------- */
 function paint(d){
@@ -1027,35 +1065,227 @@ $("importFile").addEventListener("change", function(){
   reader.readAsText(file);
 });
 
-/* ---------- shared data ---------- */
-/* rto-data.json sits next to this page, so every device starts from the same log and time
-   away. A newer revision is merged in once; anything changed here afterwards is kept. */
-function syncShared(){
-  if(!window.fetch || location.protocol === "file:") return;
-  fetch("rto-data.json?t=" + Date.now(), { cache:"no-store" }).then(function(r){ return r.ok ? r.json() : null; }).then(function(s){
-    if(!s || typeof s !== "object" || typeof s.rev !== "string" || s.rev === state.rev) return;
-    var log = cleanLog(s.log), off = cleanOff(s.off), days = cleanDays(s.days);
-    Object.keys(log).forEach(function(k){ state.log[k] = log[k]; });
-    Object.keys(off).forEach(function(d){ state.off[d] = off[d]; delete state.days[d]; popDays[d] = true; });
-    /* a value that matches the usual pattern clears any change made here */
-    Object.keys(days).forEach(function(d){
-      if(!!days[d] === !!officeDays(weekOf(d), null, true)[d]) delete state.days[d]; else state.days[d] = days[d];
-    });
-    if(Array.isArray(s.usual)) state.usual = cleanUsual(s.usual);
-    state.rev = s.rev.slice(0,40);
-    notice = "Updated from your shared data: " + plural(Object.keys(log).length, "logged week") +
-      (Object.keys(off).length ? " and " + plural(Object.keys(off).length, "day") + " of time away" : "") + ".";
-    change();
-  }).catch(function(){});
+/* ---------- sync with Supabase ---------- */
+/* One row per signed-in user in public.rto_state, guarded by row-level security. This
+   browser keeps its own copy so the page works offline; every change is pushed, and the
+   row is pulled on open and whenever the page comes back into view. One person, so the
+   most recent save wins. A device that has never synced takes what's stored rather than
+   overwriting it. The publishable key is meant to be public; the table rules protect it. */
+var SB_URL = "https://decipjbgbkmngqilncjo.supabase.co";
+var SB_KEY = "sb_publishable_w_m4QxMMG-r44gw0GSplwg_dqccVToN";
+var SYNC_KEY = "rto-24of24-sync";
+var sync = { session:null, dirty:false, editedAt:0, syncedAt:null, email:"", status:"off", msg:"" };
+var pushTimer = null, refreshing = null, pulling = null;
+
+function loadSync(){
+  try{
+    var s = JSON.parse(localStorage.getItem(SYNC_KEY) || "null");
+    if(s && typeof s === "object"){
+      sync.session = s.session && s.session.access_token ? s.session : null;
+      sync.dirty = !!s.dirty; sync.editedAt = +s.editedAt || 0; sync.syncedAt = s.syncedAt || null; sync.email = s.email || "";
+    }
+  }catch(e){}
+  if(sync.session) sync.status = "ok";
 }
+function saveSync(){
+  try{ localStorage.setItem(SYNC_KEY, JSON.stringify({ session:sync.session, dirty:sync.dirty, editedAt:sync.editedAt, syncedAt:sync.syncedAt, email:sync.email })); }catch(e){}
+}
+function setStatus(st, msg){ sync.status = st; sync.msg = msg || ""; renderSync(); }
+
+function sbFetch(path, opts, auth){
+  opts = opts || {};
+  var h = { "apikey":SB_KEY, "Content-Type":"application/json" }, k;
+  for(k in (opts.headers || {})) h[k] = opts.headers[k];
+  if(auth && sync.session) h.Authorization = "Bearer " + sync.session.access_token;
+  return fetch(SB_URL + path, { method:opts.method || "GET", headers:h, body:opts.body ? JSON.stringify(opts.body) : undefined });
+}
+function jwtPayload(tok){
+  try{
+    var b = tok.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+    while(b.length % 4) b += "=";
+    return JSON.parse(decodeURIComponent(escape(atob(b))));
+  }catch(e){ return {}; }
+}
+function setSession(t){
+  var p = jwtPayload(t.access_token);
+  sync.session = {
+    access_token:t.access_token, refresh_token:t.refresh_token,
+    expires_at:t.expires_at ? +t.expires_at : Math.floor(Date.now() / 1000) + (+t.expires_in || 3600),
+    user_id:(t.user && t.user.id) || p.sub, email:(t.user && t.user.email) || p.email || sync.email
+  };
+  sync.email = sync.session.email || sync.email;
+  saveSync();
+}
+function signOutLocal(msg){
+  sync.session = null; sync.syncedAt = null; saveSync();
+  setStatus("off", msg);
+}
+/* A fresh access token, refreshing it (once, however many callers ask) when it's close to expiry. */
+function token(force){
+  if(!sync.session) return Promise.reject(new Error("signed out"));
+  if(!force && sync.session.expires_at - 60 > Date.now() / 1000) return Promise.resolve();
+  if(refreshing) return refreshing;
+  refreshing = sbFetch("/auth/v1/token?grant_type=refresh_token", { method:"POST", body:{ refresh_token:sync.session.refresh_token } })
+    .then(function(r){
+      if(!r.ok){
+        if(r.status >= 400 && r.status < 500) signOutLocal("Your sign-in ran out. Sign in again to keep syncing; nothing here was lost.");
+        throw new Error("refresh " + r.status);
+      }
+      return r.json();
+    })
+    .then(setSession)
+    .then(function(){ refreshing = null; }, function(e){ refreshing = null; throw e; });
+  return refreshing;
+}
+/* A REST call that refreshes and retries once if the token was rejected. */
+function rest(path, opts){
+  return token().then(function(){ return sbFetch(path, opts, true); }).then(function(r){
+    if(r.status !== 401) return r;
+    return token(true).then(function(){ return sbFetch(path, opts, true); });
+  });
+}
+function failed(e){
+  if(!sync.session) return;
+  setStatus("err", navigator.onLine === false ? "Offline. Changes are kept here and will sync when you're back." : "Couldn't reach your sync store just now. Changes are kept here and will retry.");
+}
+
+function pull(){
+  if(!sync.session) return Promise.resolve();
+  if(pulling) return pulling;
+  setStatus("busy");
+  pulling = rest("/rest/v1/rto_state?select=data,updated_at", {})
+    .then(function(r){ if(!r.ok) throw new Error("pull " + r.status); return r.json(); })
+    .then(function(rows){
+      var row = rows && rows[0];
+      if(!row) return push(true);                               // nothing stored yet: this device seeds it
+      var remoteAt = Date.parse(row.updated_at);
+      if(sync.dirty && sync.syncedAt && sync.editedAt > remoteAt) return push(true);  // our edit is newer
+      var next = fromAny(row.data);
+      if(next){ state = next; save(); }
+      sync.dirty = false; sync.syncedAt = row.updated_at; saveSync();
+      setStatus("ok");
+      render();
+    })
+    .catch(failed)
+    .then(function(){ pulling = null; });
+  return pulling;
+}
+function push(now){
+  if(!sync.session) return Promise.resolve();
+  clearTimeout(pushTimer); pushTimer = null;
+  var edited = sync.editedAt;
+  setStatus("busy");
+  return rest("/rest/v1/rto_state?on_conflict=user_id", {
+      method:"POST",
+      headers:{ "Prefer":"resolution=merge-duplicates,return=representation" },
+      body:{ user_id:sync.session.user_id, data:state, updated_at:new Date().toISOString() }
+    })
+    .then(function(r){ if(!r.ok) throw new Error("push " + r.status); return r.json(); })
+    .then(function(rows){
+      var row = rows && rows[0];
+      sync.syncedAt = row ? row.updated_at : new Date().toISOString();
+      if(sync.editedAt === edited) sync.dirty = false;            // nothing new arrived meanwhile
+      saveSync();
+      if(sync.dirty) schedulePush(); else setStatus("ok");
+    })
+    .catch(failed);
+}
+function schedulePush(){ clearTimeout(pushTimer); pushTimer = setTimeout(push, 800); }
+function markDirty(){
+  sync.dirty = true; sync.editedAt = Date.now(); saveSync();
+  if(sync.session) schedulePush();
+}
+
+/* The emailed link lands back here with the session in the address. */
+function readAuthHash(){
+  var h = location.hash || "";
+  if(h.indexOf("access_token=") < 0 && h.indexOf("error_description=") < 0) return;
+  var q = {};
+  h.slice(1).split("&").forEach(function(kv){ var i = kv.indexOf("="); if(i > 0) q[decodeURIComponent(kv.slice(0,i))] = decodeURIComponent(kv.slice(i+1).replace(/\+/g, " ")); });
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(q.access_token){
+    sync.syncedAt = null;                                        // first sync on this device: take what's stored
+    setSession(q);
+    notice = "Signed in. Your plan now syncs across your devices.";
+  }else if(q.error_description){
+    notice = "Sign-in didn't work: " + q.error_description + ". Ask for a new link.";
+  }
+}
+
+function renderSync(){
+  var pill = $("syncPill"); if(!pill) return;
+  var label = !sync.session ? "Sign in to sync" : sync.status === "busy" ? "Syncing…" : sync.status === "err" ? "Not synced" : "Synced";
+  pill.className = "sync-pill" + (!sync.session ? "" : sync.status === "busy" ? " busy" : sync.status === "err" ? " err" : " ok");
+  pill.querySelector("span").textContent = label;
+  $("syncOut").hidden = !!sync.session;
+  $("syncIn").hidden = !sync.session;
+  if(sync.session) $("syncWho").textContent = "Signed in as " + (sync.session.email || "you") + ". Changes here save to your account and show up on your other devices." +
+    (sync.syncedAt ? " Last synced " + new Date(sync.syncedAt).toLocaleString([], { day:"numeric", month:"short", hour:"2-digit", minute:"2-digit" }) + "." : "");
+  if(!$("sbEmail").value && sync.email) $("sbEmail").value = sync.email;
+  $("syncErr").hidden = !sync.msg; $("syncErr").textContent = sync.msg;
+  $("vtag").textContent = "v10";
+}
+
+$("syncPill").addEventListener("click", function(){ var c = $("syncCard"); c.hidden = !c.hidden; if(!c.hidden && !sync.session) $("sbEmail").focus(); });
+$("sendForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  var email = $("sbEmail").value.trim(), btn = $("sendBtn");
+  if(!email) return;
+  sync.email = email; saveSync();
+  btn.disabled = true; btn.textContent = "Sending…";
+  sbFetch("/auth/v1/otp?redirect_to=" + encodeURIComponent(location.origin + location.pathname), { method:"POST", body:{ email:email, create_user:true } })
+    .then(function(r){
+      if(r.ok){ $("sentBox").hidden = false; setStatus(sync.status, ""); $("sbCode").focus(); return; }
+      return r.json().catch(function(){ return {}; }).then(function(j){
+        setStatus(sync.status, r.status === 429 ? "Supabase only sends a few sign-in emails an hour. Wait a little and try again."
+          : "Couldn't send the email: " + (j.msg || j.error_description || j.message || ("error " + r.status)) + ".");
+      });
+    })
+    .catch(function(){ setStatus(sync.status, "Couldn't reach Supabase. Check your connection and try again."); })
+    .then(function(){ btn.disabled = false; btn.textContent = "Email me a link"; });
+});
+$("codeForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  var code = $("sbCode").value.trim();
+  if(!code) return;
+  sbFetch("/auth/v1/verify", { method:"POST", body:{ type:"email", email:sync.email, token:code } })
+    .then(function(r){ return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
+    .then(function(x){
+      if(!x.ok || !x.j.access_token){ setStatus("off", "That code didn't work. Check it, or use the link in the email."); return; }
+      sync.syncedAt = null; setSession(x.j);
+      notice = "Signed in. Your plan now syncs across your devices.";
+      $("syncCard").hidden = true; $("sentBox").hidden = true; $("sbCode").value = "";
+      render(); pull();
+    })
+    .catch(function(){ setStatus("off", "Couldn't reach Supabase. Check your connection and try again."); });
+});
+$("syncNow").addEventListener("click", function(){ (sync.dirty ? push() : pull()); });
+$("signOut").addEventListener("click", function(){
+  var t = sync.session && sync.session.access_token;
+  if(t) sbFetch("/auth/v1/logout", { method:"POST", headers:{ Authorization:"Bearer " + t } }).catch(function(){});
+  signOutLocal("");
+  notice = "Signed out on this device. Your plan is still here and in your account.";
+  render();
+});
 
 buildDial();
 load();
+loadSync();
+readAuthHash();
 readOffer();
 render();
-syncShared();
-window.addEventListener("hashchange", function(){ if((location.hash || "").indexOf("#add=") === 0){ readOffer(); render(); } });
-document.addEventListener("visibilitychange", function(){ if(!document.hidden && iso(mondayOf(todayUTC())) !== thisK) render(); });
+if(sync.session) pull();
+window.addEventListener("hashchange", function(){
+  var h = location.hash || "";
+  if(h.indexOf("#add=") === 0){ readOffer(); render(); }
+  else if(h.indexOf("access_token=") >= 0 || h.indexOf("error_description=") >= 0){ readAuthHash(); render(); if(sync.session) pull(); }
+});
+document.addEventListener("visibilitychange", function(){
+  if(document.hidden) return;
+  if(iso(mondayOf(todayUTC())) !== thisK) render();
+  if(sync.session) pull();
+});
+window.addEventListener("online", function(){ if(sync.session) (sync.dirty ? push() : pull()); });
 
 })();
 </script>
