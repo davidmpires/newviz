@@ -163,6 +163,8 @@ input:focus-visible, button:focus-visible, select:focus-visible{outline:2px soli
 
 /* fixes */
 .fix{border-left:3px solid var(--accent)}
+.offer{border-left:3px solid var(--accent); background:var(--accent-wash)}
+.offer .away-item{border-bottom-color:var(--accent-wash-2)}
 .opts{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:10px; margin-top:12px}
 .opt{border:1px solid var(--rule); border-radius:3px; padding:11px 12px; background:var(--card-2); display:flex; flex-direction:column; gap:6px; min-width:0}
 .opt.rec{border-color:var(--accent-wash-2); background:var(--accent-wash)}
@@ -270,6 +272,16 @@ details.more[open] summary::before{content:"\2212  "}
 
 <div class="wrap">
   <div class="warn-note" id="dataNote" hidden></div>
+  <section class="card offer" id="offer" hidden>
+    <div class="card-body">
+      <h2>Add this to your plan?</h2>
+      <div id="offerList" style="margin-top:8px"></div>
+      <div class="btn-row" style="margin-top:12px">
+        <button class="btn primary" id="offerAdd" type="button">Add</button>
+        <button class="btn" id="offerSkip" type="button">Ignore</button>
+      </div>
+    </div>
+  </section>
 
   <!-- where you stand, and the 12 weeks it comes from -->
   <section class="card status" id="status">
@@ -840,6 +852,7 @@ function renderData(){
 function render(){
   thisK = iso(mondayOf(todayUTC()));
   var r = analyse(planGet);
+  renderOffer();
   renderStatus(r);
   renderFix(r);
   renderAway();
@@ -957,8 +970,53 @@ $("importFile").addEventListener("change", function(){
   reader.readAsText(file);
 });
 
+/* A link can carry time away (and log weeks) to add: #add={"away":[...],"log":{...}}.
+   Nothing changes until you tap Add; entries you already have are skipped. */
+var offer = null;
+function readOffer(){
+  var h = location.hash || "";
+  if(h.indexOf("#add=") !== 0) return;
+  try{
+    var s = JSON.parse(decodeURIComponent(h.slice(5)));
+    var away = cleanAway(s.away).filter(function(a){
+      return !state.away.some(function(b){ return b.from === a.from && b.to === a.to && b.kind === a.kind; });
+    });
+    var log = cleanLog(s.log), newLog = {};
+    Object.keys(log).forEach(function(k){ if(!has(state.log, k)) newLog[k] = log[k]; });
+    if(away.length || Object.keys(newLog).length) offer = { away:away, log:newLog };
+    else notice = "Everything in that link is already in your plan.";
+  }catch(e){ notice = "That link could not be read, so nothing was added."; }
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+}
+function renderOffer(){
+  $("offer").hidden = !offer;
+  if(!offer) return;
+  var h = offer.away.map(function(a){
+    var f = parseISO(a.from), t = parseISO(a.to);
+    return '<div class="away-item"><div class="what"><div class="dates">' + (a.from === a.to ? fmtLong(f) : fmtLong(f) + ' – ' + fmtLong(t)) + '</div>' +
+      '<div class="lbl"><span class="kind ' + a.kind + '">' + (a.kind === "holiday" ? "Holiday" : "Not in office") + '</span>' + esc(a.label || "") + '</div></div></div>';
+  }).join("");
+  var n = Object.keys(offer.log).length;
+  if(n) h += '<p class="tiny" style="margin-top:8px">and ' + plural(n, "logged week") + ' you have not entered yet</p>';
+  $("offerList").innerHTML = h;
+}
+$("offerAdd").addEventListener("click", function(){
+  if(!offer) return;
+  offer.away.forEach(function(a){ state.away.push(a); });
+  sortAway(state.away);
+  Object.keys(offer.log).forEach(function(k){ state.log[k] = offer.log[k]; });
+  notice = "Added " + (offer.away.length ? plural(offer.away.length, "stretch", "stretches") + " of time away" : "") +
+    (offer.away.length && Object.keys(offer.log).length ? " and " : "") +
+    (Object.keys(offer.log).length ? plural(Object.keys(offer.log).length, "logged week") : "") + ".";
+  offer = null;
+  change();
+});
+$("offerSkip").addEventListener("click", function(){ offer = null; render(); });
+
 load();
+readOffer();
 render();
+window.addEventListener("hashchange", function(){ if((location.hash || "").indexOf("#add=") === 0){ readOffer(); render(); } });
 /* Roll the window on if the page is left open across a Monday. */
 document.addEventListener("visibilitychange", function(){ if(!document.hidden && iso(mondayOf(todayUTC())) !== thisK) render(); });
 
