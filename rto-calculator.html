@@ -1,6 +1,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>24 of 24</title>
+<link rel="icon" type="image/svg+xml" href="rto-icon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="rto-icon-32.png">
+<link rel="apple-touch-icon" href="rto-icon-180.png">
+<meta name="theme-color" content="#1b1f3b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&display=swap">
@@ -259,7 +263,7 @@ details.more[open] summary::before{content:"\2212 "}
 
 <div class="wrap">
   <div class="top">
-    <div class="brand">24 <span>of</span> 24 <small class="vtag" id="vtag">v8</small></div>
+    <div class="brand">24 <span>of</span> 24 <small class="vtag" id="vtag">v9</small></div>
     <div class="rule">best 8 of the last 12 weeks &ge; 24 days in</div>
   </div>
 
@@ -356,7 +360,7 @@ details.more[open] summary::before{content:"\2212 "}
       <p class="tiny">Time away is never deducted. A week away is just a low week, and the 4 dropped weeks absorb it, so a
         fifth week away in the same window counts as a zero. Time away and bank holidays only block days in the plan.
         A planning aid, not the system of record.</p>
-      <p class="ver" id="ver">Version 8 · 24 Oct 2026</p>
+      <p class="ver" id="ver">Version 9 · 24 Oct 2026</p>
     </div>
   </details>
 </div>
@@ -834,8 +838,8 @@ function renderData(){
   $("saveNote").innerHTML = (weeks.length ? 'Your log holds ' + plural(weeks.length, "week") + ' from ' + fmtLong(parseISO(weeks[0])) + '. ' : 'Your log is empty. ') +
     (storageOK ? 'Everything saves in this browser as you go. Each device keeps its own copy and browsers can clear it, so Export now and then.'
                : '<b>This browser is blocking storage</b>, so nothing is kept between visits. Export before you leave.');
-  $("ver").textContent = "Version 8 · 24 Oct 2026" + (state.rev ? " · shared data " + state.rev : "");
-  $("vtag").textContent = "v8" + (state.rev ? " · data " + state.rev : " · no shared data yet");
+  $("ver").textContent = "Version 9 · 24 Oct 2026" + (state.rev ? " · shared data " + state.rev : "");
+  $("vtag").textContent = "v9" + (state.rev ? " · data " + state.rev : " · no shared data yet");
   $("dataNote").hidden = !notice && storageOK;
   $("dataNote").textContent = notice || (storageOK ? "" : "This browser is blocking storage, so nothing you enter is kept. Export (at the bottom) before you leave.");
 }
@@ -1033,7 +1037,10 @@ function syncShared(){
     var log = cleanLog(s.log), off = cleanOff(s.off), days = cleanDays(s.days);
     Object.keys(log).forEach(function(k){ state.log[k] = log[k]; });
     Object.keys(off).forEach(function(d){ state.off[d] = off[d]; delete state.days[d]; popDays[d] = true; });
-    Object.keys(days).forEach(function(d){ state.days[d] = days[d]; });
+    /* a value that matches the usual pattern clears any change made here */
+    Object.keys(days).forEach(function(d){
+      if(!!days[d] === !!officeDays(weekOf(d), null, true)[d]) delete state.days[d]; else state.days[d] = days[d];
+    });
     if(Array.isArray(s.usual)) state.usual = cleanUsual(s.usual);
     state.rev = s.rev.slice(0,40);
     notice = "Updated from your shared data: " + plural(Object.keys(log).length, "logged week") +
