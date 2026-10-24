@@ -355,7 +355,7 @@ details.more[open] summary::before{content:"\2212 "}
       <p class="tiny">Time away is never deducted. A week away is just a low week, and the 4 dropped weeks absorb it, so a
         fifth week away in the same window counts as a zero. Time away and bank holidays only block days in the plan.
         A planning aid, not the system of record.</p>
-      <p class="ver">Version 5 · 25 Oct 2026</p>
+      <p class="ver" id="ver">Version 6 · 25 Oct 2026</p>
     </div>
   </details>
 </div>
@@ -414,7 +414,8 @@ function fresh(){
     log:{},          // Monday -> badge-ins you actually did (0-5); absent = not logged
     usual:[0,1,2],   // usual office weekdays, 0 = Mon … 4 = Fri
     days:{},         // date -> 1 office / 0 home, where you changed a planned day
-    off:{}           // date -> "holiday" | "out" (not in office)
+    off:{},          // date -> "holiday" | "out" (not in office)
+    rev:""           // revision of the shared data file last applied here
   };
 }
 var state = fresh();
@@ -437,7 +438,7 @@ function cleanDays(m){
 }
 function cleanOff(m){
   var out = {};
-  if(m && typeof m === "object") Object.keys(m).forEach(function(k){ if(isDate(k) && isWeekday(k) && (m[k] === "holiday" || m[k] === "out")) out[k] = m[k]; });
+  if(m && typeof m === "object") Object.keys(m).forEach(function(k){ if(isDate(k) && isWeekday(k) && !HOLS[k] && (m[k] === "holiday" || m[k] === "out")) out[k] = m[k]; });
   return out;
 }
 function cleanUsual(u){
@@ -455,7 +456,7 @@ function addRanges(off, ranges){
     if(!f || !t || t < f) return;
     for(d=f; d<=t; d=addDays(d,1)){
       k = iso(d);
-      if(!isWeekday(k)) continue;
+      if(!isWeekday(k) || HOLS[k]) continue;
       if(off[k] === "holiday" && kind === "out") continue;
       off[k] = kind;
     }
@@ -464,6 +465,7 @@ function addRanges(off, ranges){
 function normalise(s){
   var out = fresh();
   out.log = cleanLog(s.log); out.usual = cleanUsual(s.usual); out.days = cleanDays(s.days); out.off = cleanOff(s.off);
+  if(typeof s.rev === "string") out.rev = s.rev.slice(0,40);
   return out;
 }
 /* Older versions all carry the log forward; their time away becomes painted days. */
@@ -628,7 +630,7 @@ function suggest(mode, noFri){
 }
 /* Painted days as stretches: runs of the same kind, bridging weekends and bank holidays. */
 function stretches(){
-  var ds = Object.keys(state.off).sort(), out = [], cur = null;
+  var ds = Object.keys(state.off).filter(function(d){ return !HOLS[d]; }).sort(), out = [], cur = null;
   ds.forEach(function(d){
     var kind = state.off[d];
     if(cur && cur.kind === kind){
@@ -718,6 +720,15 @@ function renderFix(r){
   var card = $("fixCard");
   if(!r.firstBad){ card.hidden = true; fixes = []; return; }
   card.hidden = false;
+  var gaps = windowAt(thisK, planGet).missing;
+  if(gaps){
+    fixes = [];
+    $("fixTitle").textContent = "Log your past weeks first";
+    $("fixSay").innerHTML = '<b>' + plural(gaps, "week") + '</b> of the last 12 ' + (gaps === 1 ? "isn't" : "aren't") +
+      ' logged on this device, so ' + (gaps === 1 ? "it counts" : "they count") + ' as zero and the plan looks worse than it is. Tap the dashed tickets above to fill them in.';
+    $("opts").innerHTML = "";
+    return;
+  }
   var a = suggest("spread", true), b = suggest("few", false), c = suggest("spread", false), extraDay = DAYN[prefOrder()[state.usual.length]] || "Thursday";
   fixes = [];
   if(!a.stuck && a.days.length){
@@ -810,6 +821,7 @@ function renderData(){
   $("saveNote").innerHTML = (weeks.length ? 'Your log holds ' + plural(weeks.length, "week") + ' from ' + fmtLong(parseISO(weeks[0])) + '. ' : 'Your log is empty. ') +
     (storageOK ? 'Everything saves in this browser as you go. Each device keeps its own copy and browsers can clear it, so Export now and then.'
                : '<b>This browser is blocking storage</b>, so nothing is kept between visits. Export before you leave.');
+  $("ver").textContent = "Version 6 · 25 Oct 2026" + (state.rev ? " · shared data " + state.rev : "");
   $("dataNote").hidden = !notice && storageOK;
   $("dataNote").textContent = notice || (storageOK ? "" : "This browser is blocking storage, so nothing you enter is kept. Export (at the bottom) before you leave.");
 }
@@ -922,7 +934,7 @@ $("awayForm").addEventListener("submit", function(e){
   if(t < f){ err.hidden = false; err.textContent = "The end date is before the start date."; return; }
   err.hidden = true;
   var kind = $("awKind").value === "out" ? "out" : "holiday", d;
-  for(d=f; d<=t; d=addDays(d,1)) if(isWeekday(iso(d))){ state.off[iso(d)] = kind; delete state.days[iso(d)]; popDays[iso(d)] = true; }
+  for(d=f; d<=t; d=addDays(d,1)) if(isWeekday(iso(d)) && !HOLS[iso(d)]){ state.off[iso(d)] = kind; delete state.days[iso(d)]; popDays[iso(d)] = true; }
   $("awFrom").value = ""; $("awTo").value = ""; $("addAway").open = false;
   change();
 });
@@ -997,10 +1009,30 @@ $("importFile").addEventListener("change", function(){
   reader.readAsText(file);
 });
 
+/* ---------- shared data ---------- */
+/* rto-data.json sits next to this page, so every device starts from the same log and time
+   away. A newer revision is merged in once; anything changed here afterwards is kept. */
+function syncShared(){
+  if(!window.fetch || location.protocol === "file:") return;
+  fetch("rto-data.json?t=" + Date.now(), { cache:"no-store" }).then(function(r){ return r.ok ? r.json() : null; }).then(function(s){
+    if(!s || typeof s !== "object" || typeof s.rev !== "string" || s.rev === state.rev) return;
+    var log = cleanLog(s.log), off = cleanOff(s.off), days = cleanDays(s.days);
+    Object.keys(log).forEach(function(k){ state.log[k] = log[k]; });
+    Object.keys(off).forEach(function(d){ state.off[d] = off[d]; delete state.days[d]; popDays[d] = true; });
+    Object.keys(days).forEach(function(d){ state.days[d] = days[d]; });
+    if(Array.isArray(s.usual)) state.usual = cleanUsual(s.usual);
+    state.rev = s.rev.slice(0,40);
+    notice = "Updated from your shared data: " + plural(Object.keys(log).length, "logged week") +
+      (Object.keys(off).length ? " and " + plural(Object.keys(off).length, "day") + " of time away" : "") + ".";
+    change();
+  }).catch(function(){});
+}
+
 buildDial();
 load();
 readOffer();
 render();
+syncShared();
 window.addEventListener("hashchange", function(){ if((location.hash || "").indexOf("#add=") === 0){ readOffer(); render(); } });
 document.addEventListener("visibilitychange", function(){ if(!document.hidden && iso(mondayOf(todayUTC())) !== thisK) render(); });
 
