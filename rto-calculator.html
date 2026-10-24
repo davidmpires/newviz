@@ -259,7 +259,7 @@ details.more[open] summary::before{content:"\2212 "}
 
 <div class="wrap">
   <div class="top">
-    <div class="brand">24 <span>of</span> 24 <small class="vtag" id="vtag">v7</small></div>
+    <div class="brand">24 <span>of</span> 24 <small class="vtag" id="vtag">v8</small></div>
     <div class="rule">best 8 of the last 12 weeks &ge; 24 days in</div>
   </div>
 
@@ -356,7 +356,7 @@ details.more[open] summary::before{content:"\2212 "}
       <p class="tiny">Time away is never deducted. A week away is just a low week, and the 4 dropped weeks absorb it, so a
         fifth week away in the same window counts as a zero. Time away and bank holidays only block days in the plan.
         A planning aid, not the system of record.</p>
-      <p class="ver" id="ver">Version 7 · 24 Oct 2026</p>
+      <p class="ver" id="ver">Version 8 · 24 Oct 2026</p>
     </div>
   </details>
 </div>
@@ -771,8 +771,20 @@ function renderTools(){
   }).join("") + '<span class="brush-hint">Tap a day to paint it · tap the date for the whole week</span>';
 }
 
-function renderCal(){
-  var end = horizon(), h = "", k, i, d, kind, set, base, cls, w, logged, lastM = -1, sc;
+/* How far the calendar runs: 12 weeks, or long enough to see you through your last day
+   away, the last day you changed, and two weeks past being back at 24 for good. The
+   numbers above still look all the way to horizon(). */
+function calEnd(r){
+  var end = wk(thisK, 12), cand = [], full = horizon();
+  Object.keys(state.off).forEach(function(d){ if(d >= thisK) cand.push(wk(weekOf(d), 2)); });
+  Object.keys(state.days).forEach(function(d){ if(d >= thisK) cand.push(wk(weekOf(d), 1)); });
+  if(r.backAt) cand.push(wk(r.backAt, 2));
+  else if(r.firstBad) cand.push(full);
+  cand.forEach(function(k){ if(k > end) end = k; });
+  return end > full ? full : end;
+}
+function renderCal(r){
+  var end = calEnd(r), h = "", k, i, d, kind, set, base, cls, w, logged, lastM = -1, sc;
   for(k=thisK; k<=end; k=wk(k,1)){
     var m = parseISO(k).getUTCMonth();
     if(m !== lastM) h += '<div class="mon">' + MONTHS[m] + (parseISO(k).getUTCFullYear() !== todayUTC().getUTCFullYear() ? " " + parseISO(k).getUTCFullYear() : "") + '</div>';
@@ -822,8 +834,8 @@ function renderData(){
   $("saveNote").innerHTML = (weeks.length ? 'Your log holds ' + plural(weeks.length, "week") + ' from ' + fmtLong(parseISO(weeks[0])) + '. ' : 'Your log is empty. ') +
     (storageOK ? 'Everything saves in this browser as you go. Each device keeps its own copy and browsers can clear it, so Export now and then.'
                : '<b>This browser is blocking storage</b>, so nothing is kept between visits. Export before you leave.');
-  $("ver").textContent = "Version 7 · 24 Oct 2026" + (state.rev ? " · shared data " + state.rev : "");
-  $("vtag").textContent = "v7" + (state.rev ? " · data " + state.rev : " · no shared data yet");
+  $("ver").textContent = "Version 8 · 24 Oct 2026" + (state.rev ? " · shared data " + state.rev : "");
+  $("vtag").textContent = "v8" + (state.rev ? " · data " + state.rev : " · no shared data yet");
   $("dataNote").hidden = !notice && storageOK;
   $("dataNote").textContent = notice || (storageOK ? "" : "This browser is blocking storage, so nothing you enter is kept. Export (at the bottom) before you leave.");
 }
@@ -835,7 +847,7 @@ function render(){
   renderStatus(r);
   renderFix(r);
   renderTools();
-  renderCal();
+  renderCal(r);
   renderAway();
   renderData();
 }
