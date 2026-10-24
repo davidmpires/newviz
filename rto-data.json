@@ -1,6 +1,6 @@
 {
  "schema": 5,
- "rev": "2026-10-25a",
+ "rev": "2026-10-24b",
  "note": "Shared data for rto-calculator.html. Edited by hand or by Claude; the page merges a new rev once per device.",
  "usual": [
   0,
@@ -46,5 +46,12 @@
   "2027-01-08": "out",
   "2027-01-11": "out"
  },
- "days": {}
+ "days": {
+  "2026-11-19": 1,
+  "2026-11-26": 1,
+  "2026-12-03": 1,
+  "2027-02-11": 1,
+  "2027-02-18": 1,
+  "2027-02-25": 1
+ }
 }
