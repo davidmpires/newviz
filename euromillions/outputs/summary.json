@@ -1,0 +1,217 @@
+{
+  "data": {
+    "n_draws": 1993,
+    "first": "2004-02-13",
+    "last": "2026-10-27",
+    "n_primary_rows": 1987,
+    "n_secondary_rows": 1104,
+    "secondary_range": [
+      "2011-05-10",
+      "2021-12-03"
+    ],
+    "overlap_agree": 1099,
+    "n_log": 12,
+    "draws_per_era": {
+      "1-9": 378,
+      "1-11": 562,
+      "1-12": 1053
+    },
+    "main_min": 1,
+    "main_max": 50,
+    "n_null_sims": 2000,
+    "n_permutations": 1000
+  },
+  "global_tests": [
+    {
+      "test": "Main ball frequencies (chi-square, 49 df)",
+      "statistic": 58.16786530635,
+      "p_used": 0.16591704147926037,
+      "p_bh_family": 0.34370314842578714
+    },
+    {
+      "test": "Main ball: most extreme single number (max |z|)",
+      "statistic": 3.083721491865541,
+      "p_used": 0.10194902548725637,
+      "p_bh_family": 0.3274362818590705
+    },
+    {
+      "test": "Gap distribution, pooled vs geometric(0.1) (chi-square, 39 bins-1)",
+      "statistic": 33.719721627723835,
+      "p_used": 0.679160419790105,
+      "p_bh_family": 0.86438598882377
+    },
+    {
+      "test": "Gap distribution, worst single number (max chi-square)",
+      "statistic": 15.02650608553105,
+      "p_used": 0.9500249875062469,
+      "p_bh_family": 0.9980009995002499
+    },
+    {
+      "test": "Serial overlap, draws t and t+k, k=1..10 (max |z|)",
+      "statistic": 0.802022912689167,
+      "p_used": 0.9980009995002499,
+      "p_bh_family": 0.9980009995002499
+    },
+    {
+      "test": "Per-number autocorrelation, 50 numbers x 10 lags (max |z|)",
+      "statistic": 3.706686982188407,
+      "p_used": 0.11694152923538231,
+      "p_bh_family": 0.3274362818590705
+    },
+    {
+      "test": "Pair co-occurrence dispersion, 1,225 pairs",
+      "statistic": 1263.0531861515303,
+      "p_used": 0.19640179910044978,
+      "p_bh_family": 0.34370314842578714
+    },
+    {
+      "test": "Pair co-occurrence, most extreme pair (max |z|)",
+      "statistic": 3.1691558040464183,
+      "p_used": 0.9560219890054973,
+      "p_bh_family": 0.9980009995002499
+    },
+    {
+      "test": "Sum of main balls vs exact distribution (chi-square)",
+      "statistic": 154.0783940556648,
+      "p_used": 0.0822092726240633,
+      "p_bh_family": 0.3274362818590705
+    },
+    {
+      "test": "Sum of main balls: standard deviation vs exact (two-sided)",
+      "statistic": 29.81012467246569,
+      "p_used": 0.017991004497751123,
+      "p_bh_family": 0.19240379810094954
+    },
+    {
+      "test": "Odd-ball count per draw vs hypergeometric (chi-square)",
+      "statistic": 6.0118637047849255,
+      "p_used": 0.30506623972153385,
+      "p_bh_family": 0.47454748401127483
+    },
+    {
+      "test": "Lucky Stars era 1-9 (378 draws) frequencies (chi-square, 8 df)",
+      "statistic": 6.149659863945578,
+      "p_used": 0.6371814092953523,
+      "p_bh_family": 0.86438598882377
+    },
+    {
+      "test": "Lucky Stars era 1-11 (562 draws) frequencies (chi-square, 10 df)",
+      "statistic": 20.41716093317517,
+      "p_used": 0.027486256871564217,
+      "p_bh_family": 0.19240379810094954
+    },
+    {
+      "test": "Lucky Stars era 1-12 (1053 draws) frequencies (chi-square, 11 df)",
+      "statistic": 15.136752136752138,
+      "p_used": 0.18190904547726136,
+      "p_bh_family": 0.34370314842578714
+    }
+  ],
+  "backtest": [
+    {
+      "strategy": "uniform",
+      "logloss": 0.3250829733914483,
+      "logloss_vs_uniform": 0.0,
+      "brier": 0.09,
+      "brier_vs_uniform": 0.0,
+      "hac_t_vs_uniform": NaN,
+      "p_beats_uniform_logloss": NaN,
+      "p_perm_logloss": NaN,
+      "p_perm_brier": NaN,
+      "mean_hits_top5": 0.48131622978248745,
+      "total_hits": 863,
+      "p_hits_exact": 0.8946050128477503,
+      "p_perm_hits": 0.8951048951048951
+    },
+    {
+      "strategy": "hot_all_time",
+      "logloss": 0.3256293941147585,
+      "logloss_vs_uniform": 0.0005464207233101814,
+      "brier": 0.09009605633356077,
+      "brier_vs_uniform": 9.605633356077337e-05,
+      "hac_t_vs_uniform": 4.066019343525152,
+      "p_beats_uniform_logloss": 0.9999760885159182,
+      "p_perm_logloss": 0.2937062937062937,
+      "p_perm_brier": 0.24875124875124874,
+      "mean_hits_top5": 0.5047406581148912,
+      "total_hits": 905,
+      "p_hits_exact": 0.3829989372972731,
+      "p_perm_hits": 0.3926073926073926
+    },
+    {
+      "strategy": "hot_last_20",
+      "logloss": 0.3369079455430007,
+      "logloss_vs_uniform": 0.011824972151552371,
+      "brier": 0.0919836896573093,
+      "brier_vs_uniform": 0.001983689657309301,
+      "hac_t_vs_uniform": 23.90081519225012,
+      "p_beats_uniform_logloss": 1.0,
+      "p_perm_logloss": 0.2047952047952048,
+      "p_perm_brier": 0.44955044955044954,
+      "mean_hits_top5": 0.4924707194645845,
+      "total_hits": 883,
+      "p_hits_exact": 0.6954292775701088,
+      "p_perm_hits": 0.7262737262737263
+    },
+    {
+      "strategy": "hot_last_50",
+      "logloss": 0.3328829499855833,
+      "logloss_vs_uniform": 0.007799976594135005,
+      "brier": 0.0912573898494144,
+      "brier_vs_uniform": 0.0012573898494143976,
+      "hac_t_vs_uniform": 17.86050703059418,
+      "p_beats_uniform_logloss": 1.0,
+      "p_perm_logloss": 0.7042957042957043,
+      "p_perm_brier": 0.6403596403596403,
+      "mean_hits_top5": 0.4924707194645845,
+      "total_hits": 883,
+      "p_hits_exact": 0.6954292775701088,
+      "p_perm_hits": 0.7162837162837162
+    },
+    {
+      "strategy": "hot_last_100",
+      "logloss": 0.32936771832112816,
+      "logloss_vs_uniform": 0.00428474492967984,
+      "brier": 0.09071671560199673,
+      "brier_vs_uniform": 0.0007167156019967369,
+      "hac_t_vs_uniform": 13.35596562026585,
+      "p_beats_uniform_logloss": 1.0,
+      "p_perm_logloss": 0.34865134865134867,
+      "p_perm_brier": 0.2897102897102897,
+      "mean_hits_top5": 0.5075292805354155,
+      "total_hits": 910,
+      "p_hits_exact": 0.3153589111097852,
+      "p_perm_hits": 0.3886113886113886
+    },
+    {
+      "strategy": "cold_overdue",
+      "logloss": 0.32699393790315273,
+      "logloss_vs_uniform": 0.001910964511704416,
+      "brier": 0.09033687774038933,
+      "brier_vs_uniform": 0.0003368777403893325,
+      "hac_t_vs_uniform": 8.054031537176773,
+      "p_beats_uniform_logloss": 0.9999999999999996,
+      "p_perm_logloss": 0.1918081918081918,
+      "p_perm_brier": 0.2127872127872128,
+      "mean_hits_top5": 0.48131622978248745,
+      "total_hits": 863,
+      "p_hits_exact": 0.8946050128477503,
+      "p_perm_hits": 0.8761238761238761
+    },
+    {
+      "strategy": "logistic_regression",
+      "logloss": 0.3253865110135428,
+      "logloss_vs_uniform": 0.0003035376220945074,
+      "brier": 0.09005419028065205,
+      "brier_vs_uniform": 5.419028065205278e-05,
+      "hac_t_vs_uniform": 3.8766593390341875,
+      "p_beats_uniform_logloss": 0.9999470497664547,
+      "p_perm_logloss": 0.968031968031968,
+      "p_perm_brier": 0.964035964035964,
+      "mean_hits_top5": 0.49191299498047963,
+      "total_hits": 882,
+      "p_hits_exact": 0.7082213991871734,
+      "p_perm_hits": 0.6943056943056943
+    }
+  ]
+}

@@ -23,7 +23,8 @@ def f2(x, d=2):
 def md_table(df, cols, headers):
     out = ["| " + " | ".join(headers) + " |", "|" + "---|" * len(headers)]
     for _, r in df.iterrows():
-        out.append("| " + " | ".join(str(c(r)) if callable(c) else str(r[c]) for c in cols) + " |")
+        cells = (str(c(r)) if callable(c) else str(r[c]) for c in cols)
+        out.append("| " + " | ".join(x.replace("|", "\\|") for x in cells) + " |")
     return "\n".join(out)
 
 
@@ -65,6 +66,10 @@ def conclusion(res, bt, summary):
     s.append(f"The smallest p-value among the {len(tests)} global tests is {fp(nominal['p_used'])} "
              f"({nominal['test']}), which becomes {fp(nominal['p_bh_family'])} once you account for running "
              f"{len(tests)} tests; that is what chance alone produces.")
+    m = res["main_table"].sort_values("p_raw").iloc[0]
+    s.append(f"The nearest miss among single numbers is ball {int(m['number'])}, drawn {int(m['count'])} times "
+             f"against {m['expected']:.0f} expected (raw p = {fp(m['p_raw'])}, {fp(m['p_bh'])} after correction); "
+             "one number in 50 looking like that is ordinary.")
     if winners.empty:
         best = others.sort_values("logloss").iloc[0]
         tail = (f"{len(any_below)} of them scored a marginally lower log-loss than uniform, but not beyond what "
@@ -165,7 +170,7 @@ def write(res, bt, summary, recon_log):
               f"{int(gt['max_gap'].max())} draws (ball {int(gt.loc[gt['max_gap'].idxmax(), 'number'])}).", "",
               f"![Serial overlap]({FIG}/fig4_serial_overlap.png)", ""]
     lt = res["lag_table"]
-    lines.append(md_table(lt, ["lag", lambda r: f"{r['mean_overlap']:.3f}", lambda r: f2(r["z"]), lambda r: fp(r["p_raw"]),
+    lines.append(md_table(lt, [lambda r: int(r["lag"]), lambda r: f"{r['mean_overlap']:.3f}", lambda r: f2(r["z"]), lambda r: fp(r["p_raw"]),
                                lambda r: fp(r["p_bh"]), lambda r: fp(r["dist_p"])],
                           ["Lag", "Mean shared balls", "z", "p", "p BH", "p (full overlap distribution)"]))
     pt = res["pair_table"]
@@ -175,7 +180,7 @@ def write(res, bt, summary, recon_log):
               f"at 5% (about {0.05 * 1225:.0f} expected by chance); {int((pt['p_bh'] < C.ALPHA).sum())} survive BH and "
               f"{int((pt['p_bonferroni'] < C.ALPHA).sum())} survive Bonferroni.", "",
               "**Most extreme pairs:**", ""]
-    lines.append(md_table(pt.head(5), [lambda r: f"{r['a']}–{r['b']}", "count", lambda r: f2(r["expected"], 1),
+    lines.append(md_table(pt.head(5), [lambda r: f"{int(r['a'])}–{int(r['b'])}", lambda r: int(r["count"]), lambda r: f2(r["expected"], 1),
                                        lambda r: fp(r["p_raw"]), lambda r: fp(r["p_bh"])],
                           ["Pair", "Together", "Expected", "p raw", "p BH"]))
     lines += ["", f"![Sum and odd/even]({FIG}/fig6_sum_oddeven.png)", "",
