@@ -1,0 +1,24 @@
+{
+  "fetched_at_utc": "2026-10-28T08:30:42+00:00",
+  "primary": {
+    "url": "https://raw.githubusercontent.com/daowa89/lottery-archive/main/eu/euromillions/results.csv",
+    "file": "data/raw/lottery_archive_euromillions.csv",
+    "sha256": "93dae5b639bfc5fb6911c9e53c9e0f5fba63854bd3660b964ea4bbeb747ef062"
+  },
+  "secondary": {
+    "package": "pyeuromil==0.2.20211203",
+    "files": [
+      "2011.txt",
+      "2012.txt",
+      "2013.txt",
+      "2014.txt",
+      "2015.txt",
+      "2016.txt",
+      "2017.txt",
+      "2018.txt",
+      "2019.txt",
+      "2020.txt",
+      "2021.txt"
+    ]
+  }
+}

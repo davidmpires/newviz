@@ -1,0 +1,6 @@
+action,date,new_date,n1,n2,n3,n4,n5,s1,s2,source,note
+redate,2009-03-26,2010-03-26,8,16,18,37,43,2,6,https://www.euro-millions.com/results/26-03-2010,"Primary lists a Thursday 26 Mar 2009 draw (no such draw) and has no 26 Mar 2010 draw; euro-millions.com gives these exact numbers for Fri 26 Mar 2010, so this is a year typo"
+redate,2010-07-04,2010-07-02,12,13,36,41,46,1,8,https://www.euro-millions.com/results/02-07-2010,"Primary lists Sunday 4 Jul 2010 (no such draw) and has no Fri 2 Jul 2010; euro-millions.com gives these exact numbers for 2 Jul 2010"
+redate,2012-12-16,2014-12-16,3,7,12,13,25,5,8,pyeuromil 2014.txt (secondary source),"Primary lists a Sunday 16 Dec 2012 (no such draw) and has no Tue 16 Dec 2014; the secondary source gives these exact numbers for 16 Dec 2014, so this is a year typo"
+add,2005-03-11,,8,12,23,40,43,1,4,https://www.euro-millions.com/results/11-03-2005,"Missing from primary; outside secondary coverage. Single third source"
+add,2009-11-20,,5,9,28,43,47,2,9,https://www.euro-millions.com/results/20-11-2009,"Missing from primary; outside secondary coverage. Single third source"

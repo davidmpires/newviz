@@ -1,0 +1,20 @@
+{
+  "n_draws": 1993,
+  "first": "2004-02-13",
+  "last": "2026-10-27",
+  "n_primary_rows": 1987,
+  "n_secondary_rows": 1104,
+  "secondary_range": [
+    "2011-05-10",
+    "2021-12-03"
+  ],
+  "overlap_agree": 1099,
+  "n_log": 12,
+  "draws_per_era": {
+    "1-9": 378,
+    "1-11": 562,
+    "1-12": 1053
+  },
+  "main_min": 1,
+  "main_max": 50
+}
