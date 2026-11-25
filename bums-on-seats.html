@@ -831,7 +831,7 @@ function renderCal(r){
     var m = parseISO(k).getUTCMonth();
     if(m !== lastM) h += '<div class="mon">' + MONTHS[m] + (parseISO(k).getUTCFullYear() !== todayUTC().getUTCFullYear() ? " " + parseISO(k).getUTCFullYear() : "") + '</div>';
     lastM = m;
-    logged = has(state.log, k);
+    logged = has(state.log, k) && k !== thisK;      // the week in progress is never locked
     set = officeDays(k); base = officeDays(k, null, true);
     w = windowAt(k, planGet);
     h += '<div class="crow' + (k === thisK ? " now" : "") + '"><button type="button" class="wkbtn" data-week="' + k + '"' + (logged ? " disabled" : "") +
@@ -904,6 +904,7 @@ function paint(d){
     var k = weekOf(d), want = brush === "office", def = !!officeDays(k, null, true)[d];
     if(want === def) delete state.days[d]; else state.days[d] = want ? 1 : 0;
   }
+  if(weekOf(d) === thisK && has(state.log, thisK)) state.log[thisK] = clampDay(count(officeDays(thisK)));
   popDays[d] = true;
 }
 $("cal").addEventListener("click", function(e){
